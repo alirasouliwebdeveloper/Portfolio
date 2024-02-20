@@ -1,14 +1,8 @@
 import React from "react";
-import Nav from "./Components/Nav";
+import HomePage from "./HomePage";
 
-function homePage() {
-  return (
-    <div className="overflow-x-hidden">
-      <div>
-        <Nav />
-      </div>
-    </div>
-  );
+function page() {
+  return <HomePage />;
 }
 
-export default homePage;
+export default page;
