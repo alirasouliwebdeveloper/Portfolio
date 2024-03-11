@@ -17,6 +17,7 @@ const HomePage = () => {
         <Nav openNav={openNav} />
         {/* Hero Section */}
         <Hero />
+        <div className="relative z-[30] ">{/* About */}</div>
       </div>
     </div>
   );
