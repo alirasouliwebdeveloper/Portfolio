@@ -9,6 +9,7 @@ import Skills from "./Components/Skills";
 import Projects from "./Components/Projects";
 import Testimonials from "./Components/Testimonials";
 import Blog from "./Components/Blog";
+import Footer from "./Components/Footer";
 
 const HomePage = () => {
   const [nav, setNav] = useState(false);
@@ -29,6 +30,7 @@ const HomePage = () => {
           <Projects />
           <Testimonials />
           <Blog />
+          <Footer />
         </div>
       </div>
     </div>
