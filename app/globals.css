@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
 @layer components {
   .nav-link {
     @apply relative font-semibold text-white cursor-pointer text-[17px] w-fit md:block 

@@ -38,8 +38,8 @@ const Particle = () => {
           interactivity: {
             events: {
               onClick: {
-                enable: true,
-                mode: "push",
+                enable: false,
+                // mode: "push",
               },
               onHover: {
                 enable: true,
