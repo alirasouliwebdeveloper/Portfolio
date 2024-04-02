@@ -19,7 +19,7 @@ const SkillsLanguage = ({
 }: Props) => {
   return (
     <div>
-      <div className="relative mb-[3rem]">
+      <div className="relative mb-[1.5rem]">
         <h1 className="p-5 w-[100%] uppercase bg-gray-800 rounded-sm text-white text-[20px] font-bold">
           {skill1}
         </h1>
@@ -28,7 +28,7 @@ const SkillsLanguage = ({
         ></span>
       </div>
 
-      <div className="relative mb-[3rem]">
+      <div className="relative mb-[1.5rem]">
         <h1 className="p-5 w-[100%] uppercase bg-gray-800 rounded-sm text-white text-[20px] font-bold">
           {skill2}
         </h1>
@@ -37,7 +37,7 @@ const SkillsLanguage = ({
         ></span>
       </div>
 
-      <div className="relative mb-[3rem]">
+      <div className="relative mb-[1.5rem]">
         <h1 className="p-5 w-[100%] uppercase bg-gray-800 rounded-sm text-white text-[20px] font-bold">
           {skill3}
         </h1>
