@@ -3,7 +3,7 @@ import {
   ChatBubbleLeftRightIcon,
   UserCircleIcon,
 } from "@heroicons/react/20/solid";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 const Blog = () => {
   return (
