@@ -19,10 +19,11 @@ const Hero = () => {
 
           <TextEffect />
           <p className="mt-[2rem] text-[18px] text-[#ffffff92]">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus
-            dignissimos modi rem aperiam sint laboriosam, repellendus,
-            recusandae vero quaerat ut necessitatibus? Eos necessitatibus atque
-            est culpa tempora soluta vel cum.
+            Seasoned Senior Full Stack Developer with a decade of expertise
+            optimizing web development processes and leading technical teams.
+            Specialized in leveraging technologies like React JS, JavaScript,
+            PHP, Laravel, and WordPress for enhanced efficiency and innovation
+            in banking and freelance projects.
           </p>
           <div className="mt-[2rem] flex-col space-y-6 sm:space-y-0 sm:flex sm:flex-row items-center sm:space-x-6">
             <button
@@ -32,7 +33,7 @@ const Hero = () => {
               <p>Download CV</p>
               <ArrowDownTrayIcon className="w-[1.6rem] h-[1.7rem] text-black " />
             </button>
-            <button className="flex items-center space-x-2">
+            <button className="flex items-center space-x-2 hidden">
               <PlayCircleIcon className="w-[4rem] h-[4rem] hover:text-yellow-400 transition-all duration-200 text-[#55e6a5]" />
               <p className="text-[20px] font-semibold text-white">
                 Watch The Video

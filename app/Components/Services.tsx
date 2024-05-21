@@ -18,10 +18,10 @@ const Services = () => {
             <h1 className="text-[20px] md:text-[30px] mt-[1.5rem] mb-[1.5rem]">
               FrontEnd
             </h1>
-            <p className="text-[15px] text-[#d3d2d2] font-normal">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit
-              nulla quo consequatur fuga laudantium ipsum molestias beatae id
-              dicta tempora.
+            <p className="text-[15px] text-[#d3d2d2] font-normal grid grid-cols-1">
+              <span>HTML - CSS - JavaScript - JQuery</span>
+              <span>TailWind - Bootstrap</span>
+              <span>React js - Next js</span>
             </p>
           </div>
         </div>
@@ -32,10 +32,10 @@ const Services = () => {
             <h1 className="text-[20px] md:text-[30px] mt-[1.5rem] mb-[1.5rem]">
               Backend
             </h1>
-            <p className="text-[15px] text-[#d3d2d2] font-normal">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit
-              nulla quo consequatur fuga laudantium ipsum molestias beatae id
-              dicta tempora.
+            <p className="text-[15px] text-[#d3d2d2] font-normal grid grid-cols-1">
+              <span>PHP</span>
+              <span>WordPress</span>
+              <span>Laravel</span>
             </p>
           </div>
         </div>
@@ -44,12 +44,12 @@ const Services = () => {
           <div className="bg-blue-700 hover:scale-110 transform transition-all duration-300 hover:rotate-6 uppercase font-semibold text-center p-[2rem]">
             <CommandLineIcon className="w-[6rem] h-[6rem] mx-auto text-[#d3fae8]" />
             <h1 className="text-[20px] md:text-[30px] mt-[1.5rem] mb-[1.5rem]">
-              Fullstack
+              Game Developer
             </h1>
-            <p className="text-[15px] text-[#d3d2d2] font-normal">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit
-              nulla quo consequatur fuga laudantium ipsum molestias beatae id
-              dicta tempora.
+            <p className="text-[15px] text-[#d3d2d2] font-normal grid grid-cols-1">
+              <span>Unity Game Engine</span>
+              <span>Android</span>
+              <span>iOS</span>
             </p>
           </div>
         </div>

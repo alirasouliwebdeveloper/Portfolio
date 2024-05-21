@@ -19,7 +19,7 @@ const Footer = () => {
               Address
             </h1>
             <p className="text-[17px] w-[90%] text-white opacity-60">
-              Lorem ipsum dolor sit.
+              In this beautiful world :)
             </p>
           </div>
         </div>
@@ -33,7 +33,7 @@ const Footer = () => {
               Phone
             </h1>
             <p className="text-[17px] w-[90%] text-white opacity-60">
-              +1123456789 <br /> +1326549875
+              +12345678900 <br /> +12345678900
             </p>
           </div>
         </div>
@@ -48,22 +48,38 @@ const Footer = () => {
               Send Us Email
             </h1>
             <p className="text-[17px] w-[90%] text-white opacity-60">
-              exmple.com
-              <br /> example@example.com
+              alirasouli.info
+              <br /> contact@alirasouli.info
             </p>
           </div>
         </div>
       </div>
       <div className="w-[80%] mt-[2rem] mx-auto grid grid-cols-1 md:grid-cols-2 items-center justify-between">
-        <div className="text-[16px] mb-[2rem] md:mb-0 text-white opacity-20">
-          Webdv warriors 2024 | All Rights Reserved
+        <div className="text-[16px] mb-[2rem] md:mb-0 text-white opacity-50">
+          Ali Rasouli Community 2023 | All Rights Reserved
         </div>
-        <div className="flex items-center space-x-10">
-          <p className="text-[16px] text-white opacity-20">
+        <div className="flex items-center justify-end space-x-10">
+          <a
+            href="#"
+            target="_blank"
+            className="text-[16px] text-white opacity-50"
+          >
             Terms & Conditions
-          </p>
-          <p className="text-[16px] text-white opacity-20">Privacy Policy</p>
-          <p className="text-[16px] text-white opacity-20">Sitemap</p>
+          </a>
+          <a
+            href="#"
+            target="_blank"
+            className="text-[16px] text-white opacity-50"
+          >
+            Privacy Policy
+          </a>
+          <a
+            href="#"
+            target="_blank"
+            className="text-[16px] text-white opacity-50"
+          >
+            Sitemap
+          </a>
         </div>
       </div>
     </div>

@@ -54,6 +54,21 @@ const Skills = () => {
             level3="w-[90%]"
           />
         </div>
+        <div>
+          <SkillsItem
+            title="Unity Developer"
+            year="2014 - Present"
+            description="Unity is a cross-platform engine. The Unity editor is supported on Windows, macOS, and the Linux platform, while the engine itself currently supports building games for more than 19 different platforms, including mobile, desktop, consoles, and virtual reality."
+          />
+          <SkillsLanguage
+            skill1="C#"
+            skill2="PhotoShop"
+            skill3="Maya - 3D MAX"
+            level1="w-[80%]"
+            level2="w-[70%]"
+            level3="w-[50%]"
+          />
+        </div>
       </div>
     </div>
   );

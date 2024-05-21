@@ -1,13 +1,16 @@
+import React from "react";
 import {
   ChatBubbleLeftRightIcon,
   UserCircleIcon,
 } from "@heroicons/react/20/solid";
 import Image from "next/image";
-import React from "react";
 
 const Blog = () => {
   return (
-    <div id="blog" className="pt-[4rem] md:pt-[8rem] pb-[4rem] bg-[#02050a]">
+    <div
+      id="blog"
+      className="pt-[4rem] md:pt-[8rem] pb-[4rem] bg-[#02050a] hidden"
+    >
       <h1 className="heading">
         MY <span className="text-yellow-400">Blog</span>
       </h1>
