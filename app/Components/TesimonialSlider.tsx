@@ -2,6 +2,7 @@ import React from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import ClientReview from "./ClientReview";
+import { testimonials } from "../data/Testimonials";
 
 const responsive = {
   desktop: {
@@ -33,31 +34,19 @@ const TesimonialSlider = () => {
       responsive={responsive}
       itemClass="item"
     >
-      <ClientReview
-        image="/images/c1.jpg"
-        name="Ali Rasouli"
-        role="Web Developer"
-      />
-      <ClientReview
-        image="/images/c2.jpg"
-        name="Ali Rasouli"
-        role="Web Developer"
-      />
-      <ClientReview
-        image="/images/c1.jpg"
-        name="Ali Rasouli"
-        role="Web Developer"
-      />
-      <ClientReview
-        image="/images/c2.jpg"
-        name="Ali Rasouli"
-        role="Web Developer"
-      />
-      <ClientReview
-        image="/images/c1.jpg"
-        name="Ali Rasouli"
-        role="Web Developer"
-      />
+      {testimonials &&
+        testimonials.map((testimonial) => {
+          return (
+            <ClientReview
+              key={testimonial.id}
+              image="/images/c1.jpg"
+              rate={testimonial.rate}
+              name={testimonial.fullName}
+              role={testimonial.jobTitle}
+              testimonial={testimonial.testimonial}
+            />
+          );
+        })}
     </Carousel>
   );
 };

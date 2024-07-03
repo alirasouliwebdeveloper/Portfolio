@@ -6,9 +6,25 @@ interface Props {
   image: string;
   name: string;
   role: string;
+  testimonial: string;
+  rate: number;
 }
 
-const ClientReview = ({ image, name, role }: Props) => {
+const ClientReview = ({ image, name, role, testimonial, rate }: Props) => {
+  const stars = (rate: number) => {
+    let starIcons = [];
+    for (let index = 1; index < 6; index++) {
+      if (rate >= index) {
+        starIcons.push({ color: "text-yellow-400" });
+      } else {
+        starIcons.push({ color: "text-gray-600" });
+      }
+    }
+    return starIcons;
+  };
+
+  const starIcons = stars(rate);
+  console.log("starIcons", starIcons);
   return (
     <div className="flex flex-col text-center justify-center">
       <Image
@@ -20,21 +36,19 @@ const ClientReview = ({ image, name, role }: Props) => {
         className="mx-auto mb-[2rem] rounded-full"
       />
       <div className="flex items-center mx-auto">
-        <StarIcon className="w-[2rem] h-[2rem] text-yellow-400" />
-        <StarIcon className="w-[2rem] h-[2rem] text-yellow-400" />
-        <StarIcon className="w-[2rem] h-[2rem] text-yellow-400" />
-        <StarIcon className="w-[2rem] h-[2rem] text-yellow-400" />
-        <StarIcon className="w-[2rem] h-[2rem] text-yellow-400" />
+        {starIcons.map(({ color }, index) => {
+          return (
+            <StarIcon key={index} className={`w-[2rem] h-[2rem] ${color}`} />
+          );
+        })}
       </div>
+
       <h1 className="text-[25px] text-white mt-[1rem]">{name}</h1>
       <p className="text-[18px] text-white mt-[0.5rem] opacity-75 mb-[1.4rem]">
         {role}
       </p>
       <p className="text-[16px] text-white opacity-50 w-[90%] md:w-[50%] mx-auto">
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quidem
-        recusandae voluptates molestias eveniet aliquid doloremque ullam,
-        placeat cum consectetur. Quisquam aspernatur animi nulla magnam
-        similique id repudiandae, quasi veritatis eaque?
+        {testimonial}
       </p>
     </div>
   );

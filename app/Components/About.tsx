@@ -23,7 +23,7 @@ const About = () => {
           </div>
           <button
             className="px-[2rem] hover:bg-yellow-400 relative transition-all duration-200 py-[1rem] text-[18px] 
-              font-bold uppercase bg-[#55e6a5] text-black flex items-center space-x-2"
+              font-bold uppercase bg-[#55e6a5] text-black flex items-center space-x-2 hidden"
           >
             <p>Download CV</p>
             <ArrowDownTrayIcon className="w-[1.6rem] h-[1.7rem] text-black " />
