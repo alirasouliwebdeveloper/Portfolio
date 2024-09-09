@@ -18,12 +18,13 @@ const Hero = () => {
           </h1>
 
           <TextEffect />
-          <p className="mt-[2rem] text-[18px] text-[#ffffff92]">
+          <p className="mt-[2rem] text-[17px] text-[#ffffff92]">
             Seasoned Senior Full Stack Developer with a decade of expertise
             optimizing web development processes and leading technical teams.
-            Specialized in leveraging technologies like React JS, JavaScript,
-            PHP, Laravel, and WordPress for enhanced efficiency and innovation
-            in banking and freelance projects.
+            Specialized in leveraging technologies like <b>React JS</b>,
+            <b>JavaScript</b>, <b>PHP</b>, <b>Laravel</b>, and <b>WordPress</b>{" "}
+            for enhanced efficiency and innovation in banking and freelance
+            projects.
           </p>
           <div className="mt-[2rem] flex-col space-y-6 sm:space-y-0 sm:flex sm:flex-row items-center sm:space-x-6">
             <button
