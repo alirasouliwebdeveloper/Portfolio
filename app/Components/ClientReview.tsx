@@ -24,7 +24,7 @@ const ClientReview = ({ image, name, role, testimonial, rate }: Props) => {
   };
 
   const starIcons = stars(rate);
-  console.log("starIcons", starIcons);
+  // console.log("starIcons", starIcons);
   return (
     <div className="flex flex-col text-center justify-center">
       <Image
