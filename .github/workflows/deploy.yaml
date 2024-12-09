@@ -31,7 +31,7 @@ jobs:
         if [[ $GITHUB_REF == refs/heads/main ]]; then
           ssh -i private_key.pem -p "$PORT" "$USER@$HOST" "cd ~/apps/prod && git pull origin main && npm install --production && npm run build && pm2 restart prod-app || pm2 start npm --name prod-app -- start"
         fi
-      shell: /bin/bash
+      shell: bash
 
     env:
       HOST: ${{ secrets.SERVER_HOST }}
