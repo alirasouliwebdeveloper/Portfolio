@@ -24,28 +24,26 @@ jobs:
     # Deploy to Server
     - name: Deploy to Server
       run: |
-        # اگر تغییرات در شاخه dev است
         if [[ $GITHUB_REF == refs/heads/dev ]]; then
           ssh -i private_key.pem -p "$PORT" "$USER@$HOST" <<'EOF'
-          cd ~/apps/dev
-          git pull origin dev
-          npm install --production
-          npm run build
-          pm2 restart dev-app || pm2 start npm --name dev-app -- start
+            cd ~/apps/dev
+            git pull origin dev
+            npm install --production
+            npm run build
+            pm2 restart dev-app || pm2 start npm --name dev-app -- start
 EOF
         fi
         
-        # اگر تغییرات در شاخه main است
         if [[ $GITHUB_REF == refs/heads/main ]]; then
           ssh -i private_key.pem -p "$PORT" "$USER@$HOST" <<'EOF'
-          cd ~/apps/prod
-          git pull origin main
-          npm install --production
-          npm run build
-          pm2 restart prod-app || pm2 start npm --name prod-app -- start
+            cd ~/apps/prod
+            git pull origin main
+            npm install --production
+            npm run build
+            pm2 restart prod-app || pm2 start npm --name prod-app -- start
 EOF
         fi
-      shell: /usr/bin/bash -e {0}
+      shell: /bin/bash
 
     env:
       HOST: ${{ secrets.SERVER_HOST }}
