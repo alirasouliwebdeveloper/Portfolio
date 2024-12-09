@@ -1,56 +1,54 @@
-name: CI/CD Workflow
+name: Deploy to Server
 
 on:
   push:
     branches:
-      - main
       - dev
+      - main
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Checkout code
+    # Checkout code
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # 2. Install Node.js
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-
-    # 3. Install dependencies and build
-    - name: Install dependencies
+    # Set up SSH key
+    - name: Set up SSH key
       run: |
-        npm install
-        npm run build
+        echo "$PRIVATE_KEY" > private_key.pem
+        chmod 600 private_key.pem
 
-    # 4. Deploy to Server
+    # Deploy to Server
     - name: Deploy to Server
-      env:
-        HOST: ${{ secrets.SERVER_HOST }}
-        USER: ${{ secrets.SERVER_USER }}
-        PORT: ${{ secrets.SERVER_PORT }}
-        PRIVATE_KEY: ${{ secrets.SERVER_PRIVATE_KEY }}
       run: |
+        # اگر تغییرات در شاخه dev است
         if [[ $GITHUB_REF == refs/heads/dev ]]; then
-          ssh -i "$PRIVATE_KEY" -p "$PORT" "$USER@$HOST" << 'EOF'
+          ssh -i private_key.pem -p "$PORT" "$USER@$HOST" <<'EOF'
           cd ~/apps/dev
           git pull origin dev
           npm install --production
           npm run build
           pm2 restart dev-app || pm2 start npm --name dev-app -- start
-          EOF
+EOF
         fi
-
+        
+        # اگر تغییرات در شاخه main است
         if [[ $GITHUB_REF == refs/heads/main ]]; then
-          ssh -i "$PRIVATE_KEY" -p "$PORT" "$USER@$HOST" << 'EOF'
+          ssh -i private_key.pem -p "$PORT" "$USER@$HOST" <<'EOF'
           cd ~/apps/prod
           git pull origin main
           npm install --production
           npm run build
           pm2 restart prod-app || pm2 start npm --name prod-app -- start
-          EOF
+EOF
         fi
+      shell: /usr/bin/bash -e {0}
+
+    env:
+      HOST: ${{ secrets.SERVER_HOST }}
+      USER: ${{ secrets.SERVER_USER }}
+      PORT: ${{ secrets.SERVER_PORT }}
+      PRIVATE_KEY: ${{ secrets.SERVER_PRIVATE_KEY }}
