@@ -28,6 +28,7 @@ jobs:
         git clone https://github.com/alirasouliwebdeveloper/Portfolio.git /var/www/Portfolio
         cd /var/www/Portfolio
         npm install
+        npm audit fix --force
         npm run build
         pm2 start /var/www/Portfolio/ecosystem.config.js
         pm2 save
