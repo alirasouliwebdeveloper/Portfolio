@@ -20,6 +20,14 @@ jobs:
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -H 185.19.201.131 >> ~/.ssh/known_hosts
 
-    - name: Create text file on server
+    - name: Deploy application
       run: |
-        ssh root@185.19.201.131 "echo 'GitHub Actions is working!' > /root/testfile.txt"
+        ssh root@185.19.201.131 << 'EOF'
+        pm2 stop all || true
+        rm -rf /var/www/Portfolio
+        git clone https://github.com/alirasouliwebdeveloper/Portfolio.git /var/www/Portfolio
+        cd /var/www/Portfolio
+        npm install
+        pm2 start /var/www/Portfolio/ecosystem.config.js
+        pm2 save
+        EOF
