@@ -9,7 +9,7 @@ export interface Testimonial {
 export const testimonials: Testimonial[] = [
   {
     id: 1,
-    fullName: "Sarah Adams",
+    fullName: "Sarah Adams Mohammad Rahmani",
     rate: 5,
     jobTitle: "Marketing Manager",
     testimonial:
