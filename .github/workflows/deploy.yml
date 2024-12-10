@@ -3,29 +3,23 @@ name: Deploy to Server
 on:
   push:
     branches:
-      - dev
       - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Setup SSH key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -t rsa ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+    - name: Setup SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H <your-server-ip> >> ~/.ssh/known_hosts
 
-      - name: Deploy to server
-        run: |
-          ssh -i ~/.ssh/id_rsa -p ${{ secrets.PORT }} ${{ secrets.USER }}@${{ secrets.HOST }} << 'EOF'
-            cd ~/apps/prod
-            git pull origin main
-            npm install --production
-            npm run build
-            pm2 restart prod-app || pm2 start npm --name prod-app -- start
-          EOF
+    - name: Create text file on server
+      run: |
+        ssh root@<your-server-ip> "echo 'GitHub Actions is working!' > /root/testfile.txt"
