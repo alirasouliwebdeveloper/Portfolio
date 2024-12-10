@@ -18,8 +18,8 @@ jobs:
         mkdir -p ~/.ssh
         echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H <your-server-ip> >> ~/.ssh/known_hosts
+        ssh-keyscan -H 185.19.201.131 >> ~/.ssh/known_hosts
 
     - name: Create text file on server
       run: |
-        ssh root@<your-server-ip> "echo 'GitHub Actions is working!' > /root/testfile.txt"
+        ssh root@185.19.201.131 "echo 'GitHub Actions is working!' > /root/testfile.txt"
