@@ -1,0 +1,34 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - prod
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Setup SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H 185.19.201.131 >> ~/.ssh/known_hosts
+
+    - name: Deploy to Production
+      run: |
+        ssh root@192.168.100.111 << 'EOF'
+        cd /var/www/prod || git clone https://github.com/alirasouliwebdeveloper/Portfolio.git /var/www/prod
+        cd /var/www/prod
+        git reset --hard
+        git pull origin prod
+        npm install
+        npm run build
+        pm2 restart prod || pm2 start npm --name "prod" -- start
+        pm2 save
+        EOF
