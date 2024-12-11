@@ -15,6 +15,9 @@ jobs:
 
     - name: Setup SSH
       run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -H 185.19.201.131 >> ~/.ssh/known_hosts
 
     - name: Deploy application
