@@ -13,13 +13,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Setup SSH
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H 185.19.201.131 >> ~/.ssh/known_hosts
-
     - name: Deploy application
       run: |
         ssh root@185.19.201.131 << 'EOF'
