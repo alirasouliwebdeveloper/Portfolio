@@ -23,8 +23,8 @@ jobs:
     - name: Deploy to Dev
       run: |
         ssh root@185.19.201.131 << 'EOF'
-        cd /var/www/dev/Portfolio || git clone https://github.com/alirasouliwebdeveloper/Portfolio.git /var/www/dev
         cd /var/www/dev/Portfolio
+        pwd
         git reset --hard
         git pull origin main
         npm install
