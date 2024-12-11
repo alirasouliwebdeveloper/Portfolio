@@ -23,8 +23,8 @@ jobs:
     - name: Deploy to Production
       run: |
         ssh root@185.19.201.131 << 'EOF'
-        cd /var/www/prod || git clone https://github.com/alirasouliwebdeveloper/Portfolio.git /var/www/prod
-        cd /var/www/prod
+        cd /var/www/prod/Portfolio || git clone https://github.com/alirasouliwebdeveloper/Portfolio.git /var/www/prod
+        cd /var/www/prod/Portfolio
         git reset --hard
         git pull origin prod
         npm install
