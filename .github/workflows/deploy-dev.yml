@@ -23,12 +23,14 @@ jobs:
     - name: Deploy to Dev
       run: |
         ssh root@185.19.201.131 << 'EOF'
+        cd /var/www/dev/Portfolio || git clone https://github.com/alirasouliwebdeveloper/Portfolio.git /var/www/dev/Portfolio
         cd /var/www/dev/Portfolio
-        pwd
         git reset --hard
         git pull origin main
         npm install
+        npm audit fix --force
         npm run build
-        pm2 restart dev || pm2 start npm --name "dev" -- start
+        # pm2 restart dev || pm2 start npm --name "dev" -- start
+        pm2 restart Portfolio || pm2 start /var/www/Portfolio/ecosystem.config.js
         pm2 save
         EOF
