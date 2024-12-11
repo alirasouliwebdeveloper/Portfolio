@@ -22,7 +22,7 @@ jobs:
 
     - name: Deploy to Dev
       run: |
-        ssh root@192.168.100.111 << 'EOF'
+        ssh root@185.19.201.131 << 'EOF'
         cd /var/www/dev || git clone https://github.com/alirasouliwebdeveloper/Portfolio.git /var/www/dev
         cd /var/www/dev
         git reset --hard
