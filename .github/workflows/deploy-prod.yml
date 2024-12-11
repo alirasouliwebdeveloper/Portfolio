@@ -26,7 +26,7 @@ jobs:
         cd /var/www/prod/Portfolio || git clone https://github.com/alirasouliwebdeveloper/Portfolio.git /var/www/prod/Portfolio
         cd /var/www/prod/Portfolio
         git reset --hard
-        git pull origin main
+        git pull origin prod
         npm install
         npm audit fix --force
         npm run build
