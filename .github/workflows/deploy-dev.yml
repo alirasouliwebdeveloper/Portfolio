@@ -31,6 +31,6 @@ jobs:
         npm audit fix --force
         npm run build
         # pm2 restart dev || pm2 start npm --name "dev" -- start
-        pm2 restart Portfolio || pm2 start /var/www/Portfolio/ecosystem.config.js
+        pm2 restart Portfolio || pm2 start /var/www/dev/Portfolio/ecosystem.config.js
         pm2 save
         EOF
