@@ -20,6 +20,7 @@ jobs:
           echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H 185.19.201.131 >> ~/.ssh/known_hosts
+          echo "GITHUB_REF: $GITHUB_REF"
 
       - name: Deploy main or develop
         run: |
