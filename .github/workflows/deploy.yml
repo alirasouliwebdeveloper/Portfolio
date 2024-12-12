@@ -21,11 +21,13 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H 185.19.201.131 >> ~/.ssh/known_hosts
           echo "GITHUB_REF: $GITHUB_REF"
+          echo "Current branch: $BRANCH_NAME"
 
       - name: Deploy main or develop
         run: |
           ssh -i ~/.ssh/id_rsa root@185.19.201.131 << 'EOF'
           echo "GITHUB_REF: $GITHUB_REF"
+          echo "Current branch: $BRANCH_NAME"
           if [ "$GITHUB_REF" = "refs/heads/main" ]; then
             BRANCH="main"
             DIR="/var/www/main"
