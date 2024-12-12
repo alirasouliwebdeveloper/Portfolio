@@ -20,21 +20,21 @@ jobs:
           echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H 185.19.201.131 >> ~/.ssh/known_hosts
-          echo "GITHUB_REF: $GITHUB_REF"
 
       - name: Deploy main or develop
         run: |
           ssh -i ~/.ssh/id_rsa root@185.19.201.131 << 'EOF'
-            if [ "$GITHUB_REF" = "refs/heads/main" ]; then
-              BRANCH="main"
-              DIR="/var/www/main"
-            elif [ "$GITHUB_REF" = "refs/heads/feature/develop" ]; then
-              BRANCH="feature/develop"
-              DIR="/var/www/develop"
-            else
-              echo "Unsupported branch: $GITHUB_REF"
-              exit 1
-            fi
+          echo "GITHUB_REF: $GITHUB_REF"
+          if [ "$GITHUB_REF" = "refs/heads/main" ]; then
+            BRANCH="main"
+            DIR="/var/www/main"
+          elif [ "$GITHUB_REF" = "refs/heads/feature/develop" ]; then
+            BRANCH="feature/develop"
+            DIR="/var/www/develop"
+          else
+            echo "Unsupported branch: $GITHUB_REF"
+            exit 1
+          fi
 
             if [ ! -d "$DIR" ]; then
               mkdir -p "$DIR"
