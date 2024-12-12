@@ -21,42 +21,33 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H 185.19.201.131 >> ~/.ssh/known_hosts
 
-      - name: Deploy to production (main)
-        if: github.ref == 'refs/heads/main'
+      - name: Deploy main or develop
         run: |
           ssh -i ~/.ssh/id_rsa root@185.19.201.131 << 'EOF'
-            if [ ! -d "/var/www/main" ]; then
-              mkdir -p /var/www/main
-              cd /var/www/main
-              git init
-              git remote add origin git@github.com:alirasouliwebdeveloper/Portfolio.git
-              git fetch origin main
-              git checkout main
+            if [ "$GITHUB_REF" = "refs/heads/main" ]; then
+              BRANCH="main"
+              DIR="/var/www/main"
+            elif [ "$GITHUB_REF" = "refs/heads/feature/develop" ]; then
+              BRANCH="feature/develop"
+              DIR="/var/www/develop"
             else
-              cd /var/www/main
+              echo "Unsupported branch: $GITHUB_REF"
+              exit 1
             fi
-            git pull origin main
-            npm install
-            npm run build
-            pm2 reload ecosystem.config.js --only main || pm2 start ecosystem.config.js --only main
-          EOF
 
-      - name: Deploy to development (feature/develop)
-        if: github.ref == 'refs/heads/feature/develop'
-        run: |
-          ssh -i ~/.ssh/id_rsa root@185.19.201.131 << 'EOF'
-            if [ ! -d "/var/www/develop" ]; then
-              mkdir -p /var/www/develop
-              cd /var/www/develop
+            if [ ! -d "$DIR" ]; then
+              mkdir -p "$DIR"
+              cd "$DIR"
               git init
               git remote add origin git@github.com:alirasouliwebdeveloper/Portfolio.git
-              git fetch origin feature/develop
-              git checkout feature/develop
+              git fetch origin $BRANCH
+              git checkout $BRANCH
             else
-              cd /var/www/develop
+              cd "$DIR"
             fi
-            git pull origin feature/develop
+            git pull origin $BRANCH
             npm install
             npm run build
-            pm2 reload ecosystem.config.js --only develop || pm2 start ecosystem.config.js --only develop
+            pm2 reload ecosystem.config.js --only $BRANCH || pm2 start ecosystem.config.js --only $BRANCH
+            pm2 save
           EOF
