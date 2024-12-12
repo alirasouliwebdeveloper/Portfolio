@@ -1,4 +1,4 @@
-name: Deploy to Server
+name: Deploy Application
 
 on:
   push:
@@ -7,11 +7,10 @@ on:
       - feature/develop
 
 jobs:
-  deploy:
+  setup_ssh:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v3
 
       - name: Setup SSH
@@ -20,38 +19,32 @@ jobs:
           echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H 185.19.201.131 >> ~/.ssh/known_hosts
-          echo "GITHUB_REF: $GITHUB_REF"
-          echo "Current branch: $BRANCH_NAME"
 
-      - name: Deploy main or develop
+      - name: Export GITHUB_REF as output
+        id: set_ref
+        run: echo "::set-output name=branch_ref::${GITHUB_REF}"
+
+  deploy:
+    needs: setup_ssh
+    runs-on: ubuntu-latest
+    steps:
+      - name: Access GITHUB_REF from setup_ssh
+        run: echo GITHUB_REF:$needs.setup_ssh.outputs.branch_ref
+
+      - name: Clone or Pull Repository
         run: |
-          ssh -i ~/.ssh/id_rsa root@185.19.201.131 << 'EOF'
-          echo "GITHUB_REF: $GITHUB_REF"
+          BRANCH_NAME=${{ needs.setup_ssh.outputs.branch_ref#refs/heads/ }}
           echo "Current branch: $BRANCH_NAME"
-          if [ "$GITHUB_REF" = "refs/heads/main" ]; then
-            BRANCH="main"
-            DIR="/var/www/main"
-          elif [ "$GITHUB_REF" = "refs/heads/feature/develop" ]; then
-            BRANCH="feature/develop"
-            DIR="/var/www/develop"
+          if [ "$BRANCH_NAME" == "main" ]; then
+            DEST_DIR="/var/www/main"
           else
-            echo "Unsupported branch: $GITHUB_REF"
-            exit 1
+            DEST_DIR="/var/www/develop"
           fi
 
-            if [ ! -d "$DIR" ]; then
-              mkdir -p "$DIR"
-              cd "$DIR"
-              git init
-              git remote add origin git@github.com:alirasouliwebdeveloper/Portfolio.git
-              git fetch origin $BRANCH
-              git checkout $BRANCH
-            else
-              cd "$DIR"
-            fi
-            git pull origin $BRANCH
-            npm install
-            npm run build
-            pm2 reload ecosystem.config.js --only $BRANCH || pm2 start ecosystem.config.js --only $BRANCH
-            pm2 save
-          EOF
+          if [ ! -d "$DEST_DIR/.git" ]; then
+            git clone -b $BRANCH_NAME git@github.com:alirasouliwebdeveloper/Portfolio.git $DEST_DIR
+          else
+            cd $DEST_DIR
+            git reset --hard
+            git pull origin $BRANCH_NAME
+          fi
