@@ -33,6 +33,7 @@ jobs:
           git checkout main
           git pull origin main
           npm install
+          npm audit fix --force
           npm run build
           pm2 reload ecosystem.config.js --only main || pm2 start ecosystem.config.js --only main
         EOF
@@ -48,6 +49,8 @@ jobs:
           git fetch origin feature/develop
           git checkout feature/develop
           git pull origin feature/develop
+          npm install
+          npm audit fix --force
           npm run build
           pm2 reload ecosystem.config.js --only develop || pm2 start ecosystem.config.js --only develop
         EOF
