@@ -11,37 +11,46 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Setup SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H 185.19.201.131 >> ~/.ssh/known_hosts
+    - name: Setup SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H 185.19.201.131 >> ~/.ssh/known_hosts
 
-      - name: Deploy to production (main)
-        if: github.ref == 'refs/heads/main'
-        run: |
-          ssh -i ~/.ssh/id_rsa user@185.19.201.131 << 'EOF'
-            cd /var/www/main
-            git pull origin main
-            npm install
-            pm2 reload ecosystem.config.js --only main
-          EOF
+    - name: Deploy to production (main)
+      if: github.ref == 'refs/heads/main'
+      run: |
+        ssh -i ~/.ssh/id_rsa root@185.19.201.131 << 'EOF'
+          mkdir -p /var/www/main
+          cd /var/www/main
+          git init
+          git remote add origin git@github.com:alirasouliwebdeveloper/Portfolio.git
+          git fetch origin main
+          git checkout main
+          git pull origin main
+          npm install
+          npm audit fix --force
+          npm run build
+          pm2 reload ecosystem.config.js --only main || pm2 start ecosystem.config.js --only main
+        EOF
 
-      - name: Deploy to development (feature/develop)
-        if: github.ref == 'refs/heads/feature/develop'
-        run: |
-          ssh -i ~/.ssh/id_rsa user@185.19.201.131 << 'EOF'
-            mkdir -p /var/www/develop
-            cd /var/www/develop
-            git init
-            git remote add origin git@github.com:alirasouliwebdeveloper/Portfolio.git
-            git fetch origin feature/develop
-            git checkout feature/develop
-            git pull origin feature/develop
-            npm install
-            pm2 reload ecosystem.config.js --only develop
-          EOF
+    - name: Deploy to development (feature/develop)
+      if: github.ref == 'refs/heads/feature/develop'
+      run: |
+        ssh -i ~/.ssh/id_rsa root@185.19.201.131 << 'EOF'
+          mkdir -p /var/www/develop
+          cd /var/www/develop
+          git init
+          git remote add origin git@github.com:alirasouliwebdeveloper/Portfolio.git
+          git fetch origin feature/develop
+          git checkout feature/develop
+          git pull origin feature/develop
+          npm install
+          npm audit fix --force
+          npm run build
+          pm2 reload ecosystem.config.js --only develop || pm2 start ecosystem.config.js --only develop
+        EOF
