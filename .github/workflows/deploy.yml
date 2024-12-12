@@ -1,4 +1,4 @@
-name: Deploy Application
+name: Deploy to Server
 
 on:
   push:
@@ -7,44 +7,47 @@ on:
       - feature/develop
 
 jobs:
-  setup_ssh:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Setup SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H 185.19.201.131 >> ~/.ssh/known_hosts
-
-      - name: Export GITHUB_REF as output
-        id: set_ref
-        run: echo "::set-output name=branch_ref::${GITHUB_REF}"
-
   deploy:
-    needs: setup_ssh
     runs-on: ubuntu-latest
+
     steps:
-      - name: Access GITHUB_REF from setup_ssh
-        run: echo GITHUB_REF:$needs.setup_ssh.outputs.branch_ref
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Clone or Pull Repository
-        run: |
-          BRANCH_NAME=${{ needs.setup_ssh.outputs.branch_ref#refs/heads/ }}
-          echo "Current branch: $BRANCH_NAME"
-          if [ "$BRANCH_NAME" == "main" ]; then
-            DEST_DIR="/var/www/main"
-          else
-            DEST_DIR="/var/www/develop"
-          fi
+    - name: Setup SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H 185.19.201.131 >> ~/.ssh/known_hosts
 
-          if [ ! -d "$DEST_DIR/.git" ]; then
-            git clone -b $BRANCH_NAME git@github.com:alirasouliwebdeveloper/Portfolio.git $DEST_DIR
-          else
-            cd $DEST_DIR
-            git reset --hard
-            git pull origin $BRANCH_NAME
-          fi
+    - name: Deploy to production (main)
+      if: github.ref == 'refs/heads/main'
+      run: |
+        ssh -i ~/.ssh/id_rsa user@185.19.201.131 << 'EOF'
+          mkdir -p /var/www/main
+          cd /var/www/main
+          git init
+          git remote add origin git@github.com:alirasouliwebdeveloper/Portfolio.git
+          git fetch origin main
+          git checkout main
+          git pull origin main
+          npm install
+          npm run build
+          pm2 reload ecosystem.config.js --only main || pm2 start ecosystem.config.js --only main
+        EOF
+
+    - name: Deploy to development (feature/develop)
+      if: github.ref == 'refs/heads/feature/develop'
+      run: |
+        ssh -i ~/.ssh/id_rsa user@185.19.201.131 << 'EOF'
+          mkdir -p /var/www/develop
+          cd /var/www/develop
+          git init
+          git remote add origin git@github.com:alirasouliwebdeveloper/Portfolio.git
+          git fetch origin feature/develop
+          git checkout feature/develop
+          git pull origin feature/develop
+          npm run build
+          pm2 reload ecosystem.config.js --only develop || pm2 start ecosystem.config.js --only develop
+        EOF
