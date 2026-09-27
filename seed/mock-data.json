@@ -1,0 +1,1222 @@
+{
+  "_note": "MOCK DATA for seeding the design. Replace before launch.",
+  "settings": {
+    "name": "Ali",
+    "headline": "I build things for the web.",
+    "bio_short": "Full-stack developer building fast websites, online stores and web apps with Laravel, React and Next.js.",
+    "email": "hello@alicodes.dev",
+    "phone": "+968 9123 4567",
+    "whatsapp": "+968 9123 4567",
+    "city": "Muscat, Oman",
+    "working_hours": "Sun–Thu, 9:00–18:00",
+    "response_time": "Usually within one working day",
+    "socials": {
+      "github": "#",
+      "linkedin": "#",
+      "x": "#",
+      "instagram": "#"
+    },
+    "stats": [
+      {
+        "icon": "calendar",
+        "value": "4+",
+        "label": "Years Experience"
+      },
+      {
+        "icon": "code",
+        "value": "50+",
+        "label": "Projects Completed"
+      },
+      {
+        "icon": "smile",
+        "value": "30+",
+        "label": "Happy Clients"
+      },
+      {
+        "icon": "trophy",
+        "value": "100%",
+        "label": "Client Satisfaction"
+      }
+    ],
+    "portrait": "ali-portrait.png"
+  },
+  "categories": [
+    {
+      "name": "Laravel",
+      "slug": "laravel",
+      "description": "Articles about Laravel."
+    },
+    {
+      "name": "Next.js",
+      "slug": "nextjs",
+      "description": "Articles about Next.js."
+    },
+    {
+      "name": "React",
+      "slug": "react",
+      "description": "Articles about React."
+    },
+    {
+      "name": "DevOps",
+      "slug": "devops",
+      "description": "Articles about DevOps."
+    },
+    {
+      "name": "Automation",
+      "slug": "automation",
+      "description": "Articles about Automation."
+    },
+    {
+      "name": "Career",
+      "slug": "career",
+      "description": "Articles about Career."
+    }
+  ],
+  "posts": [
+    {
+      "title": "Building an admin panel for a headless site with Laravel and Filament",
+      "slug": "building-an-admin-panel-for-a-headless-site-with-laravel-and-filament",
+      "category": "Laravel",
+      "excerpt": "How to structure models, API resources and media so a Next.js frontend can consume them cleanly.",
+      "published_at": "Sep 22, 2026",
+      "reading_time": 9,
+      "featured": true,
+      "cover": "cover-laravel.jpg"
+    },
+    {
+      "title": "Instant content updates with on-demand revalidation",
+      "slug": "instant-content-updates-with-on-demand-revalidation",
+      "category": "Next.js",
+      "excerpt": "Keep a static Next.js site fast while new posts go live the moment you hit save in the CMS.",
+      "published_at": "Sep 15, 2026",
+      "reading_time": 7,
+      "featured": false,
+      "cover": "cover-nextjs.jpg"
+    },
+    {
+      "title": "Automating a content workflow with n8n",
+      "slug": "automating-a-content-workflow-with-n8n",
+      "category": "Automation",
+      "excerpt": "Collect, review and publish content automatically, without copy-pasting between tools.",
+      "published_at": "Sep 8, 2026",
+      "reading_time": 6,
+      "featured": false,
+      "cover": "cover-automation.jpg"
+    },
+    {
+      "title": "Forms that don’t fight you: validation patterns in React",
+      "slug": "forms-that-dont-fight-you-validation-patterns-in-react",
+      "category": "React",
+      "excerpt": "A practical setup for forms with server errors, loading states and accessible messages.",
+      "published_at": "Aug 30, 2026",
+      "reading_time": 8,
+      "featured": false,
+      "cover": "cover-react.jpg"
+    },
+    {
+      "title": "Shipping Laravel and Next.js with Docker Compose",
+      "slug": "shipping-laravel-and-next-js-with-docker-compose",
+      "category": "DevOps",
+      "excerpt": "One compose file for local development and a lean production setup on a single VPS.",
+      "published_at": "Aug 21, 2026",
+      "reading_time": 10,
+      "featured": false,
+      "cover": "cover-devops.jpg"
+    },
+    {
+      "title": "Designing a search-first classifieds backend",
+      "slug": "designing-a-search-first-classifieds-backend",
+      "category": "Laravel",
+      "excerpt": "Indexing, filters and ranking choices when search is the main way people browse.",
+      "published_at": "Aug 12, 2026",
+      "reading_time": 11,
+      "featured": false,
+      "cover": "cover-laravel.jpg"
+    },
+    {
+      "title": "What I learned shipping client projects across two markets",
+      "slug": "what-i-learned-shipping-client-projects-across-two-markets",
+      "category": "Career",
+      "excerpt": "Scoping, communication and pricing lessons from working with clients in different countries.",
+      "published_at": "Aug 3, 2026",
+      "reading_time": 5,
+      "featured": false,
+      "cover": "cover-career.jpg"
+    },
+    {
+      "title": "Structured data for a developer portfolio",
+      "slug": "structured-data-for-a-developer-portfolio",
+      "category": "Next.js",
+      "excerpt": "JSON-LD for Person, Article and CreativeWork, and how to generate it per page.",
+      "published_at": "Jul 27, 2026",
+      "reading_time": 6,
+      "featured": false,
+      "cover": "cover-nextjs.jpg"
+    },
+    {
+      "title": "Keeping bundle size in check in a growing Next.js app",
+      "slug": "keeping-bundle-size-in-check-in-a-growing-next-js-app",
+      "category": "React",
+      "excerpt": "Finding what ships to the browser and moving work back to the server.",
+      "published_at": "Jul 19, 2026",
+      "reading_time": 7,
+      "featured": false,
+      "cover": "cover-react.jpg"
+    },
+    {
+      "title": "Rate limiting and spam protection for public forms",
+      "slug": "rate-limiting-and-spam-protection-for-public-forms",
+      "category": "Laravel",
+      "excerpt": "Throttling, honeypots and Turnstile for contact forms that face the open internet.",
+      "published_at": "Jul 10, 2026",
+      "reading_time": 6,
+      "featured": false,
+      "cover": "cover-laravel.jpg"
+    },
+    {
+      "title": "Webhooks you can debug: logging and retries in n8n",
+      "slug": "webhooks-you-can-debug-logging-and-retries-in-n8n",
+      "category": "Automation",
+      "excerpt": "Making automated workflows observable before they fail at 3 a.m.",
+      "published_at": "Jul 2, 2026",
+      "reading_time": 5,
+      "featured": false,
+      "cover": "cover-automation.jpg"
+    },
+    {
+      "title": "Zero-downtime deploys for a small Laravel app",
+      "slug": "zero-downtime-deploys-for-a-small-laravel-app",
+      "category": "DevOps",
+      "excerpt": "A simple release flow with symlinks, migrations and queue restarts.",
+      "published_at": "Jun 24, 2026",
+      "reading_time": 8,
+      "featured": false,
+      "cover": "cover-devops.jpg"
+    },
+    {
+      "title": "Writing proposals clients actually read",
+      "slug": "writing-proposals-clients-actually-read",
+      "category": "Career",
+      "excerpt": "How to turn a vague brief into a clear scope, timeline and price.",
+      "published_at": "Jun 15, 2026",
+      "reading_time": 4,
+      "featured": false,
+      "cover": "cover-career.jpg"
+    },
+    {
+      "title": "API Resources vs. DTOs: shaping responses for a Next.js frontend",
+      "slug": "api-resources-vs-dtos-shaping-responses-for-a-next-js-frontend",
+      "category": "Laravel",
+      "excerpt": "When the built-in resources are enough and when a dedicated data layer pays off.",
+      "published_at": "Aug 5, 2026",
+      "reading_time": 8,
+      "featured": false,
+      "cover": "cover-laravel.jpg"
+    },
+    {
+      "title": "Queues in production: jobs, retries and failed jobs you can trust",
+      "slug": "queues-in-production-jobs-retries-and-failed-jobs-you-can-trust",
+      "category": "Laravel",
+      "excerpt": "A simple checklist for background jobs that don’t silently disappear.",
+      "published_at": "Jul 29, 2026",
+      "reading_time": 9,
+      "featured": false,
+      "cover": "cover-laravel.jpg"
+    },
+    {
+      "title": "Handling uploads and image conversions with Media Library",
+      "slug": "handling-uploads-and-image-conversions-with-media-library",
+      "category": "Laravel",
+      "excerpt": "Responsive image sizes and clean URLs for a headless frontend.",
+      "published_at": "Jul 16, 2026",
+      "reading_time": 7,
+      "featured": false,
+      "cover": "cover-laravel.jpg"
+    }
+  ],
+  "testimonials": [
+    {
+      "quote": "Ali is an exceptional developer who delivers high-quality work on time. His attention to detail and problem-solving skills are outstanding.",
+      "initials": "SJ",
+      "name": "Sarah Johnson",
+      "role": "CEO",
+      "company": "TechStart",
+      "rating": 5,
+      "featured": true
+    },
+    {
+      "quote": "Our new store loads in under a second and orders went up in the first month. Ali explained every decision in plain language.",
+      "initials": "KB",
+      "name": "Khalid Al-Balushi",
+      "role": "Founder",
+      "company": "Securio",
+      "rating": 5,
+      "featured": true
+    },
+    {
+      "quote": "He turned a messy spreadsheet process into a clean dashboard our team actually enjoys using. Communication was fast and clear.",
+      "initials": "MR",
+      "name": "Maryam Rahimi",
+      "role": "Operations Lead",
+      "company": "Taskly",
+      "rating": 5,
+      "featured": true
+    }
+  ],
+  "projects": [
+    {
+      "title": "E-Commerce Platform",
+      "slug": "e-commerce-platform",
+      "summary": "Smart-home store with a custom admin panel and fast product pages.",
+      "lead": "A smart-home and door-security store with fast product pages, a custom checkout and a Filament admin panel the team runs day to day.",
+      "client": "Securio",
+      "role": "Full-stack developer",
+      "timeline": "10 weeks",
+      "year": 2026,
+      "live_url": null,
+      "challenge": "The old store was slow on mobile, checkout had four steps too many, and managing stock meant editing spreadsheets by hand.",
+      "solution": "A Laravel API with a Filament admin panel, and a statically generated Next.js storefront with a two-step checkout.",
+      "result": "Pages load in under a second, more visitors finish checkout, and the team updates products without calling a developer.",
+      "features": [
+        {
+          "icon": "grid",
+          "title": "Catalogue with filters",
+          "text": "Filter by category, price and brand in real time."
+        },
+        {
+          "icon": "cart",
+          "title": "Two-step checkout",
+          "text": "Guest checkout, saved addresses and order tracking."
+        },
+        {
+          "icon": "screen",
+          "title": "Admin panel",
+          "text": "Products, orders and customers managed in Filament."
+        },
+        {
+          "icon": "card",
+          "title": "Online payments",
+          "text": "Card payments confirmed securely by webhook."
+        },
+        {
+          "icon": "search",
+          "title": "SEO-ready pages",
+          "text": "Static product pages with structured data and sitemaps."
+        },
+        {
+          "icon": "bell",
+          "title": "Automated emails",
+          "text": "Order and shipping updates sent from queued jobs."
+        }
+      ],
+      "stack": [
+        "Laravel",
+        "Filament",
+        "MySQL",
+        "Next.js",
+        "Tailwind CSS",
+        "Docker"
+      ],
+      "metrics": [
+        {
+          "value": "0.8s",
+          "label": "Average page load"
+        },
+        {
+          "value": "+28%",
+          "label": "Online orders in 3 months"
+        },
+        {
+          "value": "15 hrs",
+          "label": "Saved each week on admin"
+        }
+      ],
+      "cover": "proj-ecom.jpg",
+      "gallery": [
+        {
+          "file": "shot-product.jpg",
+          "caption": "Product page"
+        },
+        {
+          "file": "shot-checkout.jpg",
+          "caption": "Checkout"
+        },
+        {
+          "file": "shot-admin.jpg",
+          "caption": "Orders in the admin panel"
+        },
+        {
+          "file": "shot-mobile.jpg",
+          "caption": "Mobile store"
+        }
+      ],
+      "testimonial": "Khalid Al-Balushi",
+      "service": "online-store-development",
+      "featured": true
+    },
+    {
+      "title": "Task Management App",
+      "slug": "task-management-app",
+      "summary": "Collaborative boards, deadlines and reports for a growing team.",
+      "cover": "proj-task.jpg",
+      "featured": true,
+      "_note": "case-study fields to be written"
+    },
+    {
+      "title": "Crypto Dashboard",
+      "slug": "crypto-dashboard",
+      "summary": "Real-time portfolio tracking with live prices and allocation charts.",
+      "cover": "proj-crypto.jpg",
+      "featured": true,
+      "_note": "case-study fields to be written"
+    }
+  ],
+  "experiences": [
+    {
+      "role": "Freelance Full-Stack Developer",
+      "company": "Self-employed",
+      "start_year": 2024,
+      "end_year": null,
+      "description": "Websites, online stores and internal tools for clients in Oman and abroad, built with Laravel, Next.js and Docker."
+    },
+    {
+      "role": "Full-Stack Developer",
+      "company": "Pixel Harbor",
+      "start_year": 2022,
+      "end_year": 2024,
+      "description": "Built and maintained e-commerce and booking platforms; introduced a shared Laravel + Next.js starter used across projects."
+    },
+    {
+      "role": "PHP Developer",
+      "company": "Nova Web Studio",
+      "start_year": 2021,
+      "end_year": 2022,
+      "description": "Developed Laravel APIs and admin panels and moved legacy sites onto modern hosting."
+    }
+  ],
+  "process_steps": [
+    {
+      "icon": "chat",
+      "title": "Understand",
+      "text": "A short call to learn about your business, your users and what success looks like."
+    },
+    {
+      "icon": "plan",
+      "title": "Plan",
+      "text": "A clear scope, timeline and price in writing before any code is written."
+    },
+    {
+      "icon": "code",
+      "title": "Build",
+      "text": "Work in small milestones with a staging link you can review at every step."
+    },
+    {
+      "icon": "rocket",
+      "title": "Launch & support",
+      "text": "Deployment, handover and support after launch so nothing is left hanging."
+    }
+  ],
+  "faqs": [
+    {
+      "question": "How much does a project cost?",
+      "answer": "Most projects are quoted at a fixed price once the scope is clear. A business website usually starts from $1,500, an online store from $4,000, and ongoing work can be billed monthly. You get a written quote before anything starts.",
+      "scope": "contact"
+    },
+    {
+      "question": "How long does a typical project take?",
+      "answer": "A marketing website takes 2–4 weeks, an online store or web app 6–12 weeks. The timeline is agreed in writing, with milestones you can review along the way.",
+      "scope": "contact"
+    },
+    {
+      "question": "What do you need from me to get started?",
+      "answer": "A short description of the project, examples you like and your ideal launch date. If you have designs or a brief, send them — if not, we shape the scope together on a first call.",
+      "scope": "contact"
+    },
+    {
+      "question": "Do you work with clients in other countries?",
+      "answer": "Yes. I work with clients in Oman and abroad. Communication happens over email, chat and video calls, and you get a staging link to follow progress.",
+      "scope": "contact"
+    },
+    {
+      "question": "Do you offer support after launch?",
+      "answer": "Every project includes 30 days of free bug fixes after launch. After that, maintenance and small improvements are available on a monthly plan.",
+      "scope": "contact"
+    },
+    {
+      "question": "Can you work on an existing website or codebase?",
+      "answer": "Yes. I start with a short review of the code and hosting, then suggest whether to improve what exists or rebuild the parts that hold you back.",
+      "scope": "contact"
+    },
+    {
+      "question": "Who owns the code and design?",
+      "answer": "You do. Once the final payment is made, the code, designs and accounts are handed over to you in full.",
+      "scope": "contact"
+    },
+    {
+      "question": "Do you sign an NDA?",
+      "answer": "Yes, I’m happy to sign an NDA before you share details about your project.",
+      "scope": "contact"
+    }
+  ],
+  "services": [
+    {
+      "slug": "laravel-development",
+      "nav_label": "Laravel development",
+      "title": "Laravel Development Services",
+      "h1": "Laravel development for web apps, admin panels and APIs",
+      "lead": "Custom Laravel applications built to last — clean architecture, a Filament admin panel your team can actually use, and APIs ready for web and mobile frontends.",
+      "icon": "db",
+      "hero_image": "shot-admin.jpg",
+      "floating_metric": {
+        "value": "0.8s",
+        "label": "Average API response"
+      },
+      "pains": [
+        {
+          "icon": "alert",
+          "title": "Your current system is slow or fragile",
+          "text": "Every change breaks something else, and nobody wants to touch the old code."
+        },
+        {
+          "icon": "grid",
+          "title": "Your team lives in spreadsheets",
+          "text": "Orders, stock or customers are managed by hand because there’s no proper admin panel."
+        },
+        {
+          "icon": "screen",
+          "title": "You need a backend for a new product",
+          "text": "A web or mobile app needs an API, user accounts, payments and roles — built properly from day one."
+        }
+      ],
+      "offers": [
+        {
+          "icon": "code",
+          "title": "Custom web applications",
+          "text": "Business logic, user roles and workflows built around how your company works."
+        },
+        {
+          "icon": "grid",
+          "title": "Filament admin panels",
+          "text": "Manage products, orders, users and content without calling a developer."
+        },
+        {
+          "icon": "db",
+          "title": "REST APIs",
+          "text": "Versioned, documented APIs for Next.js, React or mobile apps."
+        },
+        {
+          "icon": "shield",
+          "title": "Authentication & permissions",
+          "text": "Secure login, roles and team access with Sanctum and policies."
+        },
+        {
+          "icon": "server",
+          "title": "Queues & background jobs",
+          "text": "Emails, imports and reports that run reliably in the background."
+        },
+        {
+          "icon": "rocket",
+          "title": "Upgrades & rescue",
+          "text": "Move old Laravel or PHP projects to a modern, supported version."
+        }
+      ],
+      "why": {
+        "title": "Why Laravel?",
+        "text": "Laravel gives you a mature, well-documented foundation with authentication, queues, caching and testing built in. That means less custom plumbing, faster delivery and a codebase any Laravel developer can pick up later.",
+        "points": [
+          "Built-in auth, queues, mail and caching",
+          "Huge ecosystem: Filament, Horizon, Sanctum, Scout",
+          "Easy to hire for and maintain long-term"
+        ]
+      },
+      "stack": [
+        "Laravel",
+        "PHP 8",
+        "MySQL",
+        "Redis",
+        "Filament",
+        "Sanctum",
+        "Docker"
+      ],
+      "tiers": [
+        {
+          "name": "Starter",
+          "price_from": "$2,500",
+          "subtitle": "A focused admin panel or internal tool.",
+          "items": [
+            "Up to 8 data models",
+            "Filament admin panel",
+            "Roles & permissions",
+            "30 days of support"
+          ],
+          "highlighted": false
+        },
+        {
+          "name": "Business",
+          "price_from": "$6,000",
+          "subtitle": "A full web application with an API.",
+          "items": [
+            "Custom business logic",
+            "REST API for web or mobile",
+            "Queues, emails & reports",
+            "Staging + production setup"
+          ],
+          "highlighted": true
+        },
+        {
+          "name": "Custom",
+          "price_from": "Let’s talk",
+          "subtitle": "Large platforms and long-term work.",
+          "items": [
+            "Architecture & code review",
+            "Monthly development plan",
+            "Priority support",
+            "Team handover & docs"
+          ],
+          "highlighted": false
+        }
+      ],
+      "faq": [
+        {
+          "question": "How long does a Laravel project take?",
+          "answer": "A focused admin panel usually takes 3–5 weeks. A full web application with an API takes 8–14 weeks, depending on scope."
+        },
+        {
+          "question": "Can you take over an existing Laravel project?",
+          "answer": "Yes. I start with a code and hosting review, then fix the urgent issues and plan improvements step by step."
+        },
+        {
+          "question": "Which Laravel version do you use?",
+          "answer": "The latest stable release, so you get long-term security updates and modern features."
+        },
+        {
+          "question": "Will I be able to manage the content myself?",
+          "answer": "Yes — every project includes an admin panel, usually built with Filament, so your team can manage data without a developer."
+        }
+      ],
+      "related_project": "e-commerce-platform",
+      "related_category": "laravel"
+    },
+    {
+      "slug": "nextjs-website-development",
+      "nav_label": "Next.js websites",
+      "title": "Next.js Website Development",
+      "h1": "Next.js websites that load fast and rank well",
+      "lead": "Company websites, portfolios and content sites built with Next.js — static-fast pages, a CMS your team can edit, and SEO set up properly from the start.",
+      "icon": "screen",
+      "hero_image": "cover-nextjs.jpg",
+      "floating_metric": {
+        "value": "98",
+        "label": "Lighthouse performance"
+      },
+      "pains": [
+        {
+          "icon": "clock",
+          "title": "Your website feels slow",
+          "text": "Visitors leave before the page loads, especially on mobile."
+        },
+        {
+          "icon": "search",
+          "title": "You don’t show up on Google",
+          "text": "Missing metadata, slow pages and messy URLs are holding your rankings back."
+        },
+        {
+          "icon": "plan",
+          "title": "Updating content is painful",
+          "text": "Every text change needs a developer, so the site is always out of date."
+        }
+      ],
+      "offers": [
+        {
+          "icon": "screen",
+          "title": "Company & marketing sites",
+          "text": "Clear, fast pages that explain what you do and turn visitors into leads."
+        },
+        {
+          "icon": "search",
+          "title": "Technical SEO",
+          "text": "Metadata, sitemaps, structured data and clean URLs on every page."
+        },
+        {
+          "icon": "grid",
+          "title": "Headless CMS",
+          "text": "Edit pages and articles yourself — changes go live in seconds."
+        },
+        {
+          "icon": "trend",
+          "title": "Performance",
+          "text": "Static generation, image optimisation and caching for sub-second loads."
+        },
+        {
+          "icon": "chat",
+          "title": "Multilingual & RTL",
+          "text": "English, Arabic or Persian versions with proper right-to-left layouts."
+        },
+        {
+          "icon": "bell",
+          "title": "Analytics & forms",
+          "text": "Contact forms, spam protection and tracking you can trust."
+        }
+      ],
+      "why": {
+        "title": "Why Next.js?",
+        "text": "Next.js renders pages ahead of time, so they load almost instantly and search engines see complete content. With on-demand revalidation, pages stay fast while your edits appear right away.",
+        "points": [
+          "Static-fast pages with fresh content",
+          "Built-in image and font optimisation",
+          "SEO-friendly routing and metadata"
+        ]
+      },
+      "stack": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Tailwind CSS",
+        "Laravel CMS",
+        "Vercel / VPS"
+      ],
+      "tiers": [
+        {
+          "name": "Landing page",
+          "price_from": "$1,200",
+          "subtitle": "One high-converting page.",
+          "items": [
+            "Custom design",
+            "Contact form + spam protection",
+            "SEO setup",
+            "Analytics"
+          ],
+          "highlighted": false
+        },
+        {
+          "name": "Business site",
+          "price_from": "$3,500",
+          "subtitle": "A full company website.",
+          "items": [
+            "Up to 10 pages",
+            "Blog with CMS",
+            "Technical SEO & sitemap",
+            "Two languages"
+          ],
+          "highlighted": true
+        },
+        {
+          "name": "Custom",
+          "price_from": "Let’s talk",
+          "subtitle": "Content-heavy or complex sites.",
+          "items": [
+            "Custom integrations",
+            "Multi-language & RTL",
+            "Performance audits",
+            "Ongoing support"
+          ],
+          "highlighted": false
+        }
+      ],
+      "faq": [
+        {
+          "question": "Can I edit the website myself?",
+          "answer": "Yes. Pages and articles are managed in a simple admin panel, and changes go live within seconds."
+        },
+        {
+          "question": "Will my site be SEO-friendly?",
+          "answer": "Yes — every page gets proper titles, descriptions, structured data and a sitemap, and pages load fast, which Google rewards."
+        },
+        {
+          "question": "Can you redesign my existing website?",
+          "answer": "Yes. I can keep your content and URLs so you don’t lose existing rankings while the site gets faster and cleaner."
+        },
+        {
+          "question": "Where will the site be hosted?",
+          "answer": "On Vercel or your own VPS. I set it up and hand over access to you."
+        }
+      ],
+      "related_project": "e-commerce-platform",
+      "related_category": "nextjs"
+    },
+    {
+      "slug": "online-store-development",
+      "nav_label": "Online stores",
+      "title": "Online Store Development",
+      "h1": "Online stores that load fast and sell more",
+      "lead": "Custom e-commerce built with Laravel and Next.js — fast product pages, a simple checkout and an admin panel that makes running the store easy.",
+      "icon": "cart",
+      "hero_image": "proj-ecom.jpg",
+      "floating_metric": {
+        "value": "+28%",
+        "label": "More orders for Securio"
+      },
+      "pains": [
+        {
+          "icon": "cart",
+          "title": "Customers abandon checkout",
+          "text": "Too many steps, slow pages or missing payment options cost you sales."
+        },
+        {
+          "icon": "grid",
+          "title": "Managing the store is a chore",
+          "text": "Stock, orders and prices are updated by hand across different tools."
+        },
+        {
+          "icon": "trend",
+          "title": "Your platform can’t grow with you",
+          "text": "Plugins pile up, the site slows down and custom features are impossible."
+        }
+      ],
+      "offers": [
+        {
+          "icon": "grid",
+          "title": "Product catalogue",
+          "text": "Categories, filters, variants and search that make products easy to find."
+        },
+        {
+          "icon": "cart",
+          "title": "Fast checkout",
+          "text": "Guest checkout, saved addresses and a two-step flow."
+        },
+        {
+          "icon": "card",
+          "title": "Payment gateways",
+          "text": "Card and local payment providers, confirmed securely by webhook."
+        },
+        {
+          "icon": "screen",
+          "title": "Store admin panel",
+          "text": "Orders, stock, customers and coupons in one place."
+        },
+        {
+          "icon": "bell",
+          "title": "Automated emails",
+          "text": "Order confirmations, shipping updates and abandoned-cart reminders."
+        },
+        {
+          "icon": "search",
+          "title": "SEO for products",
+          "text": "Static product pages with structured data and clean URLs."
+        }
+      ],
+      "why": {
+        "title": "Why a custom store?",
+        "text": "Off-the-shelf platforms are great for starting out, but they get slow and limiting as you grow. A custom store is built around your products and processes, loads faster and has no monthly plugin bills.",
+        "points": [
+          "Built for your products and workflow",
+          "No plugin bloat or per-sale fees",
+          "You own the code and the data"
+        ]
+      },
+      "stack": [
+        "Laravel",
+        "Filament",
+        "Next.js",
+        "MySQL",
+        "Payment gateway",
+        "Docker"
+      ],
+      "tiers": [
+        {
+          "name": "Launch",
+          "price_from": "$4,000",
+          "subtitle": "Everything you need to start selling.",
+          "items": [
+            "Up to 200 products",
+            "Checkout + one payment gateway",
+            "Admin panel",
+            "Order emails"
+          ],
+          "highlighted": false
+        },
+        {
+          "name": "Growth",
+          "price_from": "$8,500",
+          "subtitle": "For stores ready to scale.",
+          "items": [
+            "Unlimited products & variants",
+            "Multiple payment & shipping options",
+            "Coupons & abandoned cart",
+            "Reports & exports"
+          ],
+          "highlighted": true
+        },
+        {
+          "name": "Custom",
+          "price_from": "Let’s talk",
+          "subtitle": "Marketplaces and complex catalogues.",
+          "items": [
+            "Multi-vendor or B2B pricing",
+            "ERP / accounting integration",
+            "Multi-language & currency",
+            "Ongoing development"
+          ],
+          "highlighted": false
+        }
+      ],
+      "faq": [
+        {
+          "question": "Why not just use Shopify or WooCommerce?",
+          "answer": "They’re a good start. A custom store makes sense when you need speed, custom features or want to avoid growing plugin and transaction costs."
+        },
+        {
+          "question": "Which payment gateways can you connect?",
+          "answer": "Any provider with an API — international card processors and local gateways alike."
+        },
+        {
+          "question": "Can you move my products from my current store?",
+          "answer": "Yes. Products, customers and orders can be imported so you don’t start from zero."
+        },
+        {
+          "question": "Will the store work well on mobile?",
+          "answer": "Yes. Most shoppers buy on their phones, so every page is designed and tested mobile-first."
+        }
+      ],
+      "related_project": "e-commerce-platform",
+      "related_category": "laravel"
+    },
+    {
+      "slug": "api-development",
+      "nav_label": "API & backend development",
+      "title": "API & Backend Development",
+      "h1": "APIs and backends for web and mobile apps",
+      "lead": "Reliable, documented REST APIs built with Laravel — authentication, payments, notifications and integrations your frontend and mobile teams can build on.",
+      "icon": "db",
+      "hero_image": "cover-laravel.jpg",
+      "floating_metric": {
+        "value": "99.9%",
+        "label": "Uptime on production APIs"
+      },
+      "pains": [
+        {
+          "icon": "screen",
+          "title": "Your app needs a backend",
+          "text": "You have a mobile or web frontend, but no API, database or admin behind it."
+        },
+        {
+          "icon": "alert",
+          "title": "Your API is hard to work with",
+          "text": "Missing docs, inconsistent responses and random errors slow your team down."
+        },
+        {
+          "icon": "flow",
+          "title": "Your systems don’t talk to each other",
+          "text": "Data is copied between CRM, accounting and your app by hand."
+        }
+      ],
+      "offers": [
+        {
+          "icon": "db",
+          "title": "REST API design",
+          "text": "Consistent, versioned endpoints with clear error messages."
+        },
+        {
+          "icon": "shield",
+          "title": "Auth & security",
+          "text": "Token auth, roles, rate limiting and input validation."
+        },
+        {
+          "icon": "plan",
+          "title": "API documentation",
+          "text": "OpenAPI docs your frontend and mobile teams can rely on."
+        },
+        {
+          "icon": "flow",
+          "title": "Third-party integrations",
+          "text": "Payments, SMS, email, maps, CRMs and accounting tools."
+        },
+        {
+          "icon": "bell",
+          "title": "Notifications",
+          "text": "Email, SMS and push notifications sent from queues."
+        },
+        {
+          "icon": "server",
+          "title": "Deployment & monitoring",
+          "text": "Dockerised deploys, logging and alerts when something breaks."
+        }
+      ],
+      "why": {
+        "title": "Why build the API with Laravel?",
+        "text": "Laravel makes the parts every API needs — auth, validation, queues, rate limiting — standard and well tested, so time goes into your business logic instead of plumbing.",
+        "points": [
+          "API Resources for consistent responses",
+          "Sanctum for secure token auth",
+          "Queues for slow work like emails and imports"
+        ]
+      },
+      "stack": [
+        "Laravel",
+        "PHP 8",
+        "MySQL",
+        "Redis",
+        "Sanctum",
+        "OpenAPI",
+        "Docker"
+      ],
+      "tiers": [
+        {
+          "name": "MVP API",
+          "price_from": "$3,000",
+          "subtitle": "A solid backend for a first release.",
+          "items": [
+            "Auth & user accounts",
+            "Core endpoints",
+            "OpenAPI documentation",
+            "Staging deploy"
+          ],
+          "highlighted": false
+        },
+        {
+          "name": "Production",
+          "price_from": "$7,000",
+          "subtitle": "A full backend with integrations.",
+          "items": [
+            "Payments & notifications",
+            "Admin panel",
+            "Monitoring & logging",
+            "Load-tested deploy"
+          ],
+          "highlighted": true
+        },
+        {
+          "name": "Custom",
+          "price_from": "Let’s talk",
+          "subtitle": "Complex or high-traffic systems.",
+          "items": [
+            "Architecture review",
+            "Microservices or queues at scale",
+            "SLA-backed support",
+            "Team onboarding"
+          ],
+          "highlighted": false
+        }
+      ],
+      "faq": [
+        {
+          "question": "Can you build the API for our mobile app?",
+          "answer": "Yes. I work with iOS, Android and Flutter teams and provide documented endpoints they can build against from day one."
+        },
+        {
+          "question": "Do you write API documentation?",
+          "answer": "Yes — every API comes with OpenAPI documentation and example requests."
+        },
+        {
+          "question": "Can you connect our API to other tools?",
+          "answer": "Yes. Payments, SMS, email, CRMs and accounting tools are common integrations."
+        },
+        {
+          "question": "How do you keep the API secure?",
+          "answer": "Token authentication, role-based permissions, rate limiting, validation on every input and regular dependency updates."
+        }
+      ],
+      "related_project": "task-management-app",
+      "related_category": "laravel"
+    },
+    {
+      "slug": "n8n-automation",
+      "nav_label": "Automation with n8n",
+      "title": "Automation with n8n",
+      "h1": "Business automation with n8n that saves hours every week",
+      "lead": "Connect your tools and remove repetitive work — from lead handling and reporting to content publishing — with reliable, self-hosted n8n workflows.",
+      "icon": "flow",
+      "hero_image": "cover-automation.jpg",
+      "floating_metric": {
+        "value": "15 hrs",
+        "label": "Saved per week, on average"
+      },
+      "pains": [
+        {
+          "icon": "clock",
+          "title": "Your team repeats the same tasks",
+          "text": "Copying data, sending the same emails and building the same reports every week."
+        },
+        {
+          "icon": "alert",
+          "title": "Things fall through the cracks",
+          "text": "Leads aren’t followed up and orders wait because someone forgot a step."
+        },
+        {
+          "icon": "flow",
+          "title": "Your tools don’t connect",
+          "text": "CRM, email, spreadsheets and your website all live in separate worlds."
+        }
+      ],
+      "offers": [
+        {
+          "icon": "flow",
+          "title": "Workflow design",
+          "text": "Map your process and turn it into a clear, automated flow."
+        },
+        {
+          "icon": "chat",
+          "title": "Lead & CRM automation",
+          "text": "New leads captured, enriched and assigned automatically."
+        },
+        {
+          "icon": "plan",
+          "title": "Reports & notifications",
+          "text": "Daily summaries in email, Slack or Telegram — no manual work."
+        },
+        {
+          "icon": "book",
+          "title": "Content workflows",
+          "text": "Collect, review and publish content across channels."
+        },
+        {
+          "icon": "server",
+          "title": "Self-hosted n8n",
+          "text": "Your own n8n instance with Docker, backups and monitoring."
+        },
+        {
+          "icon": "shield",
+          "title": "Error handling",
+          "text": "Retries, logs and alerts so failed steps never go unnoticed."
+        }
+      ],
+      "why": {
+        "title": "Why n8n?",
+        "text": "n8n connects hundreds of apps visually, but can also run custom code when you need it. Self-hosting keeps your data on your own server and avoids per-task pricing.",
+        "points": [
+          "Hundreds of ready-made integrations",
+          "Custom code when no-code isn’t enough",
+          "Self-hosted: your data, no per-task fees"
+        ]
+      },
+      "stack": [
+        "n8n",
+        "Docker",
+        "Webhooks",
+        "REST APIs",
+        "PostgreSQL",
+        "Telegram / Slack"
+      ],
+      "tiers": [
+        {
+          "name": "Single workflow",
+          "price_from": "$600",
+          "subtitle": "Automate one repetitive process.",
+          "items": [
+            "Process mapping",
+            "One production workflow",
+            "Error alerts",
+            "Handover video"
+          ],
+          "highlighted": false
+        },
+        {
+          "name": "Automation pack",
+          "price_from": "$2,000",
+          "subtitle": "Connect your main tools.",
+          "items": [
+            "Up to 5 workflows",
+            "Self-hosted n8n setup",
+            "Logging & retries",
+            "30 days of support"
+          ],
+          "highlighted": true
+        },
+        {
+          "name": "Custom",
+          "price_from": "Let’s talk",
+          "subtitle": "Ongoing automation for your team.",
+          "items": [
+            "Monthly automation plan",
+            "Custom integrations",
+            "Monitoring",
+            "Priority support"
+          ],
+          "highlighted": false
+        }
+      ],
+      "faq": [
+        {
+          "question": "Do I need to know how n8n works?",
+          "answer": "No. I build and test the workflows, then show you how to monitor them in a short handover call."
+        },
+        {
+          "question": "Where does n8n run?",
+          "answer": "On your own server with Docker, or on n8n Cloud if you prefer. Self-hosting keeps your data in your hands."
+        },
+        {
+          "question": "What happens if a workflow fails?",
+          "answer": "Every workflow has retries and error alerts, so you know right away and nothing is silently lost."
+        },
+        {
+          "question": "Can n8n connect to our custom software?",
+          "answer": "Yes — through APIs, webhooks or direct database access, depending on the system."
+        }
+      ],
+      "related_project": "task-management-app",
+      "related_category": "automation"
+    }
+  ],
+  "contact_options": {
+    "needs": [
+      "Website or web app",
+      "Online store",
+      "API or backend",
+      "Automation",
+      "Something else"
+    ],
+    "budgets": [
+      "$1,500 – $4,000",
+      "$4,000 – $8,000",
+      "$8,000+",
+      "Not sure yet"
+    ],
+    "timelines": [
+      "As soon as possible",
+      "Within 1–3 months",
+      "Flexible"
+    ],
+    "upload": {
+      "types": [
+        "pdf",
+        "doc",
+        "docx",
+        "png",
+        "jpg",
+        "jpeg",
+        "zip"
+      ],
+      "max_mb": 10,
+      "max_files": 5
+    }
+  },
+  "icons": [
+    "alert",
+    "bell",
+    "book",
+    "bulb",
+    "calendar",
+    "card",
+    "cart",
+    "chat",
+    "check",
+    "clock",
+    "code",
+    "db",
+    "download",
+    "file",
+    "flow",
+    "grid",
+    "heart",
+    "home",
+    "mail",
+    "menu",
+    "minus",
+    "phone",
+    "pin",
+    "plan",
+    "plus",
+    "rocket",
+    "screen",
+    "search",
+    "send",
+    "server",
+    "shield",
+    "smile",
+    "trend",
+    "trophy",
+    "upload",
+    "user",
+    "x"
+  ]
+}

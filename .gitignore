@@ -1,0 +1,48 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Backend (Laravel)
+/backend/vendor/
+/backend/node_modules/
+/backend/.env
+/backend/.env.*
+!/backend/.env.example
+/backend/storage/*.key
+/backend/storage/app/*
+!/backend/storage/app/.gitkeep
+/backend/storage/framework/cache/data/*
+/backend/storage/framework/sessions/*
+/backend/storage/framework/testing/*
+/backend/storage/framework/views/*
+!/backend/storage/framework/cache/data/.gitkeep
+!/backend/storage/framework/sessions/.gitkeep
+!/backend/storage/framework/testing/.gitkeep
+!/backend/storage/framework/views/.gitkeep
+/backend/storage/logs/*
+!/backend/storage/logs/.gitkeep
+/backend/storage/*.key
+/backend/bootstrap/cache/*
+!/backend/bootstrap/cache/.gitkeep
+/backend/public/storage
+/backend/public/hot
+/backend/.phpunit.cache
+
+# Frontend (Next.js)
+/frontend/node_modules/
+/frontend/.next/
+/frontend/out/
+/frontend/build/
+/frontend/.env
+/frontend/.env.*
+!/frontend/.env.example
+/frontend/*.tsbuildinfo
+/frontend/next-env.d.ts
+
+# Docker
+docker-data/
