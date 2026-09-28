@@ -16,9 +16,9 @@ export function ProjectMeta({ project }: { project: Project }) {
   if (items.length === 0) return null;
 
   return (
-    <dl className="desktop:grid-cols-4 desktop:gap-6 grid grid-cols-2 gap-4">
+    <ul className="desktop:grid-cols-4 desktop:gap-6 grid grid-cols-2 gap-4">
       {items.map((item) => (
-        <div
+        <li
           key={item.label}
           className="rounded-card border-border bg-surface desktop:px-6 desktop:py-5.5 flex items-center gap-4 border px-5 py-5"
         >
@@ -29,13 +29,13 @@ export function ProjectMeta({ project }: { project: Project }) {
             className="size-12"
           />
           <div>
-            <dt className="text-caption text-dim">{item.label}</dt>
-            <dd className="text-text mt-1 text-base font-medium">
+            <div className="text-caption text-dim">{item.label}</div>
+            <div className="text-text mt-1 text-base font-medium">
               {item.value}
-            </dd>
+            </div>
           </div>
-        </div>
+        </li>
       ))}
-    </dl>
+    </ul>
   );
 }

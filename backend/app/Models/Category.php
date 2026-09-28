@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Concerns\Publishable;
 use App\Models\Concerns\RegistersImageConversions;
 use App\Models\Concerns\ScoresSeo;
+use App\Models\Concerns\TracksSlugRedirects;
 use App\Support\Seo\SeoInput;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,7 +18,13 @@ use Spatie\Sluggable\SlugOptions;
 #[Fillable(['name', 'slug', 'description', 'sort_order', 'status', 'published_at', 'meta_title', 'meta_description', 'focus_keyword', 'canonical_url', 'noindex'])]
 class Category extends Model implements HasMedia
 {
-    use HasFactory, HasSlug, Publishable, RegistersImageConversions, ScoresSeo;
+    use HasFactory, HasSlug, Publishable, RegistersImageConversions, ScoresSeo, TracksSlugRedirects;
+
+    /** Public frontend path for a slug (used to keep old URLs redirecting). */
+    public function publicPath(string $slug): string
+    {
+        return '/blog/category/'.$slug;
+    }
 
     protected function casts(): array
     {

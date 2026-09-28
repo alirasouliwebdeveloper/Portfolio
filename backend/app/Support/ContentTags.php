@@ -10,6 +10,7 @@ use App\Models\Post;
 use App\Models\ProcessStep;
 use App\Models\Project;
 use App\Models\ProjectScreen;
+use App\Models\Redirect;
 use App\Models\Service;
 use App\Models\Setting;
 use App\Models\Tag;
@@ -47,6 +48,7 @@ final class ContentTags
             $model instanceof Page => ['pages', 'sitemap', ...($model->key === 'about' ? ['about'] : [])],
             $model instanceof Experience, $model instanceof ProcessStep => ['about', 'services'],
             $model instanceof Faq => ['faqs'],
+            $model instanceof Redirect => ['redirects'],
             default => [],
         }));
     }

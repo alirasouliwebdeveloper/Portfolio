@@ -35,9 +35,9 @@ export function AboutTeaser({
           </Button>
         </div>
 
-        <dl className="desktop:w-175 grid grid-cols-2">
+        <ul className="desktop:w-175 grid grid-cols-2">
           {stats.map((stat, index) => (
-            <div
+            <li
               key={stat.label}
               className={cn(
                 "border-divider tablet:flex-row tablet:items-center tablet:gap-5 tablet:p-7.5 desktop:px-8 flex flex-col items-start gap-3 px-4 py-5",
@@ -50,14 +50,14 @@ export function AboutTeaser({
                 tone={index === 0 || index === 3 ? "accent" : "tile"}
               />
               <div>
-                <dd className="text-stat text-text leading-tight font-semibold">
+                <div className="text-stat text-text leading-tight font-semibold">
                   {stat.value}
-                </dd>
-                <dt className="text-meta text-muted">{stat.label}</dt>
+                </div>
+                <div className="text-meta text-muted">{stat.label}</div>
               </div>
-            </div>
+            </li>
           ))}
-        </dl>
+        </ul>
       </Container>
     </section>
   );

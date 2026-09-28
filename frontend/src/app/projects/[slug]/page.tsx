@@ -18,6 +18,7 @@ import { ArrowUpRight } from "@/components/ui/icons";
 import { getProject, getSettings, getSitemap } from "@/lib/api";
 import { breadcrumbJsonLd, creativeWorkJsonLd } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/seo";
+import { redirectIfMoved } from "@/lib/redirects";
 
 export const dynamicParams = true;
 
@@ -50,7 +51,10 @@ export default async function ProjectPage({
 }: PageProps<"/projects/[slug]">) {
   const { slug } = await params;
   const project = await getProject(slug);
-  if (!project) notFound();
+  if (!project) {
+    await redirectIfMoved(`/projects/${slug}`);
+    notFound();
+  }
 
   const overview = [
     {

@@ -219,3 +219,12 @@ export const getFaqs = async (scope = "contact") =>
 
 export const getSitemap = async () =>
   (await required<{ data: Sitemap }>("/sitemap", { tags: ["sitemap"] })).data;
+
+/** Where an old public path moved to after a slug change, or null. */
+export async function getRedirect(path: string) {
+  const result = await request<{ data: { to: string; status: number } }>(
+    `/redirects${qs({ path })}`,
+    { tags: ["redirects"] },
+  );
+  return result?.data.to ?? null;
+}

@@ -31,8 +31,19 @@ export async function blogListMetadata(
   ]);
   if (!blogPage) return {};
 
+  // A category with only a one-line description borrows the blog intro so the meta description stays useful.
+  const categoryDescription = scope.category?.seo.meta_description ?? "";
   const base = scope.category
-    ? { title: scope.category.name, seo: scope.category.seo }
+    ? {
+        title: scope.category.name,
+        seo: {
+          ...scope.category.seo,
+          meta_description:
+            categoryDescription.length >= 50
+              ? categoryDescription
+              : `${categoryDescription} ${blogPage.content.description}`.trim(),
+        },
+      }
     : { title: blogPage.title, seo: blogPage.seo };
   const title = page > 1 ? `${base.title} — Page ${page}` : base.title;
 

@@ -17,6 +17,7 @@ $testEnv = [
     'BROADCAST_CONNECTION' => 'null',
     'QUEUE_CONVERSIONS_BY_DEFAULT' => 'false',
     'TURNSTILE_SECRET_KEY' => '',
+    'REVALIDATE_SECRET' => '',
     'GSC_ENABLED' => 'false',
     'API_INTERNAL_KEY' => 'test-key',
     'MAIL_TO_ADDRESS' => 'owner@example.com',

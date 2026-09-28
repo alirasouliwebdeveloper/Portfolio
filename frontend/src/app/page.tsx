@@ -14,6 +14,8 @@ import {
   getSettings,
   getTestimonials,
 } from "@/lib/api";
+import { JsonLd } from "@/components/ui/JsonLd";
+import { personJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import { pageMetadata } from "@/lib/seo";
 import { notFound } from "next/navigation";
 
@@ -40,6 +42,7 @@ export default async function HomePage() {
 
   return (
     <>
+      <JsonLd data={[personJsonLd(settings), websiteJsonLd(settings)]} />
       <Hero
         content={content.hero}
         title={page.title}

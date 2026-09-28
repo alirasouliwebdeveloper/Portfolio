@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\ContactController;
 use App\Http\Controllers\Api\V1\PageController;
 use App\Http\Controllers\Api\V1\PostController;
 use App\Http\Controllers\Api\V1\ProjectController;
+use App\Http\Controllers\Api\V1\RedirectController;
 use App\Http\Controllers\Api\V1\SearchController;
 use App\Http\Controllers\Api\V1\ServiceController;
 use App\Http\Controllers\Api\V1\SettingsController;
@@ -42,6 +43,7 @@ Route::prefix('v1')->middleware('internal.key')->group(function () {
     Route::get('faqs', [AboutController::class, 'faqs']);
 
     Route::get('sitemap', [SitemapController::class, 'show']);
+    Route::get('redirects', [RedirectController::class, 'show']);
 });
 
 /* Browser -> Laravel directly (CORS-limited to the frontend origin, rate limited). */

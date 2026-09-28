@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Concerns\Publishable;
 use App\Models\Concerns\RegistersImageConversions;
 use App\Models\Concerns\ScoresSeo;
+use App\Models\Concerns\TracksSlugRedirects;
 use App\Support\RichBody;
 use App\Support\Seo\SeoInput;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -24,7 +25,13 @@ use Spatie\Sluggable\SlugOptions;
 ])]
 class Service extends Model implements HasMedia
 {
-    use HasFactory, HasSlug, Publishable, RegistersImageConversions, ScoresSeo;
+    use HasFactory, HasSlug, Publishable, RegistersImageConversions, ScoresSeo, TracksSlugRedirects;
+
+    /** Public frontend path for a slug (used to keep old URLs redirecting). */
+    public function publicPath(string $slug): string
+    {
+        return '/services/'.$slug;
+    }
 
     protected function casts(): array
     {

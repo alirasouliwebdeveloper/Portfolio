@@ -17,6 +17,7 @@ import { Tag } from "@/components/ui/Tag";
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "@/components/ui/icons";
 import Image from "next/image";
 import { getPost, getSettings, getSitemap } from "@/lib/api";
+import { redirectIfMoved } from "@/lib/redirects";
 import { formatDate, formatReadingTime } from "@/lib/format";
 import { highlightCode } from "@/lib/highlight";
 import { blogPostingJsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
@@ -51,7 +52,10 @@ export async function generateMetadata({
 export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
   const { slug } = await params;
   const [post, settings] = await Promise.all([getPost(slug), getSettings()]);
-  if (!post) notFound();
+  if (!post) {
+    await redirectIfMoved(`/blog/${slug}`);
+    notFound();
+  }
 
   const html = await highlightCode(post.body_html);
   const url = absoluteUrl(`/blog/${post.slug}`);

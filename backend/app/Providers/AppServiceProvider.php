@@ -11,6 +11,7 @@ use App\Models\Post;
 use App\Models\ProcessStep;
 use App\Models\Project;
 use App\Models\ProjectScreen;
+use App\Models\Redirect;
 use App\Models\Service;
 use App\Models\Setting;
 use App\Models\Tag;
@@ -35,7 +36,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        foreach ([Post::class, Category::class, Tag::class, Project::class, ProjectScreen::class, Testimonial::class, Service::class, Setting::class, Page::class, Experience::class, ProcessStep::class, Faq::class, Media::class] as $model) {
+        foreach ([Post::class, Category::class, Tag::class, Project::class, ProjectScreen::class, Testimonial::class, Service::class, Setting::class, Page::class, Experience::class, ProcessStep::class, Faq::class, Redirect::class, Media::class] as $model) {
             $model::observe(ContentObserver::class);
         }
 

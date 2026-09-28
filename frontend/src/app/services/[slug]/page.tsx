@@ -28,6 +28,7 @@ import {
 } from "@/lib/api";
 import { breadcrumbJsonLd, faqJsonLd, serviceJsonLd } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/seo";
+import { redirectIfMoved } from "@/lib/redirects";
 
 export const dynamicParams = true;
 
@@ -66,7 +67,10 @@ export default async function ServicePage({
     getServices(),
     getAboutPage(),
   ]);
-  if (!service) notFound();
+  if (!service) {
+    await redirectIfMoved(`/services/${slug}`);
+    notFound();
+  }
 
   return (
     <>

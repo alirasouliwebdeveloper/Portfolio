@@ -14,6 +14,10 @@ return [
 
     'frontend_url' => env('FRONTEND_URL', 'http://localhost:3000'),
 
+    // Next.js on-demand revalidation (server to server; never exposed to the browser).
+    'next_url' => env('NEXT_URL', 'http://web:3000'),
+    'revalidate_secret' => env('REVALIDATE_SECRET'),
+
     'seed_path' => env('SEED_PATH', base_path('../seed')),
     'assets_path' => env('ASSETS_PATH', base_path('../assets/images')),
 

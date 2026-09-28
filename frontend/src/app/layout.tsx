@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import { GoogleAnalytics } from "@/components/ui/GoogleAnalytics";
 import { getSettings } from "@/lib/api";
 import "./globals.css";
 
@@ -44,7 +45,9 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const settings = await getSettings();
+
   return (
     <html
       lang="en"
@@ -63,6 +66,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <SiteFooter />
+        <GoogleAnalytics id={settings.tracking.ga_measurement_id} />
       </body>
     </html>
   );

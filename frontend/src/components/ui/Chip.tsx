@@ -27,7 +27,9 @@ export function FilterChip(props: ChipProps) {
   const content = (
     <>
       {children}
-      {count !== undefined ? <span className="opacity-70">{count}</span> : null}
+      {count !== undefined ? (
+        <span className={active ? undefined : "opacity-70"}>{count}</span>
+      ) : null}
     </>
   );
 
