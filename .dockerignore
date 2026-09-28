@@ -1,0 +1,2 @@
+# The PHP image copies nothing from the repo (code is bind-mounted), so send nothing.
+*

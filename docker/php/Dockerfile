@@ -9,8 +9,9 @@ RUN apk add --no-cache \
         libpng-dev \
         libjpeg-turbo-dev \
         freetype-dev \
+        libwebp-dev \
         oniguruma-dev \
-    && docker-php-ext-configure gd --with-jpeg --with-freetype \
+    && docker-php-ext-configure gd --with-jpeg --with-freetype --with-webp \
     && docker-php-ext-install \
         pdo_mysql \
         intl \

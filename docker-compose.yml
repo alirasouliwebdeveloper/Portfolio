@@ -9,6 +9,8 @@ services:
         GID: ${GID:-1000}
     volumes:
       - ./backend:/var/www/html
+      - ./seed:/var/www/seed:ro
+      - ./assets:/var/www/assets:ro
     env_file:
       - ./backend/.env
     depends_on:
