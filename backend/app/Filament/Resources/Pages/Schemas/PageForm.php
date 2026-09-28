@@ -56,6 +56,7 @@ class PageForm
                         Section::make('Hero')->columns(2)->schema([
                             TextInput::make('content.hero.chip')->maxLength(80),
                             TextInput::make('content.hero.greeting')->maxLength(80)->helperText('Shown before your name in the heading.'),
+                            Textarea::make('content.hero.lead')->rows(2)->columnSpanFull()->helperText('The sentence under the sub-headline.'),
                             TextInput::make('content.hero.tech_label')->label('Technologies label')->maxLength(80),
                             TagsInput::make('content.hero.technologies')->label('Technologies')->helperText('Icons shown under the hero. Known: HTML, JavaScript, TypeScript, React, Node.js, Git, Laravel, PHP, Docker.')->columnSpanFull(),
                             TagsInput::make('content.hero.code_stack')->label('Code card: stack'),

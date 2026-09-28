@@ -40,7 +40,7 @@ import {
   Trophy,
   Upload,
   User,
-  Workflow,
+  Network,
   X,
   type LucideProps,
 } from "lucide-react";
@@ -65,7 +65,7 @@ export const iconMap = {
   db: Database,
   download: Download,
   file: File,
-  flow: Workflow,
+  flow: Network,
   grid: LayoutGrid,
   heart: Heart,
   home: House,

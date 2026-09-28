@@ -23,14 +23,15 @@ class PageSeeder extends Seeder
 
         return [
             'home' => [
-                'title' => "Hi, I'm Ali",
+                'title' => "Hi, I’m Ali",
                 'meta_title' => 'Ali — Laravel & Next.js Developer',
-                'meta_description' => "Full-stack developer building fast websites, online stores and web apps with Laravel, React and Next.js. Based in Muscat, Oman — let's build yours.",
+                'meta_description' => "Full-stack developer building fast websites, online stores and web apps with Laravel, React and Next.js. Based in Muscat, Oman — let’s build yours.",
                 'focus_keyword' => 'Laravel developer',
                 'content' => [
                     'hero' => [
-                        'chip' => "I'M A WEB DEVELOPER",
-                        'greeting' => "Hi, I'm",
+                        'chip' => "I’M A WEB DEVELOPER",
+                        'greeting' => "Hi, I’m",
+                        'lead' => "I’m a full-stack developer building fast websites, online stores and web apps with Laravel, React and Next.js.",
                         'tech_label' => 'Technologies I work with',
                         'technologies' => ['HTML', 'JavaScript', 'TypeScript', 'React', 'Node.js', 'Git'],
                         'code_stack' => ['Laravel', 'React', 'Next.js', 'Docker'],
@@ -38,7 +39,7 @@ class PageSeeder extends Seeder
                     ],
                     'about_teaser' => [
                         'eyebrow' => 'ABOUT ME',
-                        'heading' => "I'm passionate about creating digital solutions",
+                        'heading' => "I’m passionate about creating digital solutions",
                         'text' => $doc('With 4+ years of experience in web development, I help businesses and individuals bring their ideas to life through clean, efficient, and user-friendly code.'),
                     ],
                     'stack' => [
@@ -56,14 +57,14 @@ class PageSeeder extends Seeder
                     'testimonials' => ['eyebrow' => 'TESTIMONIALS', 'heading' => 'What Clients Say'],
                     'blog' => ['eyebrow' => 'LATEST ARTICLES', 'heading' => 'From the Blog'],
                     'contact' => [
-                        'eyebrow' => "LET'S WORK TOGETHER",
+                        'eyebrow' => "LET’S WORK TOGETHER",
                         'heading' => 'Have a project in mind?',
-                        'text' => "Tell me what you're building and where you're stuck. I usually reply within one working day.",
+                        'text' => "Tell me what you’re building and where you’re stuck. I usually reply within one working day.",
                     ],
                 ],
             ],
             'about' => [
-                'title' => "I'm Ali — a full-stack developer who builds for the web.",
+                'title' => "I’m Ali — a full-stack developer who builds for the web.",
                 'meta_title' => 'About Ali — Full-Stack Laravel & Next.js Developer',
                 'meta_description' => 'Meet Ali, a full-stack developer in Muscat building websites, online stores and web apps with Laravel and Next.js — from idea to launch in one set of hands.',
                 'focus_keyword' => 'full-stack developer',
@@ -75,8 +76,8 @@ class PageSeeder extends Seeder
                             'I started with small PHP sites for local businesses and now work with startups and companies on products that have to be fast, easy to manage and ready to grow.',
                         ),
                     ],
-                    'how' => ['eyebrow' => 'HOW I WORK', 'heading' => 'A simple, predictable process', 'text' => "You always know what's being built, what it costs and when it ships."],
-                    'experience' => ['eyebrow' => 'EXPERIENCE', 'heading' => "Where I've worked"],
+                    'how' => ['eyebrow' => 'HOW I WORK', 'heading' => 'A simple, predictable process', 'text' => "You always know what’s being built, what it costs and when it ships."],
+                    'experience' => ['eyebrow' => 'EXPERIENCE', 'heading' => "Where I’ve worked"],
                     'toolbox' => [
                         'eyebrow' => 'TOOLBOX',
                         'heading' => 'Tools I use every day',
@@ -89,25 +90,25 @@ class PageSeeder extends Seeder
                     ],
                     'cta' => [
                         'heading' => 'Have a project in mind?',
-                        'text' => "Tell me what you're building. I usually reply within one working day.",
+                        'text' => "Tell me what you’re building. I usually reply within one working day.",
                         'button' => 'Start a Conversation',
                     ],
                 ],
             ],
             'contact' => [
-                'title' => "Let's talk about your project",
+                'title' => "Let’s talk about your project",
                 'meta_title' => 'Contact Ali — Hire a Laravel & Next.js Developer',
                 'meta_description' => 'Tell me what you are building and get a reply within one working day. Websites, online stores, APIs and automations from a developer in Muscat, Oman.',
                 'focus_keyword' => 'hire a Laravel developer',
                 'content' => [
                     'hero' => [
                         'eyebrow' => 'CONTACT',
-                        'text' => "Tell me what you're building and where you're stuck. The more you share, the more useful my first reply will be.",
+                        'text' => "Tell me what you’re building and where you’re stuck. The more you share, the more useful my first reply will be.",
                     ],
                     'faq' => [
                         'eyebrow' => 'FAQ',
                         'heading' => 'Before you write',
-                        'text' => "Answers to what clients ask most often. Can't find yours? Ask in the form above.",
+                        'text' => "Answers to what clients ask most often. Can’t find yours? Ask in the form above.",
                     ],
                 ],
             ],
@@ -118,11 +119,11 @@ class PageSeeder extends Seeder
                 'focus_keyword' => 'Laravel and Next.js articles',
                 'content' => [
                     'eyebrow' => 'BLOG',
-                    'description' => "Practical write-ups on Laravel, Next.js, DevOps and automation — what worked in real projects and what didn't.",
+                    'description' => "Practical write-ups on Laravel, Next.js, DevOps and automation — what worked in real projects and what didn’t.",
                 ],
             ],
             'not_found' => [
-                'title' => "This page doesn't exist",
+                'title' => "This page doesn’t exist",
                 'content' => [
                     'text' => 'The link may be old or the page may have moved. Try searching, or head back to somewhere familiar.',
                 ],

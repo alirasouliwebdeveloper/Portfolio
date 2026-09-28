@@ -98,6 +98,7 @@ class MockDataSeeder extends Seeder
         ]);
 
         $this->attach($setting, $s['portrait'], 'portrait');
+        $this->attach($setting, 'cv-placeholder.pdf', 'cv');
     }
 
     /** The design uses "#" placeholders; the admin validates URLs, so seed valid generic ones. */

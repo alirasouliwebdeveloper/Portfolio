@@ -47,6 +47,9 @@
   --color-online: #22c55e;
   --color-code: #e4e6f5;
   --color-code-string: #f9a26c;
+  --color-portrait-from: #8c74ff;
+  --color-portrait-via: #6a4fe6;
+  --color-portrait-to: #3f2e9e;
 
   /* Radii */
   --radius-control: 8px;
@@ -56,6 +59,7 @@
   --radius-tag-sm: 5px;
   --radius-pill: 999px;
   --radius-tile: 22%;
+  --radius-arch-bottom: 20px;
 
   /* Shadows: floating elements only */
   --shadow-float: 0 20px 40px rgb(0 0 0 / 0.4);
@@ -92,7 +96,7 @@
   --fs-article: 16.5px;
   --fs-kicker: 12px;
   --fs-meta: 13px;
-  --fs-stat: 28px;
+  --fs-stat: 26px;
 }
 
 @media (width >= 48rem) {
@@ -200,6 +204,15 @@
   );
 }
 
+@utility bg-portrait {
+  background-image: radial-gradient(
+    circle at 40% 25%,
+    var(--color-portrait-from) 0%,
+    var(--color-portrait-via) 45%,
+    var(--color-portrait-to) 100%
+  );
+}
+
 @utility text-gradient-404 {
   background-image: linear-gradient(
     90deg,
@@ -254,5 +267,149 @@
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
     }
+  }
+}
+
+/* Portrait arch: fully round top (radius = half the width), 20px bottom corners. */
+@layer components {
+  .portrait-arch {
+    --arch-w: 300px;
+    width: var(--arch-w);
+    border-radius: calc(var(--arch-w) / 2) calc(var(--arch-w) / 2)
+      var(--radius-arch-bottom) var(--radius-arch-bottom);
+  }
+
+  @media (width >= 48rem) {
+    .portrait-arch {
+      --arch-w: 420px;
+    }
+  }
+
+  @media (width >= 80rem) {
+    .portrait-arch {
+      --arch-w: 480px;
+    }
+  }
+}
+
+/* Rich text from the CMS: paragraphs, lists, headings, code — sizes come from the type tokens. */
+@layer components {
+  .rich-content {
+    color: var(--color-muted);
+    font-size: var(--fs-body);
+    line-height: 1.7;
+  }
+
+  .rich-content > * + * {
+    margin-block-start: 1em;
+  }
+
+  .rich-content h2 {
+    margin-block-start: 1.75em;
+    color: var(--color-text);
+    font-size: var(--fs-h2);
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    scroll-margin-block-start: 6rem;
+  }
+
+  .rich-content h3 {
+    margin-block-start: 1.5em;
+    color: var(--color-text);
+    font-size: var(--fs-card-title-lg);
+    line-height: 1.35;
+    scroll-margin-block-start: 6rem;
+  }
+
+  .rich-content h4 {
+    color: var(--color-text);
+    font-size: var(--fs-card-title);
+  }
+
+  .rich-content a {
+    color: var(--color-link);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .rich-content strong {
+    color: var(--color-text-2);
+  }
+
+  .rich-content ul,
+  .rich-content ol {
+    padding-inline-start: 1.5em;
+  }
+
+  .rich-content ul {
+    list-style: disc;
+  }
+
+  .rich-content ol {
+    list-style: decimal;
+  }
+
+  .rich-content li + li {
+    margin-block-start: 0.4em;
+  }
+
+  .rich-content blockquote {
+    border-inline-start: 3px solid var(--color-accent);
+    padding-inline-start: 1.25em;
+    color: var(--color-text-2);
+  }
+
+  .rich-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-card);
+  }
+
+  .rich-content hr {
+    border-color: var(--color-divider);
+  }
+
+  .rich-content code {
+    border-radius: var(--radius-tag);
+    background-color: var(--color-surface-input);
+    padding: 0.15em 0.4em;
+    color: var(--color-code);
+    font-size: 0.9em;
+  }
+
+  .rich-content pre {
+    direction: ltr;
+    overflow-x: auto;
+    border: 1px solid var(--color-border-input);
+    border-radius: var(--radius-card);
+    background-color: var(--color-surface-input);
+    padding: 1.25rem;
+    color: var(--color-code);
+    font-size: 0.875rem;
+    line-height: 1.75;
+  }
+
+  .rich-content pre code {
+    background: none;
+    padding: 0;
+  }
+
+  .rich-content table {
+    display: block;
+    overflow-x: auto;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  .rich-content th,
+  .rich-content td {
+    border: 1px solid var(--color-border);
+    padding: 0.6rem 0.8rem;
+    text-align: start;
+  }
+
+  .rich-content--article {
+    font-size: var(--fs-article);
+    line-height: 1.85;
   }
 }
