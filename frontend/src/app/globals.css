@@ -1,26 +1,258 @@
 @import "tailwindcss";
 
+/*
+ * Design tokens — source of truth: docs/03-design-system.md and design/tokens.json.
+ * Components must use these theme names only (no raw hex / px for colors, type, radii).
+ */
+
+@theme {
+  /* Breakpoints: mobile < 768, tablet 768–1279, desktop ≥ 1280, wide ≥ 1520 (container edge) */
+  --breakpoint-*: initial;
+  --breakpoint-tablet: 48rem;
+  --breakpoint-desktop: 80rem;
+  --breakpoint-wide: 95rem;
+
+  /* Colors (dark theme only) */
+  --color-bg: #0a0b1a;
+  --color-bg-alt: #0d0f22;
+  --color-bg-footer: #080916;
+  --color-surface: #10122a;
+  --color-surface-input: #0f1128;
+  --color-surface-strong: #14153a;
+  --color-border: #262a4d;
+  --color-border-input: #2b2e57;
+  --color-divider: #22254a;
+  --color-line: #191b34;
+  --color-line-soft: #14162c;
+  --color-chip: #1b1942;
+  --color-chip-text: #d3ccff;
+  --color-tile: #2c2a63;
+  --color-accent: #6d5df5;
+  --color-accent-2: #8272ff;
+  --color-accent-soft: #8f80ff;
+  --color-accent-border: #4a43a8;
+  --color-eyebrow: #9c8fff;
+  --color-link: #a99cff;
+  --color-icon-soft: #b1a6ff;
+  --color-text: #f4f5fa;
+  --color-text-2: #c9cbe0;
+  --color-muted: #a7aac6;
+  --color-dim: #8e91b0;
+  --color-faint: #6f7295;
+  --color-success: #4ade80;
+  --color-success-solid: #16a34a;
+  --color-danger: #f87171;
+  --color-danger-border: #7f2d3a;
+  --color-star: #f5b84a;
+  --color-online: #22c55e;
+  --color-code: #e4e6f5;
+  --color-code-string: #f9a26c;
+
+  /* Radii */
+  --radius-control: 8px;
+  --radius-card: 12px;
+  --radius-card-lg: 16px;
+  --radius-tag: 6px;
+  --radius-tag-sm: 5px;
+  --radius-pill: 999px;
+  --radius-tile: 22%;
+
+  /* Shadows: floating elements only */
+  --shadow-float: 0 20px 40px rgb(0 0 0 / 0.4);
+
+  /* Letter spacing */
+  --tracking-eyebrow: 0.1em;
+  --tracking-chip: 0.08em;
+  --tracking-h1: -0.02em;
+  --tracking-h2: -0.01em;
+
+  /* Layout */
+  --container-page: 90rem;
+}
+
+/* Responsive tokens: values change per breakpoint, utilities stay the same */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --gutter: 20px;
+  --section-py: 56px;
+  --grid-gap: 20px;
+  --card-p: 24px;
+  --tile-size: 48px;
+  --control-h: 50px;
+  --header-h: 68px;
+
+  --fs-hero-h1: 40px;
+  --fs-hero-sub: 30px;
+  --fs-page-h1: 34px;
+  --fs-h2: 26px;
+  --fs-card-title: 18px;
+  --fs-card-title-lg: 19px;
+  --fs-lead: 16px;
+  --fs-subhead: 15px;
+  --fs-body: 15px;
+  --fs-article: 16.5px;
+  --fs-kicker: 12px;
+  --fs-meta: 13px;
+  --fs-stat: 28px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@media (width >= 48rem) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --gutter: 40px;
+    --section-py: 72px;
+    --grid-gap: 24px;
+    --card-p: 28px;
+    --tile-size: 52px;
+    --header-h: 76px;
+
+    --fs-hero-h1: 52px;
+    --fs-hero-sub: 38px;
+    --fs-page-h1: 44px;
+    --fs-h2: 30px;
+    --fs-card-title: 19px;
+    --fs-card-title-lg: 20px;
+    --fs-lead: 18px;
+    --fs-subhead: 16px;
+    --fs-body: 16px;
+    --fs-article: 17.5px;
+    --fs-kicker: 13px;
+    --fs-meta: 14px;
+    --fs-stat: 32px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (width >= 80rem) {
+  :root {
+    --section-py: 96px;
+    --grid-gap: 32px;
+    --card-p: 32px;
+    --tile-size: 56px;
+    --control-h: 52px;
+    --header-h: 88px;
+
+    --fs-hero-h1: 68px;
+    --fs-hero-sub: 48px;
+    --fs-page-h1: 58px;
+    --fs-h2: 36px;
+    --fs-card-title: 20px;
+    --fs-card-title-lg: 22px;
+    --fs-lead: 19px;
+    --fs-subhead: 17px;
+    --fs-article: 18px;
+    --fs-stat: 34px;
+  }
+}
+
+@media (width >= 95rem) {
+  :root {
+    --gutter: 0px;
+  }
+}
+
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+
+  --spacing-gutter: var(--gutter);
+  --spacing-section: var(--section-py);
+  --spacing-grid: var(--grid-gap);
+  --spacing-card: var(--card-p);
+  --spacing-tile: var(--tile-size);
+  --spacing-control: var(--control-h);
+  --spacing-header: var(--header-h);
+
+  --text-hero-h1: var(--fs-hero-h1);
+  --text-hero-h1--line-height: 1.08;
+  --text-hero-sub: var(--fs-hero-sub);
+  --text-hero-sub--line-height: 1.15;
+  --text-page-h1: var(--fs-page-h1);
+  --text-page-h1--line-height: 1.15;
+  --text-h2: var(--fs-h2);
+  --text-h2--line-height: 1.25;
+  --text-card-title: var(--fs-card-title);
+  --text-card-title--line-height: 1.4;
+  --text-card-title-lg: var(--fs-card-title-lg);
+  --text-card-title-lg--line-height: 1.35;
+  --text-lead: var(--fs-lead);
+  --text-lead--line-height: 1.65;
+  --text-subhead: var(--fs-subhead);
+  --text-subhead--line-height: 1.65;
+  --text-body: var(--fs-body);
+  --text-body--line-height: 1.7;
+  --text-article: var(--fs-article);
+  --text-article--line-height: 1.85;
+  --text-kicker: var(--fs-kicker);
+  --text-kicker--line-height: 1.4;
+  --text-meta: var(--fs-meta);
+  --text-meta--line-height: 1.5;
+  --text-stat: var(--fs-stat);
+  --text-stat--line-height: 1.2;
+  --text-ui: 15px;
+  --text-ui--line-height: 1.5;
+  --text-caption: 13px;
+  --text-caption--line-height: 1.5;
+}
+
+@utility bg-primary-gradient {
+  background-image: linear-gradient(
+    90deg,
+    var(--color-accent),
+    var(--color-accent-2)
+  );
+}
+
+@utility text-gradient-404 {
+  background-image: linear-gradient(
+    90deg,
+    var(--color-accent),
+    var(--color-icon-soft)
+  );
+  background-clip: text;
+  color: transparent;
+}
+
+@layer base {
+  html {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: var(--fs-body);
+    line-height: 1.7;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 600;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-text);
+  }
+
+  code,
+  pre {
+    font-family: var(--font-mono);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
