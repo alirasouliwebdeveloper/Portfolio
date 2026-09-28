@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight } from "@/components/ui/icons";
+import { Highlighted } from "@/components/ui/Highlighted";
 import { Media } from "@/components/ui/Media";
 import { formatPostMeta } from "@/lib/format";
 import type { PostCard as PostCardData } from "@/types/api";
@@ -7,9 +8,11 @@ import type { PostCard as PostCardData } from "@/types/api";
 export function PostCard({
   post,
   priority,
+  query,
 }: {
   post: PostCardData;
   priority?: boolean;
+  query?: string;
 }) {
   return (
     <article className="rounded-card border-border bg-surface flex h-full flex-col overflow-hidden border">
@@ -34,10 +37,20 @@ export function PostCard({
         </div>
         <h3 className="text-card-title text-text font-semibold">
           <Link href={`/blog/${post.slug}`} className="hover:text-white">
-            {post.title}
+            {query ? (
+              <Highlighted text={post.title} query={query} />
+            ) : (
+              post.title
+            )}
           </Link>
         </h3>
-        <p className="text-ui text-muted leading-relaxed">{post.excerpt}</p>
+        <p className="text-ui text-muted leading-relaxed">
+          {query ? (
+            <Highlighted text={post.excerpt} query={query} />
+          ) : (
+            post.excerpt
+          )}
+        </p>
         <Link
           href={`/blog/${post.slug}`}
           className="text-link mt-auto flex items-center gap-2 pt-2 text-sm"

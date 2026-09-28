@@ -23,7 +23,7 @@ export function Breadcrumbs({
               key={`${item.label}-${index}`}
               className="flex items-center gap-2.5"
             >
-              {isLast || !item.href ? (
+              {!item.href ? (
                 <span
                   aria-current={isLast ? "page" : undefined}
                   className="text-text"
