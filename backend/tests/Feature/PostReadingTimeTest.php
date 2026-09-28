@@ -1,10 +1,11 @@
 <?php
 
 use App\Models\Post;
+use App\Support\TipTapDocument;
 
-function words(int $count): string
+function words(int $count): ?array
 {
-    return '<p>'.implode(' ', array_fill(0, $count, 'word')).'</p>';
+    return TipTapDocument::fromParagraphs([implode(' ', array_fill(0, $count, 'word'))]);
 }
 
 it('computes reading time as words divided by 220, rounded up', function (int $words, int $minutes) {
@@ -16,8 +17,13 @@ it('computes reading time as words divided by 220, rounded up', function (int $w
     'ten minutes' => [2200, 10],
 ]);
 
-it('ignores html tags when counting words', function () {
-    expect(Post::readingTimeFor('<h2>Title</h2><pre><code>a b c</code></pre>'))->toBe(1);
+it('counts the text of a rich document, not its structure', function () {
+    $doc = ['type' => 'doc', 'content' => [
+        ['type' => 'heading', 'attrs' => ['level' => 2], 'content' => [['type' => 'text', 'text' => 'Title']]],
+        ['type' => 'codeBlock', 'content' => [['type' => 'text', 'text' => 'a b c']]],
+    ]];
+
+    expect(Post::readingTimeFor($doc))->toBe(1);
 });
 
 it('sets the reading time when a post is saved', function () {

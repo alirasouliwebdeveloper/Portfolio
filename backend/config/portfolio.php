@@ -10,5 +10,6 @@ return [
         'name' => env('ADMIN_NAME', 'Admin'),
         'email' => env('ADMIN_EMAIL', 'admin@example.com'),
         'password' => env('ADMIN_PASSWORD'),
+        'require_2fa' => (bool) env('ADMIN_2FA_REQUIRED', false),
     ],
 ];

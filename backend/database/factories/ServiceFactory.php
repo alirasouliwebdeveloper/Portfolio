@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Enums\PublishStatus;
 use App\Models\Service;
+use App\Support\TipTapDocument;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /** @extends Factory<Service> */
@@ -23,7 +24,7 @@ class ServiceFactory extends Factory
             'floating_metric' => ['value' => '0.8s', 'label' => 'Average response'],
             'pains' => [['icon' => 'alert', 'title' => fake()->sentence(4), 'text' => fake()->sentence()]],
             'offers' => [['icon' => 'code', 'title' => fake()->sentence(3), 'text' => fake()->sentence()]],
-            'why' => ['title' => 'Why this stack?', 'text' => fake()->paragraph(), 'points' => [fake()->sentence(4)]],
+            'why' => ['title' => 'Why this stack?', 'text' => TipTapDocument::fromParagraphs([fake()->paragraph()]), 'points' => [fake()->sentence(4)]],
             'stack' => ['Laravel', 'MySQL'],
             'tiers' => [['name' => 'Starter', 'price_from' => '$1,500', 'subtitle' => fake()->sentence(4), 'items' => [fake()->sentence(3)], 'highlighted' => false]],
             'faq' => [['question' => fake()->sentence(6).'?', 'answer' => fake()->paragraph()]],

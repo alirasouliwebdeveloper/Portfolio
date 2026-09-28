@@ -23,6 +23,14 @@ class PostsTable
                 TextColumn::make('title')->searchable()->sortable()->limit(60),
                 TextColumn::make('category.name')->badge()->sortable(),
                 TextColumn::make('status')->badge(),
+                TextColumn::make('seo_score')->label('SEO')->badge()
+                    ->color(fn (?int $state): string => match (true) {
+                        $state === null => 'gray',
+                        $state >= 80 => 'success',
+                        $state >= 50 => 'warning',
+                        default => 'danger',
+                    })
+                    ->sortable(),
                 IconColumn::make('featured')->boolean(),
                 TextColumn::make('reading_time')->suffix(' min')->sortable(),
                 TextColumn::make('published_at')->dateTime('M j, Y')->sortable(),

@@ -49,3 +49,4 @@ docker-data/
 
 # Root compose env
 /.env
+/backend/storage/media-library/

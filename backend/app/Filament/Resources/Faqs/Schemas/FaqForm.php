@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\Faqs\Schemas;
 
+use App\Filament\Support\RichBodyField;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -15,7 +15,7 @@ class FaqForm
         return $schema->components([
             Section::make()->schema([
                 TextInput::make('question')->required()->maxLength(255),
-                Textarea::make('answer')->required()->rows(5),
+                RichBodyField::compact('answer')->required(),
                 Select::make('scope')->options(['contact' => 'Contact page'])->default('contact')->required(),
             ]),
         ]);

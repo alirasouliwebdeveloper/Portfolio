@@ -4,6 +4,9 @@ namespace App\Models;
 
 use App\Models\Concerns\Publishable;
 use App\Models\Concerns\RegistersImageConversions;
+use App\Models\Concerns\ScoresSeo;
+use App\Support\RichBody;
+use App\Support\Seo\SeoInput;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,16 +19,17 @@ use Spatie\Sluggable\SlugOptions;
 #[Fillable([
     'category_id', 'title', 'slug', 'excerpt', 'body', 'featured', 'reading_time', 'cover_alt',
     'related_service_id', 'status', 'published_at', 'meta_title', 'meta_description',
+    'focus_keyword', 'canonical_url', 'noindex',
 ])]
 class Post extends Model implements HasMedia
 {
-    use HasFactory, HasSlug, Publishable, RegistersImageConversions;
+    use HasFactory, HasSlug, Publishable, RegistersImageConversions, ScoresSeo;
 
     public const WORDS_PER_MINUTE = 220;
 
     protected function casts(): array
     {
-        return ['featured' => 'boolean', 'reading_time' => 'integer'];
+        return ['featured' => 'boolean', 'reading_time' => 'integer', 'body' => 'array', 'noindex' => 'boolean'];
     }
 
     protected static function booted(): void
@@ -37,11 +41,24 @@ class Post extends Model implements HasMedia
         });
     }
 
-    public static function readingTimeFor(?string $html): int
+    public static function readingTimeFor(mixed $body): int
     {
-        $words = str_word_count(strip_tags((string) $html));
+        $words = str_word_count(RichBody::plain($body));
 
         return max(1, (int) ceil($words / self::WORDS_PER_MINUTE));
+    }
+
+    public function seoInput(): SeoInput
+    {
+        return SeoInput::fromPage(
+            $this->title,
+            $this->meta_title,
+            $this->meta_description,
+            $this->focus_keyword,
+            $this->slug,
+            RichBody::normalize($this->body),
+            $this->excerpt,
+        );
     }
 
     public function registerMediaCollections(): void

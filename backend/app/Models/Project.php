@@ -4,6 +4,9 @@ namespace App\Models;
 
 use App\Models\Concerns\Publishable;
 use App\Models\Concerns\RegistersImageConversions;
+use App\Models\Concerns\ScoresSeo;
+use App\Support\RichBody;
+use App\Support\Seo\SeoInput;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,11 +20,11 @@ use Spatie\Sluggable\SlugOptions;
     'title', 'slug', 'summary', 'lead', 'client', 'role', 'timeline', 'year', 'live_url',
     'challenge', 'solution', 'result', 'features', 'stack', 'metrics', 'cover_alt',
     'testimonial_id', 'service_id', 'featured', 'sort_order', 'status', 'published_at',
-    'meta_title', 'meta_description',
+    'meta_title', 'meta_description', 'focus_keyword', 'canonical_url', 'noindex',
 ])]
 class Project extends Model implements HasMedia
 {
-    use HasFactory, HasSlug, Publishable, RegistersImageConversions;
+    use HasFactory, HasSlug, Publishable, RegistersImageConversions, ScoresSeo;
 
     protected function casts(): array
     {
@@ -31,6 +34,11 @@ class Project extends Model implements HasMedia
             'metrics' => 'array',
             'featured' => 'boolean',
             'year' => 'integer',
+            'noindex' => 'boolean',
+            'lead' => 'array',
+            'challenge' => 'array',
+            'solution' => 'array',
+            'result' => 'array',
         ];
     }
 
@@ -47,6 +55,18 @@ class Project extends Model implements HasMedia
             ->saveSlugsTo('slug')
             ->preventOverwrite()
             ->doNotGenerateSlugsOnUpdate();
+    }
+
+    public function seoInput(): SeoInput
+    {
+        return SeoInput::fromPlainText(
+            $this->title,
+            $this->meta_title,
+            $this->meta_description,
+            $this->focus_keyword,
+            $this->slug,
+            [$this->summary, RichBody::plain($this->lead), RichBody::plain($this->challenge), RichBody::plain($this->solution), RichBody::plain($this->result)],
+        );
     }
 
     public function testimonial(): BelongsTo

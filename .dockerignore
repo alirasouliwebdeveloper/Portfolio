@@ -1,2 +1,3 @@
-# The PHP image copies nothing from the repo (code is bind-mounted), so send nothing.
+# The PHP image only needs docker/php/php.ini from the repo (code is bind-mounted).
 *
+!docker/php/php.ini

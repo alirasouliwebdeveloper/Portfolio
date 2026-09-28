@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+    'search_console' => [
+        'enabled' => (bool) env('GSC_ENABLED', false),
+        'site_url' => env('GSC_SITE_URL'),
+        'page_base_url' => env('GSC_PAGE_BASE_URL'),
+        'credentials_path' => env('GSC_CREDENTIALS_PATH'),
+    ],
+
 ];

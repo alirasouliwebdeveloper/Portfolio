@@ -13,12 +13,15 @@ use App\Models\Service;
 use App\Models\Setting;
 use App\Models\Tag;
 use App\Models\Testimonial;
+use App\Support\TipTapDocument;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 use RuntimeException;
 use Spatie\MediaLibrary\HasMedia;
+use Tiptap\Editor;
 
 /**
  * Loads seed/mock-data.json (mock content from the design) and attaches
@@ -63,6 +66,8 @@ class MockDataSeeder extends Seeder
         $this->experiences();
         $this->processSteps();
         $this->faqs();
+
+        Artisan::call('seo:rescore');
     }
 
     private function settings(): void
@@ -156,7 +161,7 @@ class MockDataSeeder extends Seeder
                 'floating_metric' => $row['floating_metric'],
                 'pains' => $row['pains'],
                 'offers' => $row['offers'],
-                'why' => $row['why'],
+                'why' => [...$row['why'], 'text' => TipTapDocument::fromParagraphs($row['why']['text'] ?? null)],
                 'stack' => $row['stack'],
                 'tiers' => $row['tiers'],
                 'faq' => $row['faq'],
@@ -182,15 +187,15 @@ class MockDataSeeder extends Seeder
                 'title' => $row['title'],
                 'slug' => $row['slug'],
                 'summary' => $row['summary'],
-                'lead' => $row['lead'] ?? null,
+                'lead' => TipTapDocument::fromParagraphs($row['lead'] ?? null),
                 'client' => $row['client'] ?? null,
                 'role' => $row['role'] ?? null,
                 'timeline' => $row['timeline'] ?? null,
                 'year' => $row['year'] ?? null,
                 'live_url' => $row['live_url'] ?? null,
-                'challenge' => $row['challenge'] ?? null,
-                'solution' => $row['solution'] ?? null,
-                'result' => $row['result'] ?? null,
+                'challenge' => TipTapDocument::fromParagraphs($row['challenge'] ?? null),
+                'solution' => TipTapDocument::fromParagraphs($row['solution'] ?? null),
+                'result' => TipTapDocument::fromParagraphs($row['result'] ?? null),
                 'features' => $row['features'] ?? null,
                 'stack' => $row['stack'] ?? null,
                 'metrics' => $row['metrics'] ?? null,
@@ -241,7 +246,7 @@ class MockDataSeeder extends Seeder
                     'title' => $row['title'],
                     'slug' => $row['slug'],
                     'excerpt' => $row['excerpt'],
-                    'body' => $this->body($row),
+                    'body' => (new Editor)->setContent($this->body($row))->getDocument(),
                     'featured' => $row['featured'],
                     'reading_time' => $row['reading_time'],
                     'cover_alt' => $row['title'],
@@ -283,7 +288,7 @@ class MockDataSeeder extends Seeder
     private function faqs(): void
     {
         foreach ($this->data['faqs'] as $index => $row) {
-            Faq::create([...$row, 'sort_order' => $index]);
+            Faq::create([...$row, 'answer' => TipTapDocument::fromParagraphs($row['answer']), 'sort_order' => $index]);
         }
     }
 

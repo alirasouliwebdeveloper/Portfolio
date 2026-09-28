@@ -23,6 +23,14 @@ class ProjectsTable
                 TextColumn::make('client')->searchable(),
                 TextColumn::make('year')->sortable(),
                 TextColumn::make('status')->badge(),
+                TextColumn::make('seo_score')->label('SEO')->badge()
+                    ->color(fn (?int $state): string => match (true) {
+                        $state === null => 'gray',
+                        $state >= 80 => 'success',
+                        $state >= 50 => 'warning',
+                        default => 'danger',
+                    })
+                    ->sortable(),
                 IconColumn::make('featured')->boolean(),
             ])
             ->filters([SelectFilter::make('status')->options(PublishStatus::class)])

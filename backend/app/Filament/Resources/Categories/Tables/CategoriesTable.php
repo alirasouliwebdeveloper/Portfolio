@@ -18,6 +18,14 @@ class CategoriesTable
                 TextColumn::make('slug')->color('gray'),
                 TextColumn::make('posts_count')->counts('posts')->label('Posts')->sortable(),
                 TextColumn::make('status')->badge(),
+                TextColumn::make('seo_score')->label('SEO')->badge()
+                    ->color(fn (?int $state): string => match (true) {
+                        $state === null => 'gray',
+                        $state >= 80 => 'success',
+                        $state >= 50 => 'warning',
+                        default => 'danger',
+                    })
+                    ->sortable(),
             ])
             ->reorderable('sort_order')
             ->defaultSort('sort_order')

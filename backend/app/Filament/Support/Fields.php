@@ -8,7 +8,6 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use Illuminate\Database\Eloquent\Model;
@@ -66,18 +65,6 @@ final class Fields
                     ->required(),
                 DateTimePicker::make('published_at')
                     ->helperText('Empty = publish immediately once the status is Published. A future date schedules it.'),
-            ]);
-    }
-
-    public static function seo(): Section
-    {
-        return Section::make('SEO')
-            ->description('Optional. Empty fields fall back to the title and summary.')
-            ->collapsed()
-            ->schema([
-                TextInput::make('meta_title')->maxLength(255),
-                Textarea::make('meta_description')->rows(2)->maxLength(320),
-                self::image('og_image', 'Open Graph image'),
             ]);
     }
 

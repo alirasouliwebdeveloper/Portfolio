@@ -10,4 +10,9 @@ use Illuminate\Database\Eloquent\Model;
 class Faq extends Model
 {
     use HasFactory;
+
+    protected function casts(): array
+    {
+        return ['answer' => 'array'];
+    }
 }

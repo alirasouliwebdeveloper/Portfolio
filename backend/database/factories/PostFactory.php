@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Enums\PublishStatus;
 use App\Models\Category;
 use App\Models\Post;
+use App\Support\TipTapDocument;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /** @extends Factory<Post> */
@@ -16,7 +17,7 @@ class PostFactory extends Factory
             'category_id' => Category::factory(),
             'title' => fake()->unique()->sentence(6),
             'excerpt' => fake()->sentence(18),
-            'body' => '<h2>'.fake()->sentence(3).'</h2><p>'.fake()->paragraph(6).'</p>',
+            'body' => TipTapDocument::fromParagraphs([fake()->paragraph(6)]),
             'featured' => false,
             'cover_alt' => fake()->sentence(4),
             'status' => PublishStatus::Published,
