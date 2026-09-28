@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 /*
@@ -19,6 +20,8 @@ pest()->extend(TestCase::class)
     ->in('Feature');
 
 pest()->extend(TestCase::class)->in('Unit');
+
+pest()->beforeEach(fn () => config(['portfolio.internal_key' => 'test-key']))->in('Feature/Api');
 
 /*
 |--------------------------------------------------------------------------
@@ -49,4 +52,10 @@ expect()->extend('toBeOne', function () {
 function something()
 {
     // ..
+}
+
+/** GET a public API endpoint with the shared internal key. */
+function api(string $uri): TestResponse
+{
+    return test()->getJson('/api/v1/'.ltrim($uri, '/'), ['X-Internal-Key' => 'test-key']);
 }

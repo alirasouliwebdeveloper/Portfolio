@@ -29,6 +29,7 @@ final class BrandFields
                     SpatieMediaLibraryFileUpload::make('favicon')->label('Favicon')->collection('favicon')
                         ->image()->acceptedFileTypes(['image/svg+xml', 'image/png', 'image/x-icon', 'image/vnd.microsoft.icon'])->maxSize(512)
                         ->helperText('Square PNG, SVG or ICO (at least 64×64 px).'),
+                    Fields::image('og_image', 'Default social sharing image')->helperText('Used when a page has no image of its own (1200×630 works best).'),
                     TextInput::make('footer_text')->label('Footer text')->maxLength(255)
                         ->helperText('Shown next to © and the year in the footer bottom bar.'),
                 ]),

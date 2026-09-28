@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use App\Models\Concerns\RegistersImageConversions;
-use App\Models\Concerns\ScoresSeo;
-use App\Support\Seo\SeoInput;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,7 +16,7 @@ use Spatie\MediaLibrary\HasMedia;
 ])]
 class Setting extends Model implements HasMedia
 {
-    use HasFactory, RegistersImageConversions, ScoresSeo;
+    use HasFactory, RegistersImageConversions;
 
     protected function casts(): array
     {
@@ -39,18 +37,6 @@ class Setting extends Model implements HasMedia
         $this->addMediaCollection('logo')->singleFile();
         $this->addMediaCollection('logo_admin')->singleFile();
         $this->addMediaCollection('favicon')->singleFile();
-    }
-
-    public function seoInput(): SeoInput
-    {
-        return SeoInput::fromPlainText(
-            trim("Hi, I'm {$this->name}. {$this->headline}"),
-            $this->meta_title,
-            $this->meta_description,
-            $this->focus_keyword,
-            '',
-            [(string) $this->bio_short],
-        );
     }
 
     /** Persists the single settings record on first use (fresh database). */

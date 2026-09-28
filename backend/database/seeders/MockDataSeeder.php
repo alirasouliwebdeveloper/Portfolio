@@ -13,11 +13,11 @@ use App\Models\Service;
 use App\Models\Setting;
 use App\Models\Tag;
 use App\Models\Testimonial;
+use App\Support\RichBody;
 use App\Support\TipTapDocument;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 use RuntimeException;
 use Spatie\MediaLibrary\HasMedia;
@@ -67,7 +67,6 @@ class MockDataSeeder extends Seeder
         $this->processSteps();
         $this->faqs();
 
-        Artisan::call('seo:rescore');
     }
 
     private function settings(): void
@@ -246,7 +245,8 @@ class MockDataSeeder extends Seeder
                     'title' => $row['title'],
                     'slug' => $row['slug'],
                     'excerpt' => $row['excerpt'],
-                    'body' => (new Editor)->setContent($this->body($row))->getDocument(),
+                    'body' => $body = (new Editor)->setContent($this->body($row))->getDocument(),
+                    'search_text' => RichBody::plain($body),
                     'featured' => $row['featured'],
                     'reading_time' => $row['reading_time'],
                     'cover_alt' => $row['title'],

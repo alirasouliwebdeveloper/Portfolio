@@ -6,6 +6,8 @@ use App\Filament\Resources\ContactMessages\ContactMessageResource;
 use App\Filament\Resources\ContactMessages\Pages\ViewContactMessage;
 use App\Filament\Resources\Experiences\ExperienceResource;
 use App\Filament\Resources\Faqs\FaqResource;
+use App\Filament\Resources\Pages\PageResource;
+use App\Filament\Resources\Pages\Pages\EditPage;
 use App\Filament\Resources\Posts\Pages\CreatePost;
 use App\Filament\Resources\Posts\Pages\EditPost;
 use App\Filament\Resources\Posts\PostResource;
@@ -20,6 +22,7 @@ use App\Models\Category;
 use App\Models\ContactMessage;
 use App\Models\Experience;
 use App\Models\Faq;
+use App\Models\Page;
 use App\Models\Post;
 use App\Models\ProcessStep;
 use App\Models\Project;
@@ -64,6 +67,7 @@ it('renders the list and edit pages of every resource', function (string $resour
     'experiences' => [ExperienceResource::class, fn () => Experience::factory()->create()],
     'process steps' => [ProcessStepResource::class, fn () => ProcessStep::factory()->create()],
     'faqs' => [FaqResource::class, fn () => Faq::factory()->create()],
+    'pages' => [PageResource::class, fn () => Page::factory()->create(['key' => 'home'])],
 ]);
 
 it('renders the create page of every editable resource', function (string $resource) {
@@ -153,4 +157,18 @@ it('lists contact messages read-only and lets an admin change their status', fun
         ->callAction('mark_replied');
 
     expect($message->fresh()->status)->toBe(ContactMessageStatus::Replied);
+});
+
+it('edits a fixed page and its SEO fields, and cannot create or delete pages', function () {
+    $page = Page::factory()->create(['key' => 'about', 'title' => 'About', 'content' => ['hero' => ['chip' => 'ABOUT ME']]]);
+
+    Livewire::test(EditPage::class, ['record' => $page->getKey()])
+        ->fillForm(['title' => 'About Ali', 'focus_keyword' => 'full-stack developer', 'meta_title' => 'About Ali | Full-stack developer'])
+        ->call('save')
+        ->assertHasNoFormErrors();
+
+    expect($page->fresh())->title->toBe('About Ali')->focus_keyword->toBe('full-stack developer')
+        ->and($page->fresh()->seo_score)->not->toBeNull()
+        ->and(PageResource::canCreate())->toBeFalse()
+        ->and(PageResource::canDelete($page))->toBeFalse();
 });
