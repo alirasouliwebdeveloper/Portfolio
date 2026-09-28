@@ -1,6 +1,12 @@
 "use client";
 
-import { useActionState, useCallback, useState } from "react";
+import {
+  startTransition,
+  useActionState,
+  useCallback,
+  useState,
+  type FormEvent,
+} from "react";
 import { submitContact } from "@/app/actions/contact";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -17,8 +23,20 @@ const initial: ContactState = { status: "idle" };
 /** Short contact form on the home page. Same endpoint as the full form, without uploads. */
 export function TeaserForm({ needs }: { needs: string[] }) {
   const [state, action, pending] = useActionState(submitContact, initial);
-  const [verified, setVerified] = useState(false);
-  const onVerify = useCallback((value: boolean) => setVerified(value), []);
+  const [verifiedFor, setVerifiedFor] = useState<number | null>(null);
+  // Tokens are single use: a failed attempt recreates the widget under a new key.
+  const widgetKey = state.nonce ?? 0;
+  const verified = verifiedFor === widgetKey;
+  const onVerify = useCallback(
+    (value: boolean) => setVerifiedFor(value ? widgetKey : null),
+    [widgetKey],
+  );
+  // Submitting via startTransition keeps the typed values when the server reports errors.
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    startTransition(() => action(data));
+  };
   const needsTurnstile = Boolean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY);
 
   if (state.status === "success") {
@@ -39,7 +57,7 @@ export function TeaserForm({ needs }: { needs: string[] }) {
   const errors = state.fieldErrors ?? {};
 
   return (
-    <form action={action} noValidate>
+    <form onSubmit={onSubmit} noValidate>
       <Card radius="lg" className="flex flex-col gap-5">
         {state.status === "error" && state.message ? (
           <p
@@ -80,7 +98,11 @@ export function TeaserForm({ needs }: { needs: string[] }) {
           error={errors.message}
         />
         {needsTurnstile ? (
-          <Turnstile onVerify={onVerify} appearance="interaction-only" />
+          <Turnstile
+            key={widgetKey}
+            onVerify={onVerify}
+            appearance="interaction-only"
+          />
         ) : null}
         {errors.turnstile ? (
           <p role="alert" className="text-caption text-danger">

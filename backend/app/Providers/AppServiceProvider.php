@@ -18,7 +18,10 @@ use App\Models\Testimonial;
 use App\Observers\ContentObserver;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Spatie\MediaLibrary\MediaCollections\Events\MediaHasBeenAddedEvent;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -37,6 +40,10 @@ class AppServiceProvider extends ServiceProvider
         }
 
         Event::listen(MediaHasBeenAddedEvent::class, StoreImageDimensions::class);
+
+        // Public write endpoints: 20 uploads and 5 contact messages per hour per visitor.
+        RateLimiter::for('uploads', fn (Request $request) => Limit::perHour(20)->by($request->ip()));
+        RateLimiter::for('contact', fn (Request $request) => Limit::perHour(5)->by($request->input('visitor_ip') ?: $request->ip()));
 
         // Rich-editor additions (font size, direction, image/link attributes). `filament:assets`
         // copies this file to public/js/app; the version is its hash so edits bust browser caches.

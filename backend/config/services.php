@@ -35,6 +35,11 @@ return [
         ],
     ],
 
+    'turnstile' => [
+        'secret' => env('TURNSTILE_SECRET_KEY'),
+        'verify_url' => 'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+    ],
+
     'search_console' => [
         'enabled' => (bool) env('GSC_ENABLED', false),
         'site_url' => env('GSC_SITE_URL'),

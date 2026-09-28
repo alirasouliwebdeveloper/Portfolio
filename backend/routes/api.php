@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\AboutController;
 use App\Http\Controllers\Api\V1\CategoryController;
+use App\Http\Controllers\Api\V1\ContactController;
 use App\Http\Controllers\Api\V1\PageController;
 use App\Http\Controllers\Api\V1\PostController;
 use App\Http\Controllers\Api\V1\ProjectController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Api\V1\ServiceController;
 use App\Http\Controllers\Api\V1\SettingsController;
 use App\Http\Controllers\Api\V1\SitemapController;
 use App\Http\Controllers\Api\V1\TestimonialController;
+use App\Http\Controllers\Api\V1\UploadController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,4 +42,15 @@ Route::prefix('v1')->middleware('internal.key')->group(function () {
     Route::get('faqs', [AboutController::class, 'faqs']);
 
     Route::get('sitemap', [SitemapController::class, 'show']);
+});
+
+/* Browser -> Laravel directly (CORS-limited to the frontend origin, rate limited). */
+Route::prefix('v1')->middleware('throttle:uploads')->group(function () {
+    Route::post('uploads', [UploadController::class, 'store']);
+    Route::delete('uploads/{uuid}', [UploadController::class, 'destroy']);
+});
+
+/* Next.js server action -> Laravel (shared secret, rate limited per visitor IP). */
+Route::prefix('v1')->middleware(['internal.key', 'throttle:contact'])->group(function () {
+    Route::post('contact', [ContactController::class, 'store']);
 });

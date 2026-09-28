@@ -16,6 +16,10 @@ $testEnv = [
     'MAIL_MAILER' => 'array',
     'BROADCAST_CONNECTION' => 'null',
     'QUEUE_CONVERSIONS_BY_DEFAULT' => 'false',
+    'TURNSTILE_SECRET_KEY' => '',
+    'GSC_ENABLED' => 'false',
+    'API_INTERNAL_KEY' => 'test-key',
+    'MAIL_TO_ADDRESS' => 'owner@example.com',
     'ADMIN_EMAIL' => 'admin@example.com',
     'ADMIN_PASSWORD' => 'test-password',
 ];

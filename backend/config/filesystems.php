@@ -47,6 +47,15 @@ return [
             'report' => false,
         ],
 
+        // Contact-form attachments: private, outside the web root, random file names.
+        'uploads' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/uploads'),
+            'visibility' => 'private',
+            'throw' => false,
+            'report' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

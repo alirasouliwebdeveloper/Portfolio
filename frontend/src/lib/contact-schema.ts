@@ -32,6 +32,8 @@ export type ContactInput = z.infer<typeof contactSchema>;
 
 export type ContactState = {
   status: "idle" | "success" | "error";
+  /** Changes on every failed submit so the (single-use) Turnstile widget is recreated. */
+  nonce?: number;
   name?: string;
   message?: string;
   fieldErrors?: Partial<Record<keyof ContactInput | "turnstile", string>>;

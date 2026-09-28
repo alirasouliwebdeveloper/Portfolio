@@ -12,6 +12,7 @@ export async function submitContact(
   _previous: ContactState,
   formData: FormData,
 ): Promise<ContactState> {
+  const required = new Set(["name", "email", "need", "message"]);
   const raw = Object.fromEntries(
     [
       "name",
@@ -26,10 +27,9 @@ export async function submitContact(
       "upload_session",
     ].map((key) => {
       const value = formData.get(key);
-      return [
-        key,
-        typeof value === "string" && value !== "" ? value : undefined,
-      ];
+      const text = typeof value === "string" ? value : "";
+      // Required fields stay "" so the schema shows its friendly message; optional ones are dropped.
+      return [key, text !== "" || required.has(key) ? text : undefined];
     }),
   );
   const uploads = formData
@@ -49,6 +49,7 @@ export async function submitContact(
     }
     return {
       status: "error",
+      nonce: Date.now(),
       message: "Please fix the highlighted fields.",
       fieldErrors,
     };
@@ -81,6 +82,7 @@ export async function submitContact(
   } catch {
     return {
       status: "error",
+      nonce: Date.now(),
       message:
         "Something went wrong on our side. Please try again in a moment.",
     };
@@ -98,6 +100,7 @@ export async function submitContact(
     }
     return {
       status: "error",
+      nonce: Date.now(),
       message: body.message ?? "Please fix the highlighted fields.",
       fieldErrors,
     };
@@ -106,6 +109,7 @@ export async function submitContact(
   if (response.status === 429) {
     return {
       status: "error",
+      nonce: Date.now(),
       message:
         "Too many messages from your connection. Please try again later.",
     };
@@ -114,6 +118,7 @@ export async function submitContact(
   if (!response.ok) {
     return {
       status: "error",
+      nonce: Date.now(),
       message:
         "Something went wrong on our side. Please try again in a moment.",
     };

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ContactMessages\Schemas;
 
+use App\Models\Upload;
 use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
@@ -30,7 +31,8 @@ class ContactMessageInfolist
             ]),
             Section::make('Files')->schema([
                 RepeatableEntry::make('uploads')->hiddenLabel()->contained(false)->columns(2)->schema([
-                    TextEntry::make('original_name')->label('File'),
+                    TextEntry::make('original_name')->label('File')->icon('heroicon-o-paper-clip')
+                        ->url(fn (Upload $record) => route('contact-files.download', $record), shouldOpenInNewTab: true),
                     TextEntry::make('size')->formatStateUsing(fn ($state) => Number::fileSize((int) $state)),
                 ]),
             ])->collapsible(),

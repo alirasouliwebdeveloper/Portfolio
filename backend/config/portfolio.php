@@ -8,6 +8,8 @@ return [
         'max_mb' => 10,
         'max_files' => 5,
     ],
+    'mail_to' => env('MAIL_TO_ADDRESS'),
+    'upload_ttl_hours' => 24,
     'cache_ttl' => (int) env('API_CACHE_TTL', 86400),
 
     'frontend_url' => env('FRONTEND_URL', 'http://localhost:3000'),
