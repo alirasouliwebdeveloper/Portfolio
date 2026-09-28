@@ -15,6 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Only the reverse proxy (Caddy -> nginx) can reach PHP, so its forwarded IP/proto headers are trusted.
+        $middleware->trustProxies(at: '*');
         $middleware->alias(['internal.key' => InternalKey::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

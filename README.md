@@ -1,37 +1,58 @@
-# Ali Portfolio — Claude Code handoff
+# Ali Portfolio
 
-Everything Claude Code needs to build the site from the finished design.
+Developer portfolio and blog: Laravel REST API + Filament admin panel, and a Next.js
+(App Router) frontend that renders static pages refreshed by on-demand revalidation.
 
-## How to use
-1. Create an empty folder for the project, `git init`, and copy the **contents** of this package into it (`CLAUDE.md` must sit at the repo root).
-2. Open the folder in a terminal and start Claude Code.
-3. Paste the kickoff prompt below.
-4. Review each phase summary before letting it continue. Answer its questions — it's instructed to ask instead of guessing on architecture.
+- **Backend:** `backend/` — Laravel 13, Filament 5 admin at `/admin`, MySQL, Redis (cache +
+  queues). See `docs/02-architecture.md` for the data model and API.
+- **Frontend:** `frontend/` — Next.js, TypeScript (strict), Tailwind CSS. Content comes from
+  the API; pages are statically generated and revalidated on demand when content changes.
+- **Design source:** `docs/` (spec, architecture, design system, SEO), `design/` (screens +
+  reference HTML at 1920/834/390), `seed/mock-data.json` (seeder content, replace before
+  launch), `assets/` (placeholder images, replace before launch).
 
-## Kickoff prompt
+## Local development
+
+```bash
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
+docker compose up -d
+docker compose exec api php artisan key:generate
+docker compose exec api php artisan migrate --seed
 ```
-Read CLAUDE.md, then every file in docs/ in order, then look at design/screens/ (start with Main.png, Main-Tablet.png, Main-Mobile.png) and seed/mock-data.json.
-Before writing code: give me a short plan for Phase 0 and Phase 1, list the exact versions of Laravel, Filament, Next.js and Tailwind you'll install (check the official docs for the current stable releases), and ask me anything that's unclear.
-Then start Phase 0.
+
+- Site: http://localhost:3000
+- API: http://localhost:8000/api/v1 (or `${NGINX_PORT}`, see `.env`/`.env.example` at the repo root)
+- Admin: http://localhost:8000/admin (credentials from `ADMIN_EMAIL`/`ADMIN_PASSWORD` in `backend/.env`)
+
+## Commands
+
+Backend (inside the `api` container, e.g. `docker compose exec api ...`):
+```bash
+php artisan test      # Pest
+./vendor/bin/pint     # code style
 ```
 
-## What's inside
-| Path | Contents |
-|---|---|
-| `CLAUDE.md` | Project rules Claude Code reads automatically |
-| `docs/01-product-spec.md` | Every page, route, section and behaviour |
-| `docs/02-architecture.md` | Data model, API, uploads/contact, revalidation, frontend structure, Docker |
-| `docs/03-design-system.md` | Colors, type scale, spacing, components |
-| `docs/04-implementation-plan.md` | 9 phases with checks |
-| `docs/05-seo-and-content.md` | Metadata, JSON-LD, sitemap, internal linking |
-| `design/screens/` | Full-page PNGs of all 38 artboards (desktop 1920, `-Tablet` 834, `-Mobile` 390) |
-| `design/html/` | Static HTML of each artboard — open in a browser to inspect exact values |
-| `design/tokens.json` | Design tokens |
-| `assets/images/` | Portrait + mock screenshots and blog covers |
-| `seed/mock-data.json` | Mock content for the database seeder |
+Frontend:
+```bash
+npm run dev            # http://localhost:3000
+npm run build
+npm run lint
+npm run typecheck
+npm test                # Vitest
+npm run check:links     # crawl a running site for broken links / missing metadata
+```
+
+## Deploying
+
+See `DEPLOY.md` for the production Docker Compose stack (Caddy + HTTPS, backups, log
+rotation) on a single VPS.
 
 ## Before launch — replace mock content
-Stats, testimonials, project details and results, experience, prices on service pages, FAQ answers, email/phone/city, social links, project screenshots and blog covers are all placeholders. Also decide the final brand name: the logo still reads "CodeCraft" from the reference design.
 
-## Not designed yet (Claude Code will build these from the tokens)
-Mobile menu open state, contact success/error states, projects index page, privacy/terms pages.
+Stats, testimonials, project details/results, experience, service prices, FAQ answers,
+contact details, social links, project screenshots, blog covers and the CV file are seeded
+from `seed/mock-data.json` and `assets/` — edit them from the admin panel (or the seed data
+before the first seed) before pointing real traffic at the site. Two projects
+(Task Management, Crypto Dashboard) only have card data and need case-study content written
+in the admin. Set each project's "Visit Live Site" URL once it has one.

@@ -5,9 +5,8 @@ use Filament\Http\Middleware\Authenticate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// The API host has no public pages; send anyone landing on it to the admin.
+Route::redirect('/', '/admin');
 
 // Admin-only download of a contact-form attachment (files live on a private disk).
 Route::middleware(['web', Authenticate::class])

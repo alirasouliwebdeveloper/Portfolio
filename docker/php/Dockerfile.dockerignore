@@ -1,0 +1,22 @@
+# Build context is the repo root; only what the PHP image needs.
+.git
+docker-data
+backups
+design
+docs
+frontend
+backend/vendor
+backend/node_modules
+backend/.env
+backend/.env.*
+!backend/.env.example
+backend/public/build
+backend/public/hot
+backend/public/storage
+backend/storage/logs/*
+backend/storage/app/*
+backend/storage/framework/cache/data/*
+backend/storage/framework/sessions/*
+backend/storage/framework/views/*
+backend/storage/media-library
+backend/bootstrap/cache/*

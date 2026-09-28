@@ -1,0 +1,225 @@
+# Production stack for a single VPS. See DEPLOY.md.
+#   docker compose -f docker-compose.prod.yml --env-file .env up -d
+# All configuration comes from the root .env (copy .env.production.example).
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "5"
+
+x-laravel-env: &laravel-env
+  APP_NAME: ${APP_NAME:-Ali}
+  APP_ENV: production
+  APP_DEBUG: "false"
+  APP_KEY: ${APP_KEY:?Set APP_KEY (php artisan key:generate --show)}
+  APP_URL: https://${API_DOMAIN:?}
+  LOG_CHANNEL: stderr
+  LOG_LEVEL: warning
+  DB_CONNECTION: mysql
+  DB_HOST: mysql
+  DB_PORT: "3306"
+  DB_DATABASE: ${DB_DATABASE:-ali_portfolio}
+  DB_USERNAME: ${DB_USERNAME:-ali_portfolio}
+  DB_PASSWORD: ${DB_PASSWORD:?}
+  REDIS_CLIENT: phpredis
+  REDIS_HOST: redis
+  REDIS_PASSWORD: ${REDIS_PASSWORD:?}
+  REDIS_PORT: "6379"
+  SESSION_DRIVER: redis
+  SESSION_SECURE_COOKIE: "true"
+  CACHE_STORE: redis
+  QUEUE_CONNECTION: redis
+  MAIL_MAILER: ${MAIL_MAILER:-smtp}
+  MAIL_SCHEME: ${MAIL_SCHEME:-}
+  MAIL_HOST: ${MAIL_HOST:-}
+  MAIL_PORT: ${MAIL_PORT:-587}
+  MAIL_USERNAME: ${MAIL_USERNAME:-}
+  MAIL_PASSWORD: ${MAIL_PASSWORD:-}
+  MAIL_FROM_ADDRESS: ${MAIL_FROM_ADDRESS:?}
+  MAIL_FROM_NAME: ${APP_NAME:-Ali}
+  MAIL_TO_ADDRESS: ${MAIL_TO_ADDRESS:?}
+  API_INTERNAL_KEY: ${API_INTERNAL_KEY:?}
+  FRONTEND_URL: https://${SITE_DOMAIN:?}
+  NEXT_URL: http://web:3000
+  REVALIDATE_SECRET: ${REVALIDATE_SECRET:?}
+  TURNSTILE_SECRET_KEY: ${TURNSTILE_SECRET_KEY:?}
+  ADMIN_NAME: ${ADMIN_NAME:-Ali}
+  ADMIN_EMAIL: ${ADMIN_EMAIL:?}
+  ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}
+  ADMIN_2FA_REQUIRED: ${ADMIN_2FA_REQUIRED:-true}
+  SEED_PATH: /var/www/seed
+  ASSETS_PATH: /var/www/assets/images
+  GSC_ENABLED: ${GSC_ENABLED:-false}
+  GSC_SITE_URL: ${GSC_SITE_URL:-}
+  GSC_PAGE_BASE_URL: ${GSC_PAGE_BASE_URL:-}
+
+x-laravel: &laravel
+  image: ali-portfolio-app:latest
+  restart: unless-stopped
+  logging: *logging
+  volumes:
+    - storage:/var/www/html/storage
+  depends_on:
+    mysql:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    logging: *logging
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      SITE_DOMAIN: ${SITE_DOMAIN:?}
+      API_DOMAIN: ${API_DOMAIN:?}
+      ACME_EMAIL: ${ACME_EMAIL:?}
+    volumes:
+      - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - web
+      - nginx
+
+  web:
+    build:
+      context: ./frontend
+      dockerfile: ../docker/node/Dockerfile.prod
+      # The API must be reachable while pre-rendering, so the build runs on the host network
+      # against nginx's loopback port (published below).
+      network: host
+      args:
+        BUILD_API_URL: http://127.0.0.1:${API_LOCAL_PORT:-8080}/api/v1
+        NEXT_PUBLIC_SITE_URL: https://${SITE_DOMAIN}
+        NEXT_PUBLIC_UPLOAD_URL: https://${API_DOMAIN}/api/v1/uploads
+        NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${TURNSTILE_SITE_KEY:?}
+      secrets:
+        - api_internal_key
+    image: ali-portfolio-web:latest
+    restart: unless-stopped
+    logging: *logging
+    environment:
+      API_URL: http://nginx/api/v1
+      API_INTERNAL_KEY: ${API_INTERNAL_KEY:?}
+      REVALIDATE_SECRET: ${REVALIDATE_SECRET:?}
+      NEXT_PUBLIC_SITE_URL: https://${SITE_DOMAIN}
+    depends_on:
+      - nginx
+
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile.prod
+      additional_contexts:
+        app: service:api
+    image: ali-portfolio-nginx:latest
+    restart: unless-stopped
+    logging: *logging
+    ports:
+      # Loopback only: used by `docker compose build web` to pre-render pages. Caddy reaches nginx internally.
+      - "127.0.0.1:${API_LOCAL_PORT:-8080}:80"
+    volumes:
+      - storage:/var/www/html/storage:ro
+    depends_on:
+      - api
+
+  api:
+    <<: *laravel
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+      target: production
+    environment:
+      <<: *laravel-env
+      RUN_MIGRATIONS: "true"
+    healthcheck:
+      test: ["CMD-SHELL", "php -r 'exit(@fsockopen(\"127.0.0.1\", 9000) ? 0 : 1);'"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  queue:
+    <<: *laravel
+    command: php artisan queue:work --tries=3 --backoff=5 --sleep=3 --max-time=3600
+    environment: *laravel-env
+    depends_on:
+      api:
+        condition: service_healthy
+
+  scheduler:
+    <<: *laravel
+    command: php artisan schedule:work
+    environment: *laravel-env
+    depends_on:
+      api:
+        condition: service_healthy
+
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    logging: *logging
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-ali_portfolio}
+      MYSQL_USER: ${DB_USERNAME:-ali_portfolio}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p\"$$MYSQL_ROOT_PASSWORD\" --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+  redis:
+    image: redis:8-alpine
+    restart: unless-stopped
+    logging: *logging
+    command: ["sh", "-c", "exec redis-server --requirepass \"$$REDIS_PASSWORD\" --appendonly yes"]
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?}
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a \"$$REDIS_PASSWORD\" --no-auth-warning ping | grep -q PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backup:
+    image: mysql:8.4
+    restart: unless-stopped
+    logging: *logging
+    entrypoint: ["/bin/bash", "/backup.sh"]
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?}
+      MYSQL_DATABASE: ${DB_DATABASE:-ali_portfolio}
+      BACKUP_RETENTION_DAYS: ${BACKUP_RETENTION_DAYS:-14}
+      BACKUP_AT: ${BACKUP_AT:-03:30}
+      TZ: ${TZ:-UTC}
+    volumes:
+      - ./docker/backup/backup.sh:/backup.sh:ro
+      - ./backups:/backups
+      - storage:/data/storage:ro
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+secrets:
+  api_internal_key:
+    environment: API_INTERNAL_KEY
+
+volumes:
+  mysql_data:
+  redis_data:
+  storage:
+  caddy_data:
+  caddy_config:
