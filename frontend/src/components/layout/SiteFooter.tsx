@@ -7,7 +7,7 @@ import { getPosts, getServices, getSettings } from "@/lib/api";
 import { mainNav } from "@/lib/nav";
 
 const linkClass = "text-body text-muted transition-colors hover:text-text";
-const clamp = "line-clamp-2";
+const clamp = "line-clamp-1";
 
 function Column({
   title,

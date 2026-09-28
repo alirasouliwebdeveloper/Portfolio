@@ -23,7 +23,7 @@ export function Accordion({ items, defaultOpenId, className }: AccordionProps) {
   const base = useId();
 
   return (
-    <div className={cn("flex flex-col gap-3", className)}>
+    <div className={cn("flex flex-col gap-3.5", className)}>
       {items.map((item) => {
         const open = item.id === openId;
         const buttonId = `${base}-${item.id}-button`;

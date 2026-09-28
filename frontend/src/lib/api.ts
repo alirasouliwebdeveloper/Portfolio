@@ -56,7 +56,8 @@ async function request<T>(
 
   const response = await fetch(`${base}${path}`, {
     headers: { Accept: "application/json", "X-Internal-Key": key },
-    ...(dynamic
+    // In development every request is fresh; in production tags + on-demand revalidation apply.
+    ...(dynamic || process.env.NODE_ENV === "development"
       ? { cache: "no-store" as const }
       : { next: { tags, revalidate: SAFETY_NET_SECONDS } }),
   });

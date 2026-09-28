@@ -43,8 +43,12 @@
   --color-success-solid: #16a34a;
   --color-danger: #f87171;
   --color-danger-border: #7f2d3a;
+  --color-danger-tile: #2a1630;
   --color-star: #f5b84a;
   --color-online: #22c55e;
+  --color-cta-border: #3a3470;
+  --color-cta-end: #16163a;
+  --color-success-tile: #16301f;
   --color-code: #e4e6f5;
   --color-code-string: #f9a26c;
   --color-portrait-from: #8c74ff;
@@ -87,6 +91,7 @@
   --fs-hero-h1: 40px;
   --fs-hero-sub: 30px;
   --fs-page-h1: 34px;
+  --fs-case-h1: 34px;
   --fs-h2: 26px;
   --fs-card-title: 18px;
   --fs-card-title-lg: 19px;
@@ -111,6 +116,7 @@
     --fs-hero-h1: 52px;
     --fs-hero-sub: 38px;
     --fs-page-h1: 44px;
+    --fs-case-h1: 46px;
     --fs-h2: 30px;
     --fs-card-title: 19px;
     --fs-card-title-lg: 20px;
@@ -136,6 +142,7 @@
     --fs-hero-h1: 68px;
     --fs-hero-sub: 48px;
     --fs-page-h1: 58px;
+    --fs-case-h1: 62px;
     --fs-h2: 36px;
     --fs-card-title: 20px;
     --fs-card-title-lg: 22px;
@@ -170,6 +177,8 @@
   --text-hero-sub--line-height: 1.15;
   --text-page-h1: var(--fs-page-h1);
   --text-page-h1--line-height: 1.15;
+  --text-case-h1: var(--fs-case-h1);
+  --text-case-h1--line-height: 1.1;
   --text-h2: var(--fs-h2);
   --text-h2--line-height: 1.25;
   --text-card-title: var(--fs-card-title);
@@ -201,6 +210,14 @@
     90deg,
     var(--color-accent),
     var(--color-accent-2)
+  );
+}
+
+@utility bg-cta {
+  background-image: linear-gradient(
+    135deg,
+    var(--color-tile),
+    var(--color-cta-end)
   );
 }
 

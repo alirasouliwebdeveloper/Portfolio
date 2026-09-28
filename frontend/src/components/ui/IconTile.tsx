@@ -3,7 +3,7 @@ import { Icon, type IconName } from "./icons";
 
 type IconTileProps = {
   name: IconName;
-  tone?: "tile" | "chip" | "accent";
+  tone?: "tile" | "chip" | "accent" | "danger" | "success";
   size?: "default" | "sm" | "lg";
   className?: string;
 };
@@ -12,6 +12,8 @@ const tones = {
   tile: "bg-tile text-icon-soft",
   chip: "bg-chip text-icon-soft",
   accent: "bg-accent text-white",
+  danger: "bg-danger-tile text-danger",
+  success: "bg-success-solid text-white",
 } as const;
 
 const sizes = {

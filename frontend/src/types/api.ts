@@ -303,6 +303,7 @@ export type AboutContent = {
     groups: { icon: IconName; title: string; tags: string[] }[];
   };
   cta: { heading: string; text: string; button: string };
+  trust: { icon: IconName; value: string; label: string }[];
 };
 
 export type ContactContent = {

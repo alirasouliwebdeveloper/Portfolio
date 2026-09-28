@@ -119,6 +119,12 @@ class PageForm
                                 ->columns(3)->maxItems(6)->reorderable()->collapsible()
                                 ->itemLabel(fn (array $state): ?string => $state['title'] ?? null),
                         ]),
+                        Section::make('Service pages: trust row')->description('Three highlights shown under the hero of every service page.')->schema([
+                            Repeater::make('content.trust')->hiddenLabel()
+                                ->schema([Fields::icon(), TextInput::make('value')->required()->maxLength(40), TextInput::make('label')->required()->maxLength(80)])
+                                ->columns(3)->maxItems(3)->reorderable()
+                                ->itemLabel(fn (array $state): ?string => $state['value'] ?? null),
+                        ]),
                         Section::make('Call to action')->schema([
                             TextInput::make('content.cta.heading'),
                             Textarea::make('content.cta.text')->rows(2),
