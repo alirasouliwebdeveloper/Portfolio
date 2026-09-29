@@ -49,8 +49,8 @@ class Service extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('hero_image')->singleFile();
-        $this->addMediaCollection('og_image')->singleFile();
+        $this->addMediaCollection('hero_image')->useDisk('public')->singleFile();
+        $this->addMediaCollection('og_image')->useDisk('public')->singleFile();
     }
 
     public function getSlugOptions(): SlugOptions

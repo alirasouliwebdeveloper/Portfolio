@@ -31,12 +31,12 @@ class Setting extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('portrait')->singleFile();
-        $this->addMediaCollection('cv')->singleFile();
-        $this->addMediaCollection('og_image')->singleFile();
-        $this->addMediaCollection('logo')->singleFile();
-        $this->addMediaCollection('logo_admin')->singleFile();
-        $this->addMediaCollection('favicon')->singleFile();
+        $this->addMediaCollection('portrait')->useDisk('public')->singleFile();
+        $this->addMediaCollection('cv')->useDisk('public')->singleFile();
+        $this->addMediaCollection('og_image')->useDisk('public')->singleFile();
+        $this->addMediaCollection('logo')->useDisk('public')->singleFile();
+        $this->addMediaCollection('logo_admin')->useDisk('public')->singleFile();
+        $this->addMediaCollection('favicon')->useDisk('public')->singleFile();
     }
 
     /** Persists the single settings record on first use (fresh database). */

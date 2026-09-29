@@ -16,7 +16,7 @@ class ProjectScreen extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('image')->singleFile();
+        $this->addMediaCollection('image')->useDisk('public')->singleFile();
     }
 
     public function project(): BelongsTo

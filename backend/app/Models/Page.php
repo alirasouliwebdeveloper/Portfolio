@@ -40,7 +40,7 @@ class Page extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('og_image')->singleFile();
+        $this->addMediaCollection('og_image')->useDisk('public')->singleFile();
     }
 
     public function path(): ?string

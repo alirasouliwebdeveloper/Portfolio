@@ -51,8 +51,8 @@ class Project extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('cover')->singleFile();
-        $this->addMediaCollection('og_image')->singleFile();
+        $this->addMediaCollection('cover')->useDisk('public')->singleFile();
+        $this->addMediaCollection('og_image')->useDisk('public')->singleFile();
     }
 
     public function getSlugOptions(): SlugOptions
