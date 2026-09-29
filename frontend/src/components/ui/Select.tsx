@@ -1,29 +1,36 @@
-import { useId, type SelectHTMLAttributes } from "react";
+import { useId } from "react";
 import { cn } from "@/lib/cn";
 import { controlClasses, describedBy, FormField } from "./FormField";
-import { ChevronDown } from "./icons";
+import { Listbox } from "./Listbox";
 
-type SelectProps = Omit<
-  SelectHTMLAttributes<HTMLSelectElement>,
-  "className"
-> & {
+type SelectProps = {
   label: string;
   options: readonly string[];
+  name?: string;
+  defaultValue?: string;
+  value?: string;
+  onChange?: (value: string) => void;
   optional?: boolean;
   hint?: string;
   error?: string;
+  disabled?: boolean;
   className?: string;
+  id?: string;
 };
 
 export function Select({
   label,
   options,
+  name,
+  defaultValue,
+  value,
+  onChange,
   optional,
   hint,
   error,
+  disabled,
   className,
   id,
-  ...props
 }: SelectProps) {
   const generated = useId();
   const fieldId = id ?? generated;
@@ -36,22 +43,18 @@ export function Select({
       error={error}
       className={className}
     >
-      <div className="relative">
-        <select
-          id={fieldId}
-          aria-invalid={error ? true : undefined}
-          aria-describedby={describedBy(fieldId, hint, error)}
-          className={cn(controlClasses, "h-12.5 appearance-none pe-11")}
-          {...props}
-        >
-          {options.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-        <ChevronDown className="text-dim pointer-events-none absolute end-4 top-1/2 size-4 -translate-y-1/2" />
-      </div>
+      <Listbox
+        id={fieldId}
+        name={name}
+        options={options}
+        defaultValue={defaultValue}
+        value={value}
+        onChange={onChange}
+        disabled={disabled}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={describedBy(fieldId, hint, error)}
+        triggerClassName={cn(controlClasses, "h-12.5 pe-4")}
+      />
     </FormField>
   );
 }
