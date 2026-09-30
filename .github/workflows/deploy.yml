@@ -170,7 +170,7 @@ jobs:
           mkdir -p artifact-frontend/.next/static artifact-frontend/tmp
           rsync -a frontend/.next/standalone/ artifact-frontend/
           rsync -a frontend/.next/static/ artifact-frontend/.next/static/
-          rsync -a frontend/public/ artifact-frontend/public/
+          if [ -d frontend/public ]; then rsync -a frontend/public/ artifact-frontend/public/; fi
           date > artifact-frontend/tmp/restart.txt
           (cd artifact-frontend && zip -rq ../frontend.zip .)
 
