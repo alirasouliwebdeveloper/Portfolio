@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import { CookieConsent } from "@/components/ui/CookieConsent";
 import { GoogleAnalytics } from "@/components/ui/GoogleAnalytics";
 import { getSettings } from "@/lib/api";
 import "./globals.css";
@@ -20,6 +21,9 @@ const jetbrainsMono = localFont({
   weight: "400",
   display: "swap",
 });
+
+// Matches manifest.ts's background/theme color so the browser chrome and the installed app agree.
+export const viewport: Viewport = { themeColor: "#0a0b1a" };
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSettings();
@@ -42,6 +46,9 @@ export async function generateMetadata(): Promise<Metadata> {
       ? { google: settings.tracking.gsc_verification }
       : undefined,
     robots: settings.site_noindex ? { index: false, follow: false } : undefined,
+    alternates: {
+      types: { "application/rss+xml": "/blog/rss.xml" },
+    },
   };
 }
 
@@ -67,6 +74,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         </main>
         <SiteFooter />
         <GoogleAnalytics id={settings.tracking.ga_measurement_id} />
+        <CookieConsent
+          hasAnalytics={Boolean(settings.tracking.ga_measurement_id)}
+        />
       </body>
     </html>
   );
