@@ -19,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // Only the reverse proxy (Caddy -> nginx) can reach PHP, so its forwarded IP/proto headers are trusted.
         $middleware->trustProxies(at: '*');
         $middleware->alias(['internal.key' => InternalKey::class]);
+        $middleware->validateCsrfTokens(except: ['deploy-hook']);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

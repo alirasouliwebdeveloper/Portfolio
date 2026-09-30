@@ -1,5 +1,5 @@
 import { timingSafeEqual } from "node:crypto";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { NextResponse, type NextRequest } from "next/server";
 
 const TAG = /^[a-z0-9:_-]{1,120}$/i;
@@ -37,6 +37,9 @@ export async function POST(request: NextRequest) {
 
   // expire: 0 → the next visit is a blocking fresh render, so an edit shows up immediately.
   for (const tag of tags) revalidateTag(tag, { expire: 0 });
+
+  // "all" is sent after a deploy: the build was pre-rendered in CI, so every page is refreshed.
+  if (tags.includes("all")) revalidatePath("/", "layout");
 
   return NextResponse.json({ revalidated: tags });
 }

@@ -1,0 +1,213 @@
+name: Deploy (cPanel)
+
+# Builds both apps and publishes backend.zip / frontend.zip to a rolling GitHub release
+# (`deploy-latest`). That is all this workflow does: the server's own `deploy:check` cron job
+# polls the release every minute and pulls it down itself, because shared-hosting firewalls
+# block inbound FTP/webhooks from GitHub's cloud IPs. See DEPLOY_CPANEL.md.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Commit/branch to deploy"
+        required: false
+        default: main
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+env:
+  REF: ${{ github.event.inputs.ref || github.sha }}
+  SITE_URL: ${{ vars.SITE_URL || 'https://alirasouli.info' }}
+  API_ORIGIN: ${{ vars.API_ORIGIN || 'https://api.alirasouli.info' }}
+
+jobs:
+  build-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.REF }}
+
+      - name: Setup PHP
+        # composer.lock pins Symfony 8 (PHP >= 8.4.1) — the host must run PHP 8.4 or newer.
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: mbstring, dom, fileinfo, pdo_mysql, gd, zip, bcmath, exif, intl
+          coverage: none
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Composer install (production)
+        working-directory: backend
+        run: |
+          composer config -g github-oauth.github.com "${{ github.token }}"
+          for i in 1 2 3; do
+            composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist --no-progress && exit 0
+            echo "composer install failed (attempt $i), retrying in 15s..."; sleep 15
+          done
+          exit 1
+
+      - name: Build admin assets (Vite theme + Filament assets)
+        working-directory: backend
+        run: |
+          npm ci
+          npm run build
+          php artisan filament:assets
+
+      - name: Assemble artifact
+        run: |
+          mkdir -p artifact-backend
+          rsync -a \
+            --exclude='.git' --exclude='.env' --exclude='tests' --exclude='node_modules' \
+            --exclude='public/storage' --exclude='public/hot' \
+            --exclude='storage/app/*' --exclude='storage/logs/*' --exclude='storage/framework/*/*' \
+            backend/ artifact-backend/
+          mkdir -p artifact-backend/storage/app/public artifact-backend/storage/app/private
+          # Mock content for the one-time `db:seed` on the server (SEED_PATH / ASSETS_PATH).
+          rsync -a seed/ artifact-backend/seed/
+          mkdir -p artifact-backend/assets
+          rsync -a assets/images/ artifact-backend/assets/images/
+          (cd artifact-backend && zip -rq ../backend.zip .)
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: backend-zip
+          path: backend.zip
+          retention-days: 1
+
+  build-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.REF }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: mbstring, dom, fileinfo, pdo_sqlite, gd, zip, bcmath, exif, intl
+          coverage: none
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Pick the API to pre-render from
+        # Prefer the live API. If it is unreachable from GitHub's network (or not set up yet), the
+        # build uses a throwaway seeded API instead; either way the server re-renders every page
+        # from live content right after it deploys (DeployRunner queues a full revalidation).
+        id: api
+        env:
+          API_INTERNAL_KEY: ${{ secrets.API_INTERNAL_KEY }}
+        run: |
+          if [ -n "$API_INTERNAL_KEY" ] && curl -fsS -m 20 -H "Accept: application/json" \
+               -H "X-Internal-Key: $API_INTERNAL_KEY" "$API_ORIGIN/api/v1/settings" > /dev/null; then
+            echo "Using the live API"
+            echo "live=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Live API unreachable — pre-rendering from a local seeded API"
+            echo "live=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Start a local seeded API (fallback)
+        if: steps.api.outputs.live != 'true'
+        working-directory: backend
+        run: |
+          composer install --no-interaction --prefer-dist --no-progress
+          cp .env.example .env
+          php artisan key:generate --force
+          sed -i \
+            -e "s#^DB_CONNECTION=.*#DB_CONNECTION=sqlite#" \
+            -e "s#^DB_DATABASE=.*#DB_DATABASE=$(pwd)/database/database.sqlite#" \
+            -e "s#^SESSION_DRIVER=.*#SESSION_DRIVER=array#" \
+            -e "s#^CACHE_STORE=.*#CACHE_STORE=array#" \
+            -e "s#^QUEUE_CONNECTION=.*#QUEUE_CONNECTION=sync#" \
+            -e "s#^MAIL_MAILER=.*#MAIL_MAILER=log#" \
+            -e "s#^API_INTERNAL_KEY=.*#API_INTERNAL_KEY=build-key#" \
+            -e "s#^REVALIDATE_SECRET=.*#REVALIDATE_SECRET=#" \
+            .env
+          {
+            echo "SEED_PATH=$(pwd)/../seed"
+            echo "ASSETS_PATH=$(pwd)/../assets/images"
+          } >> .env
+          touch database/database.sqlite
+          php artisan migrate --force
+          php artisan db:seed --force
+          nohup php artisan serve --port=8000 > ../laravel.log 2>&1 &
+          npx --yes wait-on http://localhost:8000/up -t 60000
+
+      - name: Build
+        working-directory: frontend
+        env:
+          API_URL: ${{ steps.api.outputs.live == 'true' && format('{0}/api/v1', env.API_ORIGIN) || 'http://localhost:8000/api/v1' }}
+          API_INTERNAL_KEY: ${{ steps.api.outputs.live == 'true' && secrets.API_INTERNAL_KEY || 'build-key' }}
+          REVALIDATE_SECRET: build-only
+          NEXT_PUBLIC_SITE_URL: ${{ env.SITE_URL }}
+          NEXT_PUBLIC_UPLOAD_URL: ${{ env.API_ORIGIN }}/api/v1/uploads
+          NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA' }}
+          NEXT_PUBLIC_SENTRY_DSN: ${{ vars.NEXT_PUBLIC_SENTRY_DSN }}
+          NEXT_TELEMETRY_DISABLED: 1
+        run: |
+          npm ci
+          npm run build
+
+      - name: Assemble standalone artifact
+        run: |
+          mkdir -p artifact-frontend/.next/static artifact-frontend/tmp
+          rsync -a frontend/.next/standalone/ artifact-frontend/
+          rsync -a frontend/.next/static/ artifact-frontend/.next/static/
+          rsync -a frontend/public/ artifact-frontend/public/
+          date > artifact-frontend/tmp/restart.txt
+          (cd artifact-frontend && zip -rq ../frontend.zip .)
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frontend-zip
+          path: frontend.zip
+          retention-days: 1
+
+      - name: Show API log on failure
+        if: failure()
+        run: cat laravel.log || true
+
+  publish-release:
+    needs: [build-backend, build-frontend]
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.REF }}
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+          merge-multiple: true
+
+      - name: Publish rolling release
+        run: |
+          for i in 1 2 3; do
+            if gh release delete deploy-latest --yes --cleanup-tag 2>&1 | tee /tmp/delete.log; then break; fi
+            grep -q "release not found" /tmp/delete.log && break
+            echo "release delete failed (attempt $i), retrying in 10s..."; sleep 10
+          done
+          gh release create deploy-latest \
+            release-assets/backend.zip release-assets/frontend.zip \
+            --target "$(git rev-parse HEAD)" \
+            --title "Deploy $(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --notes "Automated deploy artifact — commit $(git rev-parse HEAD). The server's deploy:check cron job pulls this within a minute."

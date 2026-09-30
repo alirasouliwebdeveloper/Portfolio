@@ -47,4 +47,14 @@ return [
         'credentials_path' => env('GSC_CREDENTIALS_PATH'),
     ],
 
+    // cPanel deploys (DEPLOY_CPANEL.md): the server pulls CI builds from a rolling GitHub release.
+    'deploy' => [
+        'token' => env('DEPLOY_WEBHOOK_SECRET'),
+        'github_repo' => env('DEPLOY_GITHUB_REPO', 'alirasouliwebdeveloper/Portfolio'),
+        'github_token' => env('DEPLOY_GITHUB_TOKEN'),
+        'release_tag' => env('DEPLOY_RELEASE_TAG', 'deploy-latest'),
+        // Absolute path of the Next.js Node.js App root on the same cPanel account.
+        'frontend_path' => env('DEPLOY_FRONTEND_PATH'),
+    ],
+
 ];
