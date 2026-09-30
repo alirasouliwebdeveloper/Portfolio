@@ -147,7 +147,6 @@ jobs:
             .env
           {
             echo "API_INTERNAL_KEY=e2e-internal-key"
-            echo "REVALIDATE_SECRET=e2e-revalidate-secret"
             echo "FRONTEND_URL=http://localhost:3100"
             echo "NEXT_URL=http://localhost:3100"
             echo "TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA"
@@ -159,6 +158,8 @@ jobs:
           touch database/database.sqlite
           php artisan migrate --force
           php artisan db:seed --force
+          # Only after seeding: with a sync queue, seeding would otherwise POST to a Next.js that isn't up yet.
+          echo "REVALIDATE_SECRET=e2e-revalidate-secret" >> .env
 
       - name: Start Laravel (sqlite, php artisan serve)
         working-directory: backend
