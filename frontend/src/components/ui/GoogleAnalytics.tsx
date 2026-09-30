@@ -8,7 +8,8 @@ export function GoogleAnalytics({ id }: { id: string | null }) {
   // Loads nothing until the visitor has accepted the cookie banner (see CookieConsent.tsx).
   const consent = useConsentChoice();
 
-  if (!id || !/^G-[A-Z0-9]{4,20}$/.test(id) || consent !== "accepted") return null;
+  if (!id || !/^G-[A-Z0-9]{4,20}$/.test(id) || consent !== "accepted")
+    return null;
 
   return (
     <>

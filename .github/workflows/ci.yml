@@ -37,6 +37,11 @@ jobs:
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
 
+      - name: Prepare .env (app key only; tests force sqlite/array/sync)
+        run: |
+          cp .env.example .env
+          php artisan key:generate --force
+
       - name: Pint (code style)
         run: ./vendor/bin/pint --test
 
