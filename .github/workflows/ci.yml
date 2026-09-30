@@ -198,7 +198,7 @@ jobs:
 
       - name: Wait for both servers
         run: |
-          npx wait-on http://localhost:8000/api/v1/settings -t 60000 --httpHeader "X-Internal-Key: e2e-internal-key" || (cat laravel.log; exit 1)
+          npx wait-on http-get://localhost:8000/api/v1/settings -t 60000 -H "X-Internal-Key: e2e-internal-key" || (cat laravel.log; exit 1)
           npx wait-on http://localhost:3100 -t 60000 || (cat next.log; exit 1)
 
       - name: Run Playwright
