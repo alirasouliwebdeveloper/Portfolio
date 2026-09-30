@@ -144,6 +144,7 @@ jobs:
             -e "s#^CACHE_STORE=.*#CACHE_STORE=array#" \
             -e "s#^QUEUE_CONNECTION=.*#QUEUE_CONNECTION=sync#" \
             -e "s#^MAIL_MAILER=.*#MAIL_MAILER=log#" \
+            -e "/^REVALIDATE_SECRET=/d" \
             .env
           {
             echo "API_INTERNAL_KEY=e2e-internal-key"
