@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasTranslations;
 use App\Models\Concerns\Publishable;
 use App\Models\Concerns\RegistersImageConversions;
 use App\Models\Concerns\ScoresSeo;
@@ -18,14 +19,14 @@ use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
 #[Fillable([
-    'title', 'slug', 'summary', 'lead', 'client', 'role', 'timeline', 'year', 'live_url',
+    'title', 'slug', 'locale', 'translation_of_id', 'summary', 'lead', 'client', 'role', 'timeline', 'year', 'live_url',
     'challenge', 'solution', 'result', 'features', 'stack', 'metrics', 'cover_alt',
     'testimonial_id', 'service_id', 'featured', 'sort_order', 'status', 'published_at',
     'meta_title', 'meta_description', 'focus_keyword', 'canonical_url', 'noindex',
 ])]
 class Project extends Model implements HasMedia
 {
-    use HasFactory, HasSlug, Publishable, RegistersImageConversions, ScoresSeo, TracksSlugRedirects;
+    use HasFactory, HasSlug, HasTranslations, Publishable, RegistersImageConversions, ScoresSeo, TracksSlugRedirects;
 
     /** Public frontend path for a slug (used to keep old URLs redirecting). */
     public function publicPath(string $slug): string

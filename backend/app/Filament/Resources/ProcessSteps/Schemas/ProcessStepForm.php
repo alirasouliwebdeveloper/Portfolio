@@ -18,6 +18,7 @@ class ProcessStepForm
                 TextInput::make('title')->required()->maxLength(255),
                 Textarea::make('text')->required()->rows(3),
             ]),
+            Fields::language('title'),
         ]);
     }
 }

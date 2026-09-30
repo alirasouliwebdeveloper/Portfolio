@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasTranslations;
 use App\Models\Concerns\RegistersImageConversions;
 use App\Models\Concerns\ScoresSeo;
 use App\Support\RichBody;
@@ -13,12 +14,12 @@ use Spatie\MediaLibrary\HasMedia;
 
 /**
  * A fixed page of the site (home, about, contact, blog, 404, privacy, terms): structured copy in
- * `content`, an optional rich `body`, and its own SEO fields.
+ * `content`, an optional rich `body`, and its own SEO fields. `key` exists once per locale.
  */
-#[Fillable(['key', 'title', 'content', 'body', 'meta_title', 'meta_description', 'focus_keyword', 'canonical_url', 'noindex'])]
+#[Fillable(['key', 'locale', 'translation_of_id', 'title', 'content', 'body', 'meta_title', 'meta_description', 'focus_keyword', 'canonical_url', 'noindex'])]
 class Page extends Model implements HasMedia
 {
-    use HasFactory, RegistersImageConversions, ScoresSeo;
+    use HasFactory, HasTranslations, RegistersImageConversions, ScoresSeo;
 
     public const KEYS = ['home', 'about', 'contact', 'blog', 'not_found', 'privacy', 'terms'];
 
@@ -74,8 +75,8 @@ class Page extends Model implements HasMedia
         }
     }
 
-    public static function forKey(string $key): self
+    public static function forKey(string $key, string $locale = 'en'): self
     {
-        return static::query()->where('key', $key)->firstOrFail();
+        return static::query()->where('key', $key)->where('locale', $locale)->firstOrFail();
     }
 }

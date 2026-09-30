@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasTranslations;
 use App\Models\Concerns\Publishable;
 use App\Models\Concerns\RegistersImageConversions;
 use App\Models\Concerns\ScoresSeo;
@@ -15,10 +16,10 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-#[Fillable(['name', 'slug', 'description', 'sort_order', 'status', 'published_at', 'meta_title', 'meta_description', 'focus_keyword', 'canonical_url', 'noindex'])]
+#[Fillable(['name', 'slug', 'locale', 'translation_of_id', 'description', 'sort_order', 'status', 'published_at', 'meta_title', 'meta_description', 'focus_keyword', 'canonical_url', 'noindex'])]
 class Category extends Model implements HasMedia
 {
-    use HasFactory, HasSlug, Publishable, RegistersImageConversions, ScoresSeo, TracksSlugRedirects;
+    use HasFactory, HasSlug, HasTranslations, Publishable, RegistersImageConversions, ScoresSeo, TracksSlugRedirects;
 
     /** Public frontend path for a slug (used to keep old URLs redirecting). */
     public function publicPath(string $slug): string

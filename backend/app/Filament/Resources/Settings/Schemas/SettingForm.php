@@ -72,6 +72,29 @@ class SettingForm
                         TagsInput::make('popular_searches')->helperText('Suggested searches on the "no results" page.'),
                     ]),
                 ]),
+                Tab::make('Persian (فارسی)')->icon('heroicon-o-language')->schema([
+                    Section::make()
+                        ->description('Only the handful of fields that read as prose — everything else (name, contact details, socials) is the same in both languages. Empty = falls back to the English value.')
+                        ->columns(2)
+                        ->schema([
+                            TextInput::make('headline_fa')->label('Headline')->maxLength(255),
+                            TextInput::make('tagline_fa')->label('Tagline')->maxLength(255),
+                            Textarea::make('bio_short_fa')->label('Short bio')->rows(3)->columnSpanFull(),
+                            TextInput::make('footer_text_fa')->label('Footer text')->maxLength(255),
+                        ]),
+                    Section::make('Stats')->schema([
+                        Repeater::make('stats_fa')->hiddenLabel()
+                            ->schema([
+                                Fields::icon(),
+                                TextInput::make('value')->required()->maxLength(32),
+                                TextInput::make('label')->required()->maxLength(255),
+                            ])
+                            ->columns(3)
+                            ->maxItems(4)
+                            ->reorderable()
+                            ->itemLabel(fn (array $state): ?string => $state['label'] ?? null),
+                    ]),
+                ]),
             ]),
         ]);
     }

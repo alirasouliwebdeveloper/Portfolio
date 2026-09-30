@@ -81,7 +81,7 @@ class ServiceForm
                         Select::make('posts')->label('Related articles')->relationship('posts', 'title')->multiple()->searchable()->preload()
                             ->helperText('Empty = newest posts of the related category.'),
                     ]),
-                    Tab::make('Publish')->icon('heroicon-o-calendar-days')->schema([Fields::publishing()]),
+                    Tab::make('Publish')->icon('heroicon-o-calendar-days')->schema([Fields::publishing(), Fields::language('nav_label')]),
                 ],
                 input: fn (Get $get): SeoInput => SeoInput::fromPlainText(
                     $get('h1'),

@@ -10,6 +10,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
 use Illuminate\Database\Eloquent\Model;
 
 /** Field groups shared by several Filament resources. */
@@ -65,6 +66,32 @@ final class Fields
                     ->required(),
                 DateTimePicker::make('published_at')
                     ->helperText('Empty = publish immediately once the status is Published. A future date schedules it.'),
+            ]);
+    }
+
+    /**
+     * Language + "translation of" section, shared by every content resource that can have a
+     * Persian version. $labelColumn is the column shown when picking the English original
+     * (title/name/question/... — whatever that model's list column is).
+     */
+    public static function language(string $labelColumn): Section
+    {
+        return Section::make('Language')
+            ->columns(2)
+            ->schema([
+                Select::make('locale')
+                    ->label('Language')
+                    ->options(['en' => 'English', 'fa' => 'فارسی (Persian)'])
+                    ->default('en')
+                    ->required()
+                    ->live(),
+                Select::make('translation_of_id')
+                    ->label('Translation of')
+                    ->relationship('translationOf', $labelColumn, fn ($query) => $query->where('locale', 'en'))
+                    ->searchable()
+                    ->preload()
+                    ->visible(fn (Get $get) => $get('locale') !== 'en')
+                    ->helperText('The English row this is a Persian version of — lets the site link "Read in English".'),
             ]);
     }
 

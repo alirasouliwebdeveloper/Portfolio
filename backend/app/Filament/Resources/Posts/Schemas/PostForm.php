@@ -50,7 +50,7 @@ class PostForm
                             Fields::altText('cover_alt'),
                         ]),
                     ]),
-                    Tab::make('Publish')->icon('heroicon-o-calendar-days')->schema([Fields::publishing()]),
+                    Tab::make('Publish')->icon('heroicon-o-calendar-days')->schema([Fields::publishing(), Fields::language('title')]),
                 ],
                 input: fn (Get $get): SeoInput => SeoInput::fromPage(
                     $get('title'),

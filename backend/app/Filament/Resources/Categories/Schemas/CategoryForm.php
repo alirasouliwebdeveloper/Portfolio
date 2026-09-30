@@ -29,7 +29,7 @@ class CategoryForm
                             ->live(debounce: 800)
                             ->helperText('Shown on the category page and used as its fallback meta description, so it must be unique.'),
                     ]),
-                    Tab::make('Publish')->icon('heroicon-o-calendar-days')->schema([Fields::publishing()]),
+                    Tab::make('Publish')->icon('heroicon-o-calendar-days')->schema([Fields::publishing(), Fields::language('name')]),
                 ],
                 input: fn (Get $get): SeoInput => SeoInput::fromPlainText(
                     $get('name'),

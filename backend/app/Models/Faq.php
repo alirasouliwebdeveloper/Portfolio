@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasTranslations;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['question', 'answer', 'scope', 'sort_order'])]
+#[Fillable(['question', 'answer', 'locale', 'translation_of_id', 'scope', 'sort_order'])]
 class Faq extends Model
 {
-    use HasFactory;
+    use HasFactory, HasTranslations;
 
     protected function casts(): array
     {

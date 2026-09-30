@@ -14,18 +14,24 @@ class SettingsResource extends JsonResource
 
     public function toArray(Request $request): array
     {
+        // Only a handful of Settings fields read as prose; the rest (name, contact details,
+        // socials, ...) are the same regardless of site language. Falls back to English when a
+        // Persian value hasn't been filled in yet, so the site never shows an empty string.
+        $locale = self::locale($request);
+        $localized = fn (?string $fa, ?string $en) => $locale === 'fa' && filled($fa) ? $fa : $en;
+
         return [
             'brand' => [
                 'name' => $this->brand_name,
-                'tagline' => $this->tagline,
+                'tagline' => $localized($this->tagline_fa, $this->tagline),
                 'logo' => self::imageOf($this->resource, 'logo', $this->brand_name),
                 'favicon' => $this->getFirstMediaUrl('favicon') ?: null,
-                'footer_text' => $this->footer_text,
+                'footer_text' => $localized($this->footer_text_fa, $this->footer_text),
             ],
             'profile' => [
                 'name' => $this->name,
-                'headline' => $this->headline,
-                'bio_short' => $this->bio_short,
+                'headline' => $localized($this->headline_fa, $this->headline),
+                'bio_short' => $localized($this->bio_short_fa, $this->bio_short),
                 'portrait' => self::imageOf($this->resource, 'portrait', $this->portrait_alt),
                 'cv_url' => $this->getFirstMediaUrl('cv') ?: null,
             ],
@@ -38,7 +44,7 @@ class SettingsResource extends JsonResource
                 'response_time' => $this->response_time,
             ],
             'socials' => array_filter((array) $this->socials),
-            'stats' => $this->stats ?? [],
+            'stats' => ($locale === 'fa' && filled($this->stats_fa) ? $this->stats_fa : $this->stats) ?? [],
             'popular_searches' => $this->popular_searches ?? [],
             'contact_options' => [
                 'needs' => $this->contact_options['needs'] ?? [],

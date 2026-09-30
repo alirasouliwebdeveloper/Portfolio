@@ -13,6 +13,7 @@ use Spatie\MediaLibrary\HasMedia;
     'response_time', 'socials', 'stats', 'popular_searches', 'contact_options', 'portrait_alt',
     'meta_title', 'meta_description', 'brand_name', 'tagline', 'footer_text', 'ga_measurement_id',
     'gsc_verification', 'twitter_handle', 'site_noindex', 'focus_keyword',
+    'headline_fa', 'bio_short_fa', 'tagline_fa', 'footer_text_fa', 'stats_fa',
 ])]
 class Setting extends Model implements HasMedia
 {
@@ -23,6 +24,7 @@ class Setting extends Model implements HasMedia
         return [
             'socials' => 'array',
             'stats' => 'array',
+            'stats_fa' => 'array',
             'popular_searches' => 'array',
             'contact_options' => 'array',
             'site_noindex' => 'boolean',

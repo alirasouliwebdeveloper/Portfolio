@@ -4,12 +4,21 @@ namespace App\Http\Resources\Concerns;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /** Shared payload builders for the public API resources. */
 trait BuildsPayloads
 {
+    /** Which language's content to return (see docs/02-architecture.md, "Locales"). */
+    public static function locale(Request $request): string
+    {
+        $locale = $request->query('locale', 'en');
+
+        return in_array($locale, ['en', 'fa'], true) ? $locale : 'en';
+    }
+
     /** @return array{url: string, card: string|null, md: string|null, lg: string|null, width: int|null, height: int|null, alt: string}|null */
     public static function image(?Media $media, ?string $alt = null): ?array
     {

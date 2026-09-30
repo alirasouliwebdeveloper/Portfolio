@@ -90,7 +90,7 @@ class ProjectForm
                         Select::make('testimonial_id')->relationship('testimonial', 'name')->searchable()->preload(),
                         Toggle::make('featured')->helperText('Shown in Featured Projects on the home page.'),
                     ]),
-                    Tab::make('Publish')->icon('heroicon-o-calendar-days')->schema([Fields::publishing()]),
+                    Tab::make('Publish')->icon('heroicon-o-calendar-days')->schema([Fields::publishing(), Fields::language('title')]),
                 ],
                 input: fn (Get $get): SeoInput => SeoInput::fromPlainText(
                     $get('title'),

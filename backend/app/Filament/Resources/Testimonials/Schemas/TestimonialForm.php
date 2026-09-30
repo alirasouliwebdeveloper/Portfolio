@@ -26,6 +26,7 @@ class TestimonialForm
                 Toggle::make('featured')->helperText('Shown on the home page.'),
                 Fields::image('avatar', 'Photo (optional)'),
             ])->columns(2),
+            Fields::language('name'),
         ]);
     }
 }

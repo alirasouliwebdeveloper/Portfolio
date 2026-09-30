@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Faqs\Schemas;
 
+use App\Filament\Support\Fields;
 use App\Filament\Support\RichBodyField;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -18,6 +19,7 @@ class FaqForm
                 RichBodyField::compact('answer')->required(),
                 Select::make('scope')->options(['contact' => 'Contact page'])->default('contact')->required(),
             ]),
+            Fields::language('question'),
         ]);
     }
 }
