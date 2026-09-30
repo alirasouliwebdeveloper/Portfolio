@@ -1,0 +1,200 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: Backend (Pint + Pest)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.5"
+          extensions: mbstring, dom, fileinfo, pdo_sqlite, gd, zip, bcmath, exif, intl
+          coverage: none
+
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: backend/vendor
+          key: composer-${{ hashFiles('backend/composer.lock') }}
+          restore-keys: composer-
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Pint (code style)
+        run: ./vendor/bin/pint --test
+
+      - name: Pest
+        # tests/bootstrap.php forces sqlite/array/sync so this never needs MySQL or Redis (see docs/02-architecture.md).
+        run: php artisan test
+
+  frontend:
+    name: Frontend (lint, typecheck, unit tests, build)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    env:
+      # A build needs *a* value for every required env var, but nothing here calls the API
+      # (mocked in unit tests; SSG data fetching is skipped — see note on the build step).
+      API_URL: http://localhost/api/v1
+      API_INTERNAL_KEY: ci
+      REVALIDATE_SECRET: ci
+      NEXT_PUBLIC_SITE_URL: http://localhost:3000
+      NEXT_PUBLIC_UPLOAD_URL: http://localhost/api/v1/uploads
+      NEXT_PUBLIC_TURNSTILE_SITE_KEY: 1x00000000000000000000AA
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Prettier
+        run: npm run format:check
+
+  e2e:
+    name: End-to-end (Playwright)
+    runs-on: ubuntu-latest
+    needs: [backend, frontend]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.5"
+          extensions: mbstring, dom, fileinfo, pdo_sqlite, gd, zip, bcmath, exif, intl
+          coverage: none
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install backend dependencies
+        working-directory: backend
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Prepare backend .env (sqlite, no external services)
+        working-directory: backend
+        run: |
+          cp .env.example .env
+          php artisan key:generate --force
+          sed -i \
+            -e "s#^DB_CONNECTION=.*#DB_CONNECTION=sqlite#" \
+            -e "s#^DB_DATABASE=.*#DB_DATABASE=$(pwd)/database/database.sqlite#" \
+            -e "s#^SESSION_DRIVER=.*#SESSION_DRIVER=array#" \
+            -e "s#^CACHE_STORE=.*#CACHE_STORE=array#" \
+            -e "s#^QUEUE_CONNECTION=.*#QUEUE_CONNECTION=sync#" \
+            -e "s#^MAIL_MAILER=.*#MAIL_MAILER=log#" \
+            .env
+          {
+            echo "API_INTERNAL_KEY=e2e-internal-key"
+            echo "REVALIDATE_SECRET=e2e-revalidate-secret"
+            echo "FRONTEND_URL=http://localhost:3100"
+            echo "NEXT_URL=http://localhost:3100"
+            echo "TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA"
+            echo "ADMIN_EMAIL=e2e@example.com"
+            echo "ADMIN_PASSWORD=e2e-password-1234"
+            echo "SEED_PATH=$(pwd)/../seed"
+            echo "ASSETS_PATH=$(pwd)/../assets/images"
+          } >> .env
+          touch database/database.sqlite
+          php artisan migrate --force
+          php artisan db:seed --force
+
+      - name: Start Laravel (sqlite, php artisan serve)
+        working-directory: backend
+        run: nohup php artisan serve --port=8000 > ../laravel.log 2>&1 &
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Install Playwright browsers
+        working-directory: frontend
+        run: npx playwright install --with-deps chromium
+
+      - name: Build the frontend against the running API
+        working-directory: frontend
+        env:
+          API_URL: http://localhost:8000/api/v1
+          API_INTERNAL_KEY: e2e-internal-key
+          REVALIDATE_SECRET: e2e-revalidate-secret
+          NEXT_PUBLIC_SITE_URL: http://localhost:3100
+          NEXT_PUBLIC_UPLOAD_URL: http://localhost:8000/api/v1/uploads
+          NEXT_PUBLIC_TURNSTILE_SITE_KEY: 1x00000000000000000000AA
+        run: npm run build
+
+      - name: Start the frontend
+        working-directory: frontend
+        env:
+          API_URL: http://localhost:8000/api/v1
+          API_INTERNAL_KEY: e2e-internal-key
+          REVALIDATE_SECRET: e2e-revalidate-secret
+          NEXT_PUBLIC_SITE_URL: http://localhost:3100
+          NEXT_PUBLIC_UPLOAD_URL: http://localhost:8000/api/v1/uploads
+          NEXT_PUBLIC_TURNSTILE_SITE_KEY: 1x00000000000000000000AA
+        run: nohup npx next start -p 3100 > ../next.log 2>&1 &
+
+      - name: Wait for both servers
+        run: |
+          npx wait-on http://localhost:8000/api/v1/settings -t 60000 --httpHeader "X-Internal-Key: e2e-internal-key" || (cat laravel.log; exit 1)
+          npx wait-on http://localhost:3100 -t 60000 || (cat next.log; exit 1)
+
+      - name: Run Playwright
+        working-directory: frontend
+        env:
+          BASE_URL: http://localhost:3100
+          API_BASE_URL: http://localhost:8000/api/v1
+          API_INTERNAL_KEY: e2e-internal-key
+          ADMIN_URL: http://localhost:8000
+          ADMIN_EMAIL: e2e@example.com
+          ADMIN_PASSWORD: e2e-password-1234
+        run: npx playwright test
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: frontend/playwright-report/
+          retention-days: 7
+
+      - name: Show server logs on failure
+        if: failure()
+        run: |
+          echo "--- laravel.log ---"; cat laravel.log || true
+          echo "--- next.log ---"; cat next.log || true
