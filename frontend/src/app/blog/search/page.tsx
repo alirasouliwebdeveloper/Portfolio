@@ -113,7 +113,7 @@ export default async function BlogSearchPage({
                         <li key={term}>
                           <Link
                             href={`/blog/search?q=${encodeURIComponent(term)}`}
-                            className="rounded-pill border-border-input text-text-2 hover:border-accent flex items-center gap-2 border px-4 py-2 text-sm transition-colors"
+                            className="rounded-pill border-border-input text-text-2 hover:border-accent flex items-center gap-2 border px-4 py-2 text-sm transition-[color,border-color,scale] duration-300 ease-out hover:scale-105"
                           >
                             <Icon name="search" className="size-3.5" /> {term}
                           </Link>
@@ -131,7 +131,7 @@ export default async function BlogSearchPage({
                       <li key={item.slug}>
                         <Link
                           href={`/blog/category/${item.slug}`}
-                          className="rounded-card border-border bg-surface text-ui text-text hover:border-accent flex items-center justify-between border px-4 py-3 font-medium transition-colors"
+                          className="hover-card rounded-card border-border bg-surface text-ui text-text hover:border-accent flex items-center justify-between border px-4 py-3 font-medium transition-colors"
                         >
                           {item.name}
                           <span className="text-caption text-dim font-normal">

@@ -211,7 +211,7 @@ export function Listbox({
                 }}
                 onKeyDown={(event) => onOptionKeyDown(event, option)}
                 className={cn(
-                  "text-ui rounded-control flex cursor-pointer items-center justify-between gap-2 px-3.5 py-2.5 outline-none",
+                  "text-ui rounded-control flex cursor-pointer items-center justify-between gap-2 px-3.5 py-2.5 transition-colors duration-200 ease-out outline-none",
                   isSelected
                     ? "bg-chip text-link font-medium"
                     : "text-text-2 hover:bg-chip/60",

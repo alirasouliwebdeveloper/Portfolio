@@ -117,7 +117,7 @@ export default async function NotFound() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="rounded-card border-border bg-surface text-body text-text hover:border-accent flex items-center gap-4 border p-5 font-medium transition-colors"
+                    className="hover-card rounded-card border-border bg-surface text-body text-text hover:border-accent flex items-center gap-4 border p-5 font-medium transition-colors"
                   >
                     <IconTile name={link.icon} tone="tile" size="sm" />
                     {link.label}
@@ -135,10 +135,16 @@ export default async function NotFound() {
                 <li key={post.slug}>
                   <Link
                     href={`/blog/${post.slug}`}
-                    className="rounded-card border-border bg-surface hover:border-accent flex items-center gap-4 border p-4 transition-colors"
+                    className="hover-card rounded-card border-border bg-surface hover:border-accent flex items-center gap-4 border p-4 transition-colors"
                   >
                     <span className="rounded-control relative size-14 shrink-0 overflow-hidden">
-                      <Media image={post.cover} size="card" fill sizes="56px" />
+                      <Media
+                        image={post.cover}
+                        size="card"
+                        fill
+                        sheen
+                        sizes="56px"
+                      />
                     </span>
                     <span>
                       <span className="text-ui text-text block font-medium">

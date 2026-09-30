@@ -34,7 +34,8 @@ export function paginationItems(
 
 const item =
   "flex h-11 min-w-11 items-center justify-center gap-2 rounded-control px-3.5 text-sm";
-const idle = "border border-border text-text-2 hover:border-accent";
+const idle =
+  "border border-border text-text-2 transition-[color,border-color,scale] duration-300 ease-out hover:border-accent hover:scale-105";
 
 export function Pagination({
   current,

@@ -68,7 +68,7 @@ export function SearchInput({
           <Link
             href={clearHref}
             aria-label="Clear search"
-            className="rounded-control text-dim hover:text-text absolute end-2 top-1/2 flex size-9 -translate-y-1/2 items-center justify-center"
+            className="rounded-control text-dim hover:text-text absolute end-2 top-1/2 flex size-9 -translate-y-1/2 items-center justify-center transition-[color,scale] duration-300 ease-out hover:scale-110"
           >
             <Icon name="x" className="size-5" />
           </Link>

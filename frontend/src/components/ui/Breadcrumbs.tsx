@@ -31,7 +31,10 @@ export function Breadcrumbs({
                   {item.label}
                 </span>
               ) : (
-                <Link href={item.href} className="text-muted hover:text-text">
+                <Link
+                  href={item.href}
+                  className="text-muted hover:text-text transition-colors duration-300 ease-out"
+                >
                   {item.label}
                 </Link>
               )}

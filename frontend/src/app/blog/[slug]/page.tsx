@@ -132,6 +132,7 @@ export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
                 image={post.cover}
                 size="lg"
                 fill
+                sheen
                 priority
                 sizes="(min-width: 1520px) 1440px, 100vw"
               />
@@ -150,7 +151,7 @@ export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
             {post.related_service ? (
               <Link
                 href={`/services/${post.related_service.slug}`}
-                className="rounded-card border-border bg-surface hover:border-accent mt-10 flex items-center gap-4 border p-5 transition-colors"
+                className="hover-card rounded-card border-border bg-surface hover:border-accent mt-10 flex items-center gap-4 border p-5 transition-colors"
               >
                 <IconTile
                   name={post.related_service.icon}
@@ -228,7 +229,7 @@ export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
             {post.previous ? (
               <Link
                 href={`/blog/${post.previous.slug}`}
-                className="rounded-card border-border bg-surface hover:border-accent flex flex-col gap-1 border p-5 transition-colors"
+                className="hover-card rounded-card border-border bg-surface hover:border-accent flex flex-col gap-1 border p-5 transition-colors"
                 rel="prev"
               >
                 <span className="text-caption text-dim flex items-center gap-1.5">
@@ -244,7 +245,7 @@ export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
             {post.next ? (
               <Link
                 href={`/blog/${post.next.slug}`}
-                className="rounded-card border-border bg-surface hover:border-accent flex flex-col gap-1 border p-5 text-end transition-colors"
+                className="hover-card rounded-card border-border bg-surface hover:border-accent flex flex-col gap-1 border p-5 text-end transition-colors"
                 rel="next"
               >
                 <span className="text-caption text-dim flex items-center justify-end gap-1.5">

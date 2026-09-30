@@ -205,8 +205,10 @@ export function Uploader({ rules, onBusyChange }: UploaderProps) {
         onDragLeave={() => setDragging(false)}
         onDrop={onDrop}
         className={cn(
-          "rounded-card bg-surface-input has-focus-visible:outline-accent flex cursor-pointer flex-col items-center gap-2.5 border border-dashed px-6 py-9 text-center transition-colors has-focus-visible:outline-2 has-focus-visible:outline-offset-2",
-          dragging ? "border-accent bg-chip" : "border-accent-border",
+          "rounded-card bg-surface-input has-focus-visible:outline-accent flex cursor-pointer flex-col items-center gap-2.5 border border-dashed px-6 py-9 text-center transition-colors duration-300 ease-out has-focus-visible:outline-2 has-focus-visible:outline-offset-2",
+          dragging
+            ? "border-accent bg-chip"
+            : "border-accent-border hover:border-accent hover:bg-chip/40",
         )}
       >
         <span className="rounded-tile bg-chip text-icon-soft flex size-11 items-center justify-center">

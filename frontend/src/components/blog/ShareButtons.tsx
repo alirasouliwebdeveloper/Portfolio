@@ -5,7 +5,7 @@ import { Check, Link2 } from "lucide-react";
 import { LinkedInIcon, XIcon } from "@/components/ui/brand-icons";
 
 const button =
-  "flex size-10 items-center justify-center rounded-control border border-border-input text-text-2 transition-colors hover:border-accent hover:text-text";
+  "flex size-10 items-center justify-center rounded-control border border-border-input text-text-2 transition-[color,border-color,scale] duration-300 ease-out hover:border-accent hover:text-text hover:scale-110";
 
 export function ShareButtons({
   url,
