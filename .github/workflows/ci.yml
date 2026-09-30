@@ -41,6 +41,10 @@ jobs:
         run: |
           cp .env.example .env
           php artisan key:generate --force
+          sed -i \
+            -e "s#^SEED_PATH=.*#SEED_PATH=$(pwd)/../seed#" \
+            -e "s#^ASSETS_PATH=.*#ASSETS_PATH=$(pwd)/../assets/images#" \
+            .env
 
       - name: Pint (code style)
         run: ./vendor/bin/pint --test
