@@ -45,6 +45,16 @@ jobs:
       - name: Pint (code style)
         run: ./vendor/bin/pint --test
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Build admin theme (Filament pages need the Vite manifest)
+        run: |
+          npm ci
+          npm run build
+
       - name: Pest
         # tests/bootstrap.php forces sqlite/array/sync so this never needs MySQL or Redis (see docs/02-architecture.md).
         run: php artisan test
@@ -111,6 +121,12 @@ jobs:
       - name: Install backend dependencies
         working-directory: backend
         run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Build admin theme
+        working-directory: backend
+        run: |
+          npm ci
+          npm run build
 
       - name: Prepare backend .env (sqlite, no external services)
         working-directory: backend
