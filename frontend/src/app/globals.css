@@ -54,6 +54,14 @@
   --color-portrait-from: #8c74ff;
   --color-portrait-via: #6a4fe6;
   --color-portrait-to: #3f2e9e;
+  /* Diagonal light streak swept across hoverable images (see .hover-sheen). */
+  --color-sheen: rgb(255 255 255 / 22%);
+
+  /* Motion: every transition/animation utility site-wide defaults to this unless it sets its own duration. */
+  --default-transition-duration: 300ms;
+  --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-hover: 300ms;
+  --duration-hover-lg: 500ms;
 
   /* Radii */
   --radius-control: 8px;
@@ -265,6 +273,21 @@
     outline-offset: 2px;
   }
 
+  /*
+   * Baseline hover motion for every interactive element that doesn't already carry its own
+   * `transition-*` utility (links, buttons, pill-shaped labels like RadioPill, selects) — so a
+   * hover state never just snaps, even on the ones we didn't hand-tune individually.
+   */
+  a,
+  button,
+  label,
+  select,
+  [role="button"] {
+    transition-property: color, background-color, border-color, opacity;
+    transition-duration: var(--duration-hover);
+    transition-timing-function: var(--default-transition-timing-function);
+  }
+
   ::selection {
     background-color: var(--color-accent);
     color: var(--color-text);
@@ -305,6 +328,77 @@
   @media (width >= 80rem) {
     .portrait-arch {
       --arch-w: 480px;
+    }
+  }
+}
+
+/*
+ * Hover motion for card-shaped tiles: a lift + scale + soft shadow, and — when a `.hover-sheen`
+ * image sits anywhere inside — a diagonal streak of light sweeping across it, like a reflection
+ * catching glass. `.hover-sheen` also works stand-alone (hovering the image itself triggers it).
+ */
+@layer components {
+  .hover-card {
+    position: relative;
+    transition-property: transform, box-shadow;
+    transition-duration: var(--duration-hover-lg);
+    transition-timing-function: var(--default-transition-timing-function);
+  }
+
+  .hover-card:hover,
+  .hover-card:focus-within {
+    transform: translateY(-6px) scale(1.015);
+    box-shadow: var(--shadow-float);
+    z-index: 10;
+  }
+
+  .hover-sheen {
+    position: relative;
+    display: block;
+    overflow: hidden;
+  }
+
+  .hover-sheen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      115deg,
+      transparent 35%,
+      var(--color-sheen) 50%,
+      transparent 65%
+    );
+    opacity: 0;
+    transform: translateX(-120%);
+    transition:
+      transform var(--duration-hover-lg)
+        var(--default-transition-timing-function),
+      opacity var(--duration-hover-lg) var(--default-transition-timing-function);
+    pointer-events: none;
+  }
+
+  .hover-sheen:hover::after,
+  .hover-card:hover .hover-sheen::after,
+  .hover-card:focus-within .hover-sheen::after {
+    transform: translateX(120%);
+    opacity: 1;
+  }
+
+  /* Any IconTile inside a hovered card gets a little extra life too. */
+  .hover-card:hover .icon-tile,
+  .hover-card:focus-within .icon-tile {
+    transform: scale(1.12) rotate(-4deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hover-card:hover,
+    .hover-card:focus-within {
+      transform: none;
+    }
+
+    .hover-card:hover .icon-tile,
+    .hover-card:focus-within .icon-tile {
+      transform: none;
     }
   }
 }

@@ -35,14 +35,14 @@ export function ContactAside({ settings }: { settings: Settings }) {
   return (
     <aside aria-label="Contact details" className="flex flex-col gap-3.5">
       {rows.map((row) => (
-        <Card key={row.label} className="flex items-center gap-4 p-5">
+        <Card key={row.label} hover className="flex items-center gap-4 p-5">
           <IconTile name={row.icon} size="sm" tone="chip" />
           <div className="min-w-0">
             <div className="text-caption text-dim">{row.label}</div>
             {row.href ? (
               <a
                 href={row.href}
-                className="text-ui text-text hover:text-link block truncate font-semibold"
+                className="text-ui text-text hover:text-link block truncate font-semibold transition-colors"
               >
                 {row.value}
               </a>
@@ -52,7 +52,7 @@ export function ContactAside({ settings }: { settings: Settings }) {
           </div>
         </Card>
       ))}
-      <Card className="flex flex-col gap-3.5 p-5">
+      <Card hover className="flex flex-col gap-3.5 p-5">
         <div className="text-caption text-dim">Find me online</div>
         <SocialLinks socials={socials} />
       </Card>

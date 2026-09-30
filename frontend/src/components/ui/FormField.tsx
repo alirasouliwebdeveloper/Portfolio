@@ -3,8 +3,8 @@ import { cn } from "@/lib/cn";
 import { Icon } from "./icons";
 
 export const controlClasses = cn(
-  "w-full rounded-control border border-border-input bg-surface-input px-4 text-ui text-text",
-  "placeholder:text-dim focus-visible:border-accent",
+  "w-full rounded-control border border-border-input bg-surface-input px-4 text-ui text-text transition-colors duration-300 ease-out",
+  "placeholder:text-dim hover:border-accent-border focus-visible:border-accent",
   "aria-invalid:border-danger-border",
 );
 

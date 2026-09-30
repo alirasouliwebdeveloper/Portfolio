@@ -15,8 +15,8 @@ export function RadioPill({ label, ...props }: RadioPillProps) {
   return (
     <label
       className={cn(
-        "rounded-control border-border-input bg-surface-input text-ui text-code flex h-12 cursor-pointer items-center gap-2.5 border px-4",
-        "has-checked:border-accent has-checked:bg-chip has-focus-visible:outline-accent has-focus-visible:outline-2 has-focus-visible:outline-offset-2",
+        "rounded-control border-border-input bg-surface-input text-ui text-code flex h-12 cursor-pointer items-center gap-2.5 border px-4 transition-[border-color,background-color] duration-300 ease-out",
+        "has-checked:border-accent has-checked:bg-chip has-focus-visible:outline-accent hover:border-accent-border has-focus-visible:outline-2 has-focus-visible:outline-offset-2",
       )}
     >
       <input type="radio" className="accent-accent m-0 size-4.5" {...props} />

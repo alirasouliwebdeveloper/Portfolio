@@ -8,7 +8,7 @@ export function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
     .join(", ");
 
   return (
-    <figure className="rounded-card border-border bg-surface p-card flex flex-col gap-5.5 border">
+    <figure className="hover-card rounded-card border-border bg-surface p-card flex flex-col gap-5.5 border">
       <svg
         width="34"
         height="28"

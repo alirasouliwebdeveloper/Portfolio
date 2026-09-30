@@ -31,7 +31,7 @@ export function StackSection({
             ? bySlug.get(group.service_slug)
             : undefined;
           return (
-            <Card key={group.title} className="flex flex-col gap-4">
+            <Card key={group.title} hover className="flex flex-col gap-4">
               <div className="flex items-center gap-4">
                 <IconTile name={group.icon} />
                 <h3 className="text-card-title-lg text-text font-semibold">

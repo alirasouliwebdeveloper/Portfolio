@@ -17,7 +17,7 @@ type StyleProps = {
 };
 
 const base =
-  "inline-flex items-center justify-center gap-3 rounded-control font-medium whitespace-nowrap transition-colors aria-disabled:pointer-events-none aria-disabled:opacity-50 disabled:pointer-events-none disabled:opacity-50";
+  "inline-flex items-center justify-center gap-3 rounded-control font-medium whitespace-nowrap transition-[color,background-color,border-color,filter,transform] duration-300 ease-out hover:scale-[1.03] active:scale-[0.97] aria-disabled:pointer-events-none aria-disabled:opacity-50 aria-disabled:hover:scale-100 disabled:pointer-events-none disabled:opacity-50 disabled:hover:scale-100";
 
 const variants: Record<ButtonVariant, string> = {
   primary: "bg-primary-gradient text-white hover:brightness-110",

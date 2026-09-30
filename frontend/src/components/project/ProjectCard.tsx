@@ -6,18 +6,22 @@ import type { ProjectCard as ProjectCardData } from "@/types/api";
 
 export function ProjectCard({ project }: { project: ProjectCardData }) {
   return (
-    <article className="rounded-card border-border bg-surface flex h-full flex-col overflow-hidden border">
+    <article className="hover-card rounded-card border-border bg-surface flex h-full flex-col overflow-hidden border">
       <div className="relative aspect-16/10 overflow-hidden">
         <Media
           image={project.cover}
           size="card"
           fill
+          sheen
           sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw"
         />
       </div>
       <div className="flex grow flex-col gap-2.5 p-6.5">
         <h3 className="text-card-title text-text font-semibold">
-          <Link href={`/projects/${project.slug}`} className="hover:text-white">
+          <Link
+            href={`/projects/${project.slug}`}
+            className="transition-colors hover:text-white"
+          >
             {project.title}
           </Link>
         </h3>

@@ -16,7 +16,7 @@ export function Logo({
       href="/"
       aria-label={`${brand.name} — home`}
       className={cn(
-        "text-text tablet:text-[1.3125rem] desktop:text-[1.375rem] flex items-center gap-2.5 text-xl font-semibold",
+        "text-text tablet:text-[1.3125rem] desktop:text-[1.375rem] flex items-center gap-2.5 text-xl font-semibold transition-transform duration-300 ease-out hover:scale-[1.03]",
         className,
       )}
     >

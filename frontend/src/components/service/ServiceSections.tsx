@@ -25,7 +25,7 @@ export function PainSection({ service }: { service: Service }) {
       />
       <div className="gap-grid desktop:grid-cols-3 mt-12 grid">
         {service.pains.map((pain) => (
-          <Card key={pain.title} className="flex flex-col gap-4">
+          <Card key={pain.title} hover className="flex flex-col gap-4">
             <IconTile name={pain.icon} tone="danger" />
             <h3 className="text-text text-[1.3125rem] leading-[1.35] font-semibold">
               {pain.title}
@@ -49,9 +49,10 @@ export function OffersSection({ service }: { service: Service }) {
       />
       <div className="tablet:grid-cols-2 tablet:gap-6 desktop:grid-cols-3 mt-12 grid gap-4">
         {service.offers.map((offer) => (
-          <div
+          <Card
             key={offer.title}
-            className="rounded-card border-border bg-surface desktop:p-6 flex items-start gap-5 border p-5"
+            hover
+            className="desktop:p-6 flex items-start gap-5 p-5"
           >
             <IconTile name={offer.icon} tone="chip" size="sm" />
             <div>
@@ -60,7 +61,7 @@ export function OffersSection({ service }: { service: Service }) {
                 {offer.text}
               </p>
             </div>
-          </div>
+          </Card>
         ))}
       </div>
     </Section>
@@ -99,7 +100,7 @@ export function StackSection({ service }: { service: Service }) {
           ) : null}
         </div>
 
-        <Card className="desktop:p-11 flex flex-col p-8">
+        <Card hover className="desktop:p-11 flex flex-col p-8">
           <h3 className="text-text text-[1.1875rem] font-semibold">
             Tools I use for this
           </h3>
@@ -147,13 +148,14 @@ export function WorkSection({ service }: { service: Service }) {
 
       <Link
         href={`/projects/${project.slug}`}
-        className="rounded-card border-border bg-surface desktop:grid-cols-[1.2fr_1fr] mt-12 grid overflow-hidden border"
+        className="hover-card rounded-card border-border bg-surface desktop:grid-cols-[1.2fr_1fr] mt-12 grid overflow-hidden border"
       >
         <div className="relative aspect-16/10">
           <Media
             image={project.cover}
             size="md"
             fill
+            sheen
             sizes="(min-width: 1280px) 55vw, 100vw"
           />
         </div>
@@ -182,7 +184,7 @@ export function WorkSection({ service }: { service: Service }) {
       </Link>
 
       {testimonial ? (
-        <figure className="rounded-card border-border bg-surface tablet:flex-row tablet:items-center tablet:gap-8 tablet:px-12 tablet:py-10 mt-8 flex flex-col gap-6 border p-6">
+        <figure className="hover-card rounded-card border-border bg-surface tablet:flex-row tablet:items-center tablet:gap-8 tablet:px-12 tablet:py-10 mt-8 flex flex-col gap-6 border p-6">
           <svg
             width="40"
             height="32"
@@ -239,7 +241,8 @@ export function PricingSection({ service }: { service: Service }) {
               key={tier.name}
               tone={tier.highlighted ? "strong" : "surface"}
               radius="lg"
-              className="desktop:px-9 relative flex flex-col gap-4.5 px-8 py-10"
+              hover
+              className="desktop:px-9 flex flex-col gap-4.5 px-8 py-10"
             >
               {tier.highlighted ? (
                 <span className="rounded-tag bg-accent absolute start-9 -top-3 px-3 py-1 text-xs font-semibold text-white">
@@ -372,7 +375,7 @@ export function OtherServices({ services }: { services: ServiceSummary[] }) {
           <li key={item.slug}>
             <Link
               href={`/services/${item.slug}`}
-              className="rounded-card border-border bg-surface text-ui text-text hover:border-accent flex items-center justify-between gap-3 border p-4 font-medium transition-colors"
+              className="hover-card rounded-card border-border bg-surface text-ui text-text hover:border-accent flex items-center justify-between gap-3 border p-4 font-medium transition-colors"
             >
               <span className="flex items-center gap-3">
                 <IconTile

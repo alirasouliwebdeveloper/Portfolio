@@ -149,6 +149,7 @@ export default async function ProjectPage({
               image={project.cover}
               size="lg"
               fill
+              sheen
               priority
               sizes="(min-width: 1520px) 1440px, 100vw"
             />
@@ -167,6 +168,7 @@ export default async function ProjectPage({
             {overview.map((item) => (
               <Card
                 key={item.title}
+                hover
                 className="desktop:p-8.5 flex flex-col gap-4"
               >
                 <div className="flex items-center gap-4">
@@ -191,9 +193,10 @@ export default async function ProjectPage({
           />
           <div className="tablet:grid-cols-2 tablet:gap-6 desktop:grid-cols-3 mt-12 grid gap-4">
             {project.features.map((feature) => (
-              <div
+              <Card
                 key={feature.title}
-                className="rounded-card border-border bg-surface desktop:p-6.5 flex items-center gap-4.5 border p-5"
+                hover
+                className="desktop:p-6.5 flex items-center gap-4.5 p-5"
               >
                 <IconTile
                   name={feature.icon}
@@ -208,7 +211,7 @@ export default async function ProjectPage({
                     {feature.text}
                   </p>
                 </div>
-              </div>
+              </Card>
             ))}
           </div>
         </Section>
@@ -225,11 +228,12 @@ export default async function ProjectPage({
             {project.screens.map((screen, index) => (
               <li key={`${screen.caption}-${index}`}>
                 <figure className="flex flex-col gap-3">
-                  <div className="rounded-card-lg border-border bg-surface relative aspect-16/10 overflow-hidden border">
+                  <div className="hover-card rounded-card-lg border-border bg-surface relative aspect-16/10 overflow-hidden border">
                     <Media
                       image={screen.image}
                       size="md"
                       fill
+                      sheen
                       sizes="(min-width: 768px) 50vw, 100vw"
                     />
                   </div>
@@ -269,19 +273,21 @@ export default async function ProjectPage({
           </div>
 
           {project.metrics.length > 0 ? (
-            <dl className="tablet:grid-cols-3 tablet:gap-6 desktop:mt-16 desktop:gap-8 mt-12 grid gap-4">
+            <ul className="tablet:grid-cols-3 tablet:gap-6 desktop:mt-16 desktop:gap-8 mt-12 grid gap-4">
               {project.metrics.map((metric) => (
-                <div
+                <Card
                   key={metric.label}
-                  className="rounded-card border-border bg-surface desktop:p-8.5 border p-8 text-center"
+                  as="li"
+                  hover
+                  className="desktop:p-8.5 p-8 text-center"
                 >
-                  <dd className="text-text desktop:text-[2.875rem] text-[2.25rem] leading-tight font-semibold">
+                  <div className="text-text desktop:text-[2.875rem] text-[2.25rem] leading-tight font-semibold">
                     {metric.value}
-                  </dd>
-                  <dt className="text-ui text-muted mt-2">{metric.label}</dt>
-                </div>
+                  </div>
+                  <div className="text-ui text-muted mt-2">{metric.label}</div>
+                </Card>
               ))}
-            </dl>
+            </ul>
           ) : null}
 
           {project.testimonial ? (
@@ -300,7 +306,7 @@ export default async function ProjectPage({
         >
           <Link
             href={`/projects/${project.next.slug}`}
-            className="group rounded-card border-border bg-surface desktop:grid-cols-2 grid overflow-hidden border"
+            className="hover-card rounded-card border-border bg-surface desktop:grid-cols-2 grid overflow-hidden border"
           >
             <div className="desktop:px-16 desktop:py-14 flex flex-col justify-center gap-3 p-8">
               <span className="text-meta text-dim">Next project</span>
@@ -320,6 +326,7 @@ export default async function ProjectPage({
                 image={project.next.cover}
                 size="card"
                 fill
+                sheen
                 sizes="(min-width: 1280px) 50vw, 100vw"
               />
             </div>

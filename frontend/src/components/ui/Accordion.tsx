@@ -32,10 +32,10 @@ export function Accordion({ items, defaultOpenId, className }: AccordionProps) {
           <div
             key={item.id}
             className={cn(
-              "rounded-card border transition-colors",
+              "rounded-card border transition-colors duration-300 ease-out",
               open
                 ? "border-accent-border bg-surface-strong"
-                : "border-border bg-surface",
+                : "border-border bg-surface hover:border-accent-border",
             )}
           >
             <h3>

@@ -12,12 +12,13 @@ export function FeaturedPost({ post }: { post: PostCard }) {
         <h2 id="featured-title" className="sr-only">
           Featured
         </h2>
-        <article className="rounded-card-lg border-border bg-surface desktop:grid-cols-[1.2fr_1fr] grid overflow-hidden border">
+        <article className="hover-card rounded-card-lg border-border bg-surface desktop:grid-cols-[1.2fr_1fr] grid overflow-hidden border">
           <div className="relative aspect-16/10">
             <Media
               image={post.cover}
               size="lg"
               fill
+              sheen
               priority
               sizes="(min-width: 1280px) 55vw, 100vw"
             />
@@ -38,7 +39,10 @@ export function FeaturedPost({ post }: { post: PostCard }) {
               {formatPostMeta(post.published_at, post.reading_time)}
             </div>
             <h2 className="tracking-h2 text-text desktop:text-[2.125rem] text-[1.75rem] leading-tight font-semibold">
-              <Link href={`/blog/${post.slug}`} className="hover:text-white">
+              <Link
+                href={`/blog/${post.slug}`}
+                className="transition-colors hover:text-white"
+              >
                 {post.title}
               </Link>
             </h2>

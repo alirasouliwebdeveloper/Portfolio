@@ -8,7 +8,7 @@ export function QuoteBlock({ testimonial }: { testimonial: Testimonial }) {
     .join(", ");
 
   return (
-    <figure className="rounded-card border-border bg-surface tablet:p-10 desktop:flex-row desktop:items-start desktop:gap-8 desktop:p-12 flex flex-col gap-6 border p-6">
+    <figure className="hover-card rounded-card border-border bg-surface tablet:p-10 desktop:flex-row desktop:items-start desktop:gap-8 desktop:p-12 flex flex-col gap-6 border p-6">
       <svg
         width="44"
         height="36"

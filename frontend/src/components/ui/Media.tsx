@@ -11,6 +11,8 @@ type MediaProps = {
   className?: string;
   /** "fill" needs a positioned, sized parent; otherwise intrinsic dimensions are used. */
   fill?: boolean;
+  /** Wraps the image so a diagonal light streak sweeps across it on hover (its own or an ancestor `.hover-card`'s). */
+  sheen?: boolean;
 };
 
 /** A Laravel image with its intrinsic size (no layout shift) or filling an aspect-ratio box. */
@@ -21,13 +23,14 @@ export function Media({
   priority,
   className,
   fill,
+  sheen,
 }: MediaProps) {
   if (!image) return null;
 
   const src = image[size] ?? image.md ?? image.url;
 
-  if (fill || !image.width || !image.height) {
-    return (
+  const img =
+    fill || !image.width || !image.height ? (
       <Image
         src={src}
         alt={image.alt}
@@ -36,18 +39,27 @@ export function Media({
         priority={priority}
         className={cn("object-cover", className)}
       />
+    ) : (
+      <Image
+        src={src}
+        alt={image.alt}
+        width={size === "card" ? 800 : image.width}
+        height={size === "card" ? 500 : image.height}
+        sizes={sizes}
+        priority={priority}
+        className={className}
+      />
     );
-  }
 
+  if (!sheen) return img;
+
+  // `absolute inset-0` when filling: this becomes the positioned ancestor next/image looks for,
+  // sized by the caller's own relative box, so wrapping it here needs no changes at call sites.
   return (
-    <Image
-      src={src}
-      alt={image.alt}
-      width={size === "card" ? 800 : image.width}
-      height={size === "card" ? 500 : image.height}
-      sizes={sizes}
-      priority={priority}
-      className={className}
-    />
+    <span
+      className={cn("hover-sheen", fill ? "absolute inset-0" : "inline-block")}
+    >
+      {img}
+    </span>
   );
 }

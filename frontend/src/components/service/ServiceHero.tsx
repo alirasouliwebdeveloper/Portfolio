@@ -92,17 +92,18 @@ export function ServiceHero({
           </div>
 
           <div className="relative">
-            <div className="rounded-card-lg border-border bg-surface shadow-float relative aspect-16/11 overflow-hidden border">
+            <div className="hover-card rounded-card-lg border-border bg-surface shadow-float relative aspect-16/11 overflow-hidden border">
               <Media
                 image={service.hero_image}
                 size="lg"
                 fill
+                sheen
                 priority
                 sizes="(min-width: 1280px) 45vw, 100vw"
               />
             </div>
             {service.floating_metric ? (
-              <div className="rounded-card border-border bg-surface shadow-float max-desktop:start-4 absolute -start-10 -bottom-9 flex items-center gap-4 border px-6 py-5">
+              <div className="hover-card rounded-card border-border bg-surface shadow-float max-desktop:start-4 absolute -start-10 -bottom-9 flex items-center gap-4 border px-6 py-5">
                 <IconTile
                   name="trend"
                   tone="success"

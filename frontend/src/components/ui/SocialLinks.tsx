@@ -32,7 +32,7 @@ export function SocialLinks({
               target="_blank"
               rel="noopener noreferrer"
               aria-label={label}
-              className="rounded-control border-border-input text-text-2 hover:border-accent hover:text-text flex size-10 items-center justify-center border transition-colors"
+              className="rounded-control border-border-input text-text-2 hover:border-accent hover:text-text flex size-10 items-center justify-center border transition-[color,border-color,transform] duration-300 ease-out hover:scale-110"
             >
               <Icon className="size-4.5" />
             </a>

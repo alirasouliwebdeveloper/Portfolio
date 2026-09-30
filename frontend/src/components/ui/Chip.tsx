@@ -18,7 +18,7 @@ type ChipProps = {
 export function FilterChip(props: ChipProps) {
   const { active, count, className, children, ...rest } = props;
   const classes = cn(
-    "inline-flex items-center gap-1.5 rounded-pill px-4.5 py-2.5 text-sm transition-colors",
+    "inline-flex items-center gap-1.5 rounded-pill px-4.5 py-2.5 text-sm transition-[color,background-color,border-color,transform] duration-300 ease-out hover:scale-[1.04]",
     active
       ? "bg-accent font-medium text-white"
       : "border border-border-input text-text-2 hover:border-accent",

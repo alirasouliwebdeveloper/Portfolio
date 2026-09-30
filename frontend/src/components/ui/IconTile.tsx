@@ -31,7 +31,9 @@ export function IconTile({
   return (
     <span
       className={cn(
-        "rounded-tile flex shrink-0 items-center justify-center",
+        // "icon-tile" is a hook for .hover-card in globals.css: it gets a little extra life when
+        // the card it sits in is hovered, on top of whatever the instance's own className does.
+        "icon-tile rounded-tile flex shrink-0 items-center justify-center transition-transform duration-500 ease-out",
         tones[tone],
         sizes[size],
         className,

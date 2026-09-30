@@ -67,7 +67,7 @@ export function MobileMenu({
         aria-expanded={open}
         aria-controls="mobile-menu"
         onClick={() => setOpen(true)}
-        className="rounded-card border-border-input bg-surface text-text desktop:hidden flex size-11.5 items-center justify-center border"
+        className="rounded-card border-border-input bg-surface text-text desktop:hidden hover:border-accent-border flex size-11.5 items-center justify-center border transition-[border-color,transform] duration-300 ease-out hover:scale-105"
       >
         <Icon name="menu" className="size-5" />
       </button>
@@ -87,7 +87,7 @@ export function MobileMenu({
               type="button"
               aria-label="Close menu"
               onClick={() => setOpen(false)}
-              className="rounded-card border-border-input bg-surface text-text flex size-11.5 items-center justify-center border"
+              className="rounded-card border-border-input bg-surface text-text hover:border-accent-border flex size-11.5 items-center justify-center border transition-[border-color,transform] duration-300 ease-out hover:scale-105"
             >
               <Icon name="x" className="size-5" />
             </button>

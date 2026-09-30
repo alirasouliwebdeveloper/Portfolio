@@ -91,6 +91,7 @@ export function Hero({ content, settings, firstProject }: HeroProps) {
                   image={profile.portrait}
                   size="lg"
                   fill
+                  sheen
                   priority
                   sizes="(min-width: 1280px) 480px, (min-width: 768px) 420px, 300px"
                   className="object-top"

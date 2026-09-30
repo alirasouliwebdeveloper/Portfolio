@@ -15,12 +15,13 @@ export function PostCard({
   query?: string;
 }) {
   return (
-    <article className="rounded-card border-border bg-surface flex h-full flex-col overflow-hidden border">
+    <article className="hover-card rounded-card border-border bg-surface flex h-full flex-col overflow-hidden border">
       <div className="relative aspect-16/10 overflow-hidden">
         <Media
           image={post.cover}
           size="card"
           fill
+          sheen
           priority={priority}
           sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw"
         />
@@ -36,7 +37,10 @@ export function PostCard({
           {formatPostMeta(post.published_at, post.reading_time)}
         </div>
         <h3 className="text-card-title text-text font-semibold">
-          <Link href={`/blog/${post.slug}`} className="hover:text-white">
+          <Link
+            href={`/blog/${post.slug}`}
+            className="transition-colors hover:text-white"
+          >
             {query ? (
               <Highlighted text={post.title} query={query} />
             ) : (
