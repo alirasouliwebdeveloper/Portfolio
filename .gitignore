@@ -57,3 +57,6 @@ docker-data/
 
 # Production backups
 /backups/
+
+# Real server .env files (never commit)
+/deploy-secrets/
