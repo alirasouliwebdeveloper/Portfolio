@@ -23,8 +23,8 @@ concurrency:
 
 env:
   REF: ${{ github.event.inputs.ref || github.sha }}
-  SITE_URL: ${{ vars.SITE_URL || 'https://alirasouli.info' }}
-  API_ORIGIN: ${{ vars.API_ORIGIN || 'https://api.alirasouli.info' }}
+  SITE_URL: ${{ vars.SITE_URL || 'https://alirasouli.ir' }}
+  API_ORIGIN: ${{ vars.API_ORIGIN || 'https://api.alirasouli.ir' }}
 
 jobs:
   build-backend:

@@ -1,4 +1,4 @@
-# دیپلوی روی هاست cPanel (alirasouli.info)
+# دیپلوی روی هاست cPanel (alirasouli.ir)
 
 همان روش غزل مسقط: هر `git push` روی `main` → GitHub Actions هر دو اپ را build می‌کند و در Release ثابت
 `deploy-latest` منتشر می‌کند → کرون `deploy:check` روی سرور هر دقیقه چک می‌کند و نسخه‌ی جدید را خودش
@@ -7,8 +7,8 @@
 
 | بخش | دامنه | محل روی هاست |
 |---|---|---|
-| Laravel API + پنل Filament | `api.alirasouli.info` | `/home/USER/api.alirasouli.info` |
-| سایت Next.js | `alirasouli.info` | Node.js App (مثلاً `/home/USER/alirasouli.info`) |
+| Laravel API + پنل Filament | `api.alirasouli.ir` | `/home/USER/api.alirasouli.ir` |
+| سایت Next.js | `alirasouli.ir` | Node.js App (مثلاً `/home/USER/alirasouli.ir`) |
 
 `USER` = نام‌کاربری cPanel. مسیر واقعی پوشه‌ها را در Domains چک کن.
 
@@ -16,7 +16,7 @@
 
 ## ۱. بک‌اند — یک‌بار
 
-1. **ساب‌دامین** `api.alirasouli.info` را بساز (Domains).
+1. **ساب‌دامین** `api.alirasouli.ir` را بساز (Domains).
 2. **دیتابیس MySQL** + یوزر بساز و یوزر را با All Privileges به دیتابیس وصل کن.
 3. **نسخه‌ی PHP: حتماً 8.4 یا بالاتر** (MultiPHP Manager) — پکیج‌های Symfony 8 روی 8.3 اجرا نمی‌شوند.
    اکستنشن‌های `gd`, `intl`, `zip`, `exif`, `bcmath`, `fileinfo`, `pdo_mysql` روشن باشند.
@@ -31,7 +31,7 @@
    این فایل هیچ‌وقت توسط دیپلوی بازنویسی نمی‌شود.
 6. **راه‌اندازی اولیه** (Terminal در cPanel، یا یک Cron موقت هر دقیقه که بعد از اجرا پاکش کنی):
    ```
-   cd ~/api.alirasouli.info
+   cd ~/api.alirasouli.ir
    php artisan key:generate --force
    php artisan migrate --force
    php artisan db:seed --force
@@ -42,26 +42,26 @@
    بعد از seed، `ADMIN_PASSWORD` را از `.env` پاک کن.
 7. **سه Cron دائمی** (Cron Jobs، هر دقیقه):
    ```
-   * * * * * /usr/local/bin/php /home/USER/api.alirasouli.info/artisan schedule:run >> /dev/null 2>&1
-   * * * * * /usr/local/bin/php /home/USER/api.alirasouli.info/artisan queue:work --stop-when-empty >> /dev/null 2>&1
-   * * * * * /usr/local/bin/php /home/USER/api.alirasouli.info/artisan deploy:check >> /dev/null 2>&1
+   * * * * * /usr/local/bin/php /home/USER/api.alirasouli.ir/artisan schedule:run >> /dev/null 2>&1
+   * * * * * /usr/local/bin/php /home/USER/api.alirasouli.ir/artisan queue:work --stop-when-empty >> /dev/null 2>&1
+   * * * * * /usr/local/bin/php /home/USER/api.alirasouli.ir/artisan deploy:check >> /dev/null 2>&1
    ```
    صف (ایمیل فرم تماس، تبدیل تصاویر، revalidate سایت) بدون کرون دوم اجرا نمی‌شود.
-8. ورود به پنل: `https://api.alirasouli.info/admin` — ورود دومرحله‌ای را همان‌جا فعال کن.
+8. ورود به پنل: `https://api.alirasouli.ir/admin` — ورود دومرحله‌ای را همان‌جا فعال کن.
 
 ## ۲. فرانت‌اند — یک‌بار
 
 1. **Setup Node.js App** → Create Application:
-   Node.js **22** (حداقل 20.9)، Mode: Production، Application root: مثلاً `alirasouli.info`
-   (باید دقیقاً با `DEPLOY_FRONTEND_PATH` یکی باشد)، Application URL: `alirasouli.info`،
+   Node.js **22** (حداقل 20.9)، Mode: Production، Application root: مثلاً `alirasouli.ir`
+   (باید دقیقاً با `DEPLOY_FRONTEND_PATH` یکی باشد)، Application URL: `alirasouli.ir`،
    Startup file: **`server.js`**.
 2. **Environment variables** در همان صفحه:
    ```
-   API_URL=https://api.alirasouli.info/api/v1
+   API_URL=https://api.alirasouli.ir/api/v1
    API_INTERNAL_KEY=<همان مقدار .env بک‌اند>
    REVALIDATE_SECRET=<همان مقدار .env بک‌اند>
-   NEXT_PUBLIC_SITE_URL=https://alirasouli.info
-   NEXT_PUBLIC_UPLOAD_URL=https://api.alirasouli.info/api/v1/uploads
+   NEXT_PUBLIC_SITE_URL=https://alirasouli.ir
+   NEXT_PUBLIC_UPLOAD_URL=https://api.alirasouli.ir/api/v1/uploads
    NEXT_PUBLIC_TURNSTILE_SITE_KEY=<site key از Cloudflare Turnstile>
    ```
 3. **اولین آپلود**: `frontend.zip` را از Release دانلود، در Application root آپلود و Extract کن، بعد Restart.
@@ -82,7 +82,7 @@ Settings → Secrets and variables → Actions:
 فقط `git push origin main`. ظرف چند دقیقه (build حدود ۵ دقیقه + حداکثر یک دقیقه تا تیک کرون) روی سایت است.
 دیپلوی فوری بدون صبر برای کرون:
 ```
-curl -X POST -H "X-Deploy-Token: <DEPLOY_WEBHOOK_SECRET>" https://api.alirasouli.info/deploy-hook
+curl -X POST -H "X-Deploy-Token: <DEPLOY_WEBHOOK_SECRET>" https://api.alirasouli.ir/deploy-hook
 ```
 برگشت به نسخه‌ی قبل: `git revert` و push، یا اجرای دستی workflow «Deploy (cPanel)» با `ref` قدیمی‌تر.
 لاگ دیپلوی‌ها: `storage/logs/laravel.log` (پیام `deploy:check ran`).
