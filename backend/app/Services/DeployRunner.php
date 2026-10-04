@@ -46,7 +46,10 @@ class DeployRunner
      */
     public function run(): array
     {
-        set_time_limit(300);
+        // Some shared hosts disable set_time_limit entirely.
+        if (function_exists('set_time_limit')) {
+            @set_time_limit(300);
+        }
 
         $release = $this->github()->timeout(30)->get($this->releaseUrl());
         if (! $release->ok()) {
@@ -123,7 +126,9 @@ class DeployRunner
         $zipPath = storage_path('app/_deploy_'.$asset['name']);
 
         $download = $this->github()
-            ->withHeaders(['Accept' => 'application/octet-stream'])
+            // replaceHeaders, not withHeaders: the latter merges with the JSON Accept header
+            // and GitHub then answers with the asset's metadata instead of the file.
+            ->replaceHeaders(['Accept' => 'application/octet-stream'])
             ->withOptions(['sink' => $zipPath])
             ->timeout(180)
             ->get($asset['url']);
