@@ -1,6 +1,8 @@
 <?php
 
 use App\Services\DeployRunner;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Support\Facades\Http;
 
 it('rejects deploy-hook calls without the shared secret', function () {
     config(['services.deploy.token' => 'secret']);
@@ -38,4 +40,13 @@ it('skips deploy:check when the release is already deployed', function () {
     $this->artisan('deploy:check')->assertSuccessful();
 
     @unlink($marker);
+});
+
+it('reports a GitHub connection failure instead of crashing', function () {
+    config(['services.deploy.token' => 'secret']);
+    Http::fake(fn () => throw new ConnectionException('cURL error 60: SSL certificate problem'));
+
+    $this->postJson('/deploy-hook', [], ['X-Deploy-Token' => 'secret'])
+        ->assertStatus(500)
+        ->assertJsonPath('results.backend.error', 'release lookup failed: cURL error 60: SSL certificate problem');
 });

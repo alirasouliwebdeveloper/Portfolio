@@ -30,7 +30,14 @@ class DeployRunner
     /** Release metadata only (no download) — cheap enough to check every minute. */
     public function latestRelease(): ?array
     {
-        $response = $this->github()->timeout(30)->get($this->releaseUrl());
+        try {
+            $response = $this->github()->timeout(30)->get($this->releaseUrl());
+        } catch (Throwable $e) {
+            // Usually the host blocking outbound HTTPS or a missing CA bundle: say so in the log.
+            Log::warning('deploy: GitHub release lookup failed: '.$e->getMessage());
+
+            return null;
+        }
 
         if (! $response->ok()) {
             return null;
@@ -51,7 +58,13 @@ class DeployRunner
             @set_time_limit(300);
         }
 
-        $release = $this->github()->timeout(30)->get($this->releaseUrl());
+        try {
+            $release = $this->github()->timeout(30)->get($this->releaseUrl());
+        } catch (Throwable $e) {
+            $error = ['ok' => false, 'error' => 'release lookup failed: '.$e->getMessage()];
+
+            return ['backend' => $error, 'frontend' => $error];
+        }
         if (! $release->ok()) {
             $error = ['ok' => false, 'error' => "release lookup failed: HTTP {$release->status()}"];
 
@@ -125,13 +138,19 @@ class DeployRunner
 
         $zipPath = storage_path('app/_deploy_'.$asset['name']);
 
-        $download = $this->github()
-            // replaceHeaders, not withHeaders: the latter merges with the JSON Accept header
-            // and GitHub then answers with the asset's metadata instead of the file.
-            ->replaceHeaders(['Accept' => 'application/octet-stream'])
-            ->withOptions(['sink' => $zipPath])
-            ->timeout(180)
-            ->get($asset['url']);
+        try {
+            $download = $this->github()
+                // replaceHeaders, not withHeaders: the latter merges with the JSON Accept header
+                // and GitHub then answers with the asset's metadata instead of the file.
+                ->replaceHeaders(['Accept' => 'application/octet-stream'])
+                ->withOptions(['sink' => $zipPath])
+                ->timeout(180)
+                ->get($asset['url']);
+        } catch (Throwable $e) {
+            @unlink($zipPath);
+
+            return ['ok' => false, 'error' => 'asset download failed: '.$e->getMessage()];
+        }
 
         if (! $download->ok()) {
             @unlink($zipPath);
