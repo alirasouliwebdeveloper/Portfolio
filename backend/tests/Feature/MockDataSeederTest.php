@@ -30,7 +30,7 @@ it('seeds all mock content, published and linked, and is idempotent', function (
         ->and(ProcessStep::count())->toBe(4)
         ->and(Faq::count())->toBe(8)
         ->and(Setting::count())->toBe(1)
-        ->and(Page::count())->toBe(7)
+        ->and(Page::count())->toBe(8)
         ->and(Page::whereNull('seo_score')->count())->toBe(0);
 
     expect(Post::published()->count())->toBe(16)
