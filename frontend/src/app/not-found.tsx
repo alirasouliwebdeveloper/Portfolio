@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 const quickLinks = [
   { icon: "home" as const, label: "Home", href: "/" },
   { icon: "user" as const, label: "About me", href: "/about" },
-  { icon: "grid" as const, label: "Projects", href: "/#projects" },
+  { icon: "grid" as const, label: "Projects", href: "/projects" },
   { icon: "mail" as const, label: "Contact", href: "/contact" },
 ];
 

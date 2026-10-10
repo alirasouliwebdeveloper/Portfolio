@@ -136,6 +136,8 @@ export type ProjectCard = {
   summary: string;
   cover: ApiImage | null;
   tags: string[];
+  /** Every technology of the project (filter on /projects); `tags` is the first two. */
+  stack: string[];
   featured: boolean;
 };
 
@@ -312,6 +314,7 @@ export type ContactContent = {
 };
 
 export type BlogContent = { eyebrow: string; description: string };
+export type ProjectsContent = BlogContent;
 export type NotFoundContent = { text: string };
 
 export type Sitemap = {

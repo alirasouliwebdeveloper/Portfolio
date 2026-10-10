@@ -20,6 +20,8 @@ class ProjectCardResource extends JsonResource
             'summary' => $this->summary,
             'cover' => self::imageOf($this->resource, 'cover', $this->cover_alt),
             'tags' => array_slice($this->stack ?? [], 0, 2),
+            // Full list for the technology filter on /projects.
+            'stack' => array_values($this->stack ?? []),
             'featured' => $this->featured,
         ];
     }

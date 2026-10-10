@@ -34,6 +34,14 @@ it('lists projects and filters featured ones', function () {
     api('projects')->assertJsonCount(2, 'data');
     $featured = api('projects?featured=1')->assertJsonCount(1, 'data');
     expect($featured->json('data.0.tags'))->toBe(['Laravel', 'Next.js']);
+    expect($featured->json('data.0.stack'))->toBe(['Laravel', 'Next.js', 'Docker']);
+});
+
+it('serves the projects list page copy', function () {
+    // The row exists already: a migration adds it to every site.
+    Page::query()->where('key', 'projects')->firstOrFail()->update(['title' => 'Projects', 'content' => ['eyebrow' => 'PROJECTS', 'description' => 'All work']]);
+
+    api('pages/projects')->assertOk()->assertJsonPath('data.title', 'Projects')->assertJsonPath('data.content.eyebrow', 'PROJECTS');
 });
 
 it('shows a project with rich sections, screens, quote and a looping next project', function () {
@@ -160,6 +168,7 @@ it('builds a sitemap without hidden or draft content', function () {
         ->and($data['projects'])->toHaveCount(1)
         ->and($data['services'])->toHaveCount(1)
         ->and($data['categories'][0]['posts_count'])->toBe(3)
-        ->and(collect($data['pages'])->pluck('path')->all())->toBe(['/'])
+        // /projects comes from the migration that adds that page to existing sites.
+        ->and(collect($data['pages'])->pluck('path')->all())->toEqualCanonicalizing(['/', '/projects'])
         ->and($data['posts_per_page'])->toBe(6);
 });

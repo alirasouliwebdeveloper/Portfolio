@@ -77,7 +77,7 @@ export default async function ProjectPage({
           creativeWorkJsonLd(project),
           breadcrumbJsonLd([
             { name: "Home", path: "/" },
-            { name: "Projects", path: "/#projects" },
+            { name: "Projects", path: "/projects" },
             { name: project.title, path: `/projects/${project.slug}` },
           ]),
         ]}
@@ -92,7 +92,7 @@ export default async function ProjectPage({
         <Breadcrumbs
           items={[
             { label: "Home", href: "/" },
-            { label: "Projects", href: "/#projects" },
+            { label: "Projects", href: "/projects" },
             { label: project.title },
           ]}
         />

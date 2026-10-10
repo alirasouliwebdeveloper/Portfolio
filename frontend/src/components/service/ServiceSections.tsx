@@ -138,7 +138,7 @@ export function WorkSection({ service }: { service: Service }) {
           </h2>
         </div>
         <Button
-          href="/#projects"
+          href="/projects"
           variant="outline"
           className="text-ui max-tablet:hidden h-11.5"
         >

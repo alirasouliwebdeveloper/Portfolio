@@ -43,7 +43,7 @@ export function Hero({ content, settings, firstProject }: HeroProps) {
           <div className="tablet:w-auto tablet:flex-row mt-9 flex w-full flex-col gap-4">
             <Button
               href={
-                firstProject ? `/projects/${firstProject.slug}` : "/#projects"
+                firstProject ? `/projects/${firstProject.slug}` : "/projects"
               }
               fullWidth
               className="tablet:w-auto"

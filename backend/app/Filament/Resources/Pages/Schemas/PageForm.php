@@ -142,7 +142,7 @@ class PageForm
                             Textarea::make('content.faq.text')->rows(2),
                         ]),
                     ]),
-                    Tab::make('Blog page')->icon('heroicon-o-newspaper')->visible($is('blog'))->schema([
+                    Tab::make('Page intro')->icon('heroicon-o-newspaper')->visible($is('blog', 'projects'))->schema([
                         TextInput::make('content.eyebrow')->maxLength(80),
                         Textarea::make('content.description')->rows(3),
                     ]),

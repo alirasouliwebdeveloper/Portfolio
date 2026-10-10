@@ -3,6 +3,7 @@ import "server-only";
 import type {
   AboutContent,
   BlogContent,
+  ProjectsContent,
   Category,
   ContactContent,
   Experience,
@@ -30,6 +31,8 @@ import type {
  * keeps a long safety-net revalidation (24h) — content updates arrive via on-demand revalidation.
  */
 const SAFETY_NET_SECONDS = 60 * 60 * 24;
+
+export type Locale = "en" | "fa";
 
 export class ApiError extends Error {
   constructor(
@@ -91,20 +94,29 @@ const qs = (
   return text ? `?${text}` : "";
 };
 
-export const getSettings = async () =>
-  (await required<{ data: Settings }>("/settings", { tags: ["settings"] }))
-    .data;
+export const getSettings = async (locale: Locale = "en") =>
+  (
+    await required<{ data: Settings }>(`/settings${qs({ locale })}`, {
+      tags: ["settings"],
+    })
+  ).data;
 
-export async function getPage<C = Record<string, unknown>>(key: string) {
-  const result = await request<{ data: PageContent<C> }>(`/pages/${key}`, {
-    tags: ["pages", ...(key === "about" ? ["about"] : [])],
-  });
+export async function getPage<C = Record<string, unknown>>(
+  key: string,
+  locale: Locale = "en",
+) {
+  const result = await request<{ data: PageContent<C> }>(
+    `/pages/${key}${qs({ locale })}`,
+    { tags: ["pages", ...(key === "about" ? ["about"] : [])] },
+  );
   return result?.data ?? null;
 }
-export const getHomePage = () => getPage<HomeContent>("home");
+export const getHomePage = (locale: Locale = "en") =>
+  getPage<HomeContent>("home", locale);
 export const getAboutPage = () => getPage<AboutContent>("about");
 export const getContactPage = () => getPage<ContactContent>("contact");
 export const getBlogPage = () => getPage<BlogContent>("blog");
+export const getProjectsPage = () => getPage<ProjectsContent>("projects");
 export const getNotFoundPage = () => getPage<NotFoundContent>("not_found");
 
 export const getPosts = (
@@ -113,10 +125,11 @@ export const getPosts = (
     perPage?: number;
     category?: string;
     excludeFeatured?: boolean;
+    locale?: Locale;
   } = {},
 ) =>
   required<Paginated<PostCard>>(
-    `/posts${qs({ page: params.page, per_page: params.perPage, category: params.category, exclude_featured: params.excludeFeatured ? 1 : undefined })}`,
+    `/posts${qs({ page: params.page, per_page: params.perPage, category: params.category, exclude_featured: params.excludeFeatured ? 1 : undefined, locale: params.locale })}`,
     {
       tags: [
         "posts",
@@ -165,10 +178,10 @@ export const getCategory = async (slug: string) =>
     })
   )?.data ?? null;
 
-export const getProjects = async (featured = false) =>
+export const getProjects = async (featured = false, locale: Locale = "en") =>
   (
     await required<{ data: ProjectCard[] }>(
-      `/projects${qs({ featured: featured ? 1 : undefined })}`,
+      `/projects${qs({ featured: featured ? 1 : undefined, locale })}`,
       { tags: ["projects"] },
     )
   ).data;
@@ -180,17 +193,20 @@ export const getProject = async (slug: string) =>
     })
   )?.data ?? null;
 
-export const getTestimonials = async (featured = false) =>
+export const getTestimonials = async (
+  featured = false,
+  locale: Locale = "en",
+) =>
   (
     await required<{ data: Testimonial[] }>(
-      `/testimonials${qs({ featured: featured ? 1 : undefined })}`,
+      `/testimonials${qs({ featured: featured ? 1 : undefined, locale })}`,
       { tags: ["testimonials"] },
     )
   ).data;
 
-export const getServices = async () =>
+export const getServices = async (locale: Locale = "en") =>
   (
-    await required<{ data: ServiceSummary[] }>("/services", {
+    await required<{ data: ServiceSummary[] }>(`/services${qs({ locale })}`, {
       tags: ["services"],
     })
   ).data;

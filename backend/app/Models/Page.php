@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 
 /**
- * A fixed page of the site (home, about, contact, blog, 404, privacy, terms): structured copy in
+ * A fixed page of the site (home, about, contact, blog, projects, 404, privacy, terms): structured copy in
  * `content`, an optional rich `body`, and its own SEO fields. `key` exists once per locale.
  */
 #[Fillable(['key', 'locale', 'translation_of_id', 'title', 'content', 'body', 'meta_title', 'meta_description', 'focus_keyword', 'canonical_url', 'noindex'])]
@@ -21,7 +21,7 @@ class Page extends Model implements HasMedia
 {
     use HasFactory, HasTranslations, RegistersImageConversions, ScoresSeo;
 
-    public const KEYS = ['home', 'about', 'contact', 'blog', 'not_found', 'privacy', 'terms'];
+    public const KEYS = ['home', 'about', 'contact', 'blog', 'projects', 'not_found', 'privacy', 'terms'];
 
     /** Public path of each page (null = not indexable / no own URL). */
     public const PATHS = [
@@ -29,6 +29,7 @@ class Page extends Model implements HasMedia
         'about' => '/about',
         'contact' => '/contact',
         'blog' => '/blog',
+        'projects' => '/projects',
         'not_found' => null,
         'privacy' => '/privacy',
         'terms' => '/terms',

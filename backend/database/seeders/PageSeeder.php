@@ -16,6 +16,21 @@ class PageSeeder extends Seeder
         }
     }
 
+    /** @return array<string, mixed> Also used by the migration that adds this page to existing sites. */
+    public static function projectsPage(): array
+    {
+        return [
+            'title' => 'Projects & Case Studies',
+            'meta_title' => 'Projects — Laravel & Next.js Case Studies',
+            'meta_description' => 'Websites, online stores, APIs and web apps I have built with Laravel, React and Next.js. Filter by technology and read how each project was delivered.',
+            'focus_keyword' => 'Laravel projects',
+            'content' => [
+                'eyebrow' => 'PROJECTS',
+                'description' => 'Real work for real clients — filter by technology and open any project to read the full case study.',
+            ],
+        ];
+    }
+
     /** @return array<string, array<string, mixed>> */
     private function pages(): array
     {
@@ -127,6 +142,7 @@ class PageSeeder extends Seeder
                     'description' => 'Practical write-ups on Laravel, Next.js, DevOps and automation — what worked in real projects and what didn’t.',
                 ],
             ],
+            'projects' => self::projectsPage(),
             'not_found' => [
                 'title' => 'This page doesn’t exist',
                 'content' => [
