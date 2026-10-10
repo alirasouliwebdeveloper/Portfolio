@@ -1,4 +1,3 @@
-import path from "node:path";
 import type { NextConfig } from "next";
 
 const origin = (url?: string) => {
@@ -52,7 +51,8 @@ const nextConfig: NextConfig = {
   output: "standalone",
   poweredByHeader: false,
   // Keeps on-demand revalidation across Node restarts (Passenger idles the app on cPanel).
-  cacheHandler: path.join(process.cwd(), "cache-handler.cjs"),
+  // Relative to this folder; an absolute process.cwd() path made Turbopack trace the whole project.
+  cacheHandler: "./cache-handler.cjs",
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
