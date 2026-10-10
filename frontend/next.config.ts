@@ -51,7 +51,6 @@ const nextConfig: NextConfig = {
   output: "standalone",
   poweredByHeader: false,
   // Keeps on-demand revalidation across Node restarts (Passenger idles the app on cPanel).
-  // Relative to this folder; an absolute process.cwd() path made Turbopack trace the whole project.
   cacheHandler: "./cache-handler.cjs",
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];

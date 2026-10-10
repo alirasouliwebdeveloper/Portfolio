@@ -41,10 +41,12 @@ class PersistentTagsCache extends FileSystemCache {
     if (!this.manifestPath) return;
     const file = this.manifestPath;
     try {
-      const { mtimeMs } = fs.statSync(file);
+      const { mtimeMs } = fs.statSync(/*turbopackIgnore: true*/ file);
       if (mtimeMs === this.loadedMtime) return;
       /** @type {Record<string, TagEntry>} */
-      const saved = JSON.parse(fs.readFileSync(file, "utf8"));
+      const saved = JSON.parse(
+        fs.readFileSync(/*turbopackIgnore: true*/ file, "utf8"),
+      );
       for (const [tag, entry] of Object.entries(saved)) {
         tagsManifest.set(tag, newest(tagsManifest.get(tag), entry));
       }
@@ -65,11 +67,13 @@ class PersistentTagsCache extends FileSystemCache {
         data[tag] = entry;
     }
     try {
-      fs.mkdirSync(path.dirname(file), { recursive: true });
+      fs.mkdirSync(/*turbopackIgnore: true*/ path.dirname(file), {
+        recursive: true,
+      });
       const temp = `${file}.${process.pid}.tmp`;
-      fs.writeFileSync(temp, JSON.stringify(data));
-      fs.renameSync(temp, file);
-      this.loadedMtime = fs.statSync(file).mtimeMs;
+      fs.writeFileSync(/*turbopackIgnore: true*/ temp, JSON.stringify(data));
+      fs.renameSync(/*turbopackIgnore: true*/ temp, file);
+      this.loadedMtime = fs.statSync(/*turbopackIgnore: true*/ file).mtimeMs;
     } catch (error) {
       console.error("cache-handler: could not save revalidated tags", error);
     }
