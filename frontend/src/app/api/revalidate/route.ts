@@ -5,6 +5,14 @@ import { NextResponse, type NextRequest } from "next/server";
 const TAG = /^[a-z0-9:_-]{1,120}$/i;
 const MAX_TAGS = 50;
 
+/** `kind:slug` tags sent by Laravel → the public path of that record. */
+const ENTITY_PATHS: Record<string, string> = {
+  post: "/blog",
+  project: "/projects",
+  service: "/services",
+  category: "/blog/category",
+};
+
 function authorized(request: NextRequest) {
   const secret = process.env.REVALIDATE_SECRET;
   if (!secret) return false;
@@ -37,6 +45,13 @@ export async function POST(request: NextRequest) {
 
   // expire: 0 → the next visit is a blocking fresh render, so an edit shows up immediately.
   for (const tag of tags) revalidateTag(tag, { expire: 0 });
+
+  // A page cached as 404 before its content was published must go too, whatever tags it recorded.
+  for (const tag of tags) {
+    const [kind, slug] = tag.split(":");
+    const base = slug ? ENTITY_PATHS[kind] : undefined;
+    if (base) revalidatePath(`${base}/${slug}`, "layout");
+  }
 
   // "all" is sent after a deploy: the build was pre-rendered in CI, so every page is refreshed.
   if (tags.includes("all")) revalidatePath("/", "layout");

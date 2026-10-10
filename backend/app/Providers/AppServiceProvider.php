@@ -19,6 +19,7 @@ use App\Models\Testimonial;
 use App\Observers\ContentObserver;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
+use Filament\Support\Facades\FilamentTimezone;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
@@ -41,6 +42,8 @@ class AppServiceProvider extends ServiceProvider
         }
 
         Event::listen(MediaHasBeenAddedEvent::class, StoreImageDimensions::class);
+
+        FilamentTimezone::set(config('portfolio.display_timezone'));
 
         // Public write endpoints: 20 uploads and 5 contact messages per hour per visitor.
         RateLimiter::for('uploads', fn (Request $request) => Limit::perHour(20)->by($request->ip()));

@@ -65,7 +65,7 @@ final class Fields
                     ->default(PublishStatus::Draft)
                     ->required(),
                 DateTimePicker::make('published_at')
-                    ->helperText('Empty = publish immediately once the status is Published. A future date schedules it.'),
+                    ->helperText('Tehran time. Empty = publish immediately once the status is Published. A future date schedules it.'),
             ]);
     }
 

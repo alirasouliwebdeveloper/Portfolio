@@ -12,6 +12,9 @@ return [
     'upload_ttl_hours' => 24,
     'cache_ttl' => (int) env('API_CACHE_TTL', 86400),
 
+    // Dates are stored in UTC (app.timezone); the admin panel shows and accepts them in this zone.
+    'display_timezone' => env('DISPLAY_TIMEZONE', 'Asia/Tehran'),
+
     'frontend_url' => env('FRONTEND_URL', 'http://localhost:3000'),
 
     // Next.js on-demand revalidation (server to server; never exposed to the browser).

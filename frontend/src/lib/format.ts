@@ -2,7 +2,8 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
   month: "short",
   day: "numeric",
   year: "numeric",
-  timeZone: "UTC",
+  // Publish times are entered in Tehran time in the admin panel; show the same calendar day.
+  timeZone: "Asia/Tehran",
 });
 
 /** "Sep 22, 2026" */
