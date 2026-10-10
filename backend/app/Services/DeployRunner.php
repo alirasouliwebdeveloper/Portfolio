@@ -83,6 +83,7 @@ class DeployRunner
         } else {
             $frontend = $this->deployAsset($assets->firstWhere('name', 'frontend.zip'), $frontendPath);
             if ($frontend['ok']) {
+                $this->removeStrayFrontendFiles($frontendPath);
                 // Passenger restarts the Node.js app when this file's mtime changes.
                 @mkdir("{$frontendPath}/tmp", 0755, true);
                 @touch("{$frontendPath}/tmp/restart.txt");
@@ -190,6 +191,36 @@ class DeployRunner
             config('services.deploy.github_repo'),
             config('services.deploy.release_tag'),
         );
+    }
+
+    /**
+     * Source files a 2026-10-10 build traced into the standalone package by mistake. Extracting
+     * never deletes, so they are removed here; a standalone build never contains these paths.
+     */
+    private const STRAY_FRONTEND_PATHS = [
+        'src', 'tests', 'scripts', 'AGENTS.md', 'CLAUDE.md', 'README.md', 'eslint.config.mjs',
+        'next.config.ts', 'package-lock.json', 'playwright.config.ts', 'postcss.config.mjs',
+        'tsconfig.json', 'vitest.config.mts',
+    ];
+
+    private function removeStrayFrontendFiles(string $frontendPath): void
+    {
+        foreach (self::STRAY_FRONTEND_PATHS as $relative) {
+            $path = $frontendPath.'/'.$relative;
+
+            if (is_file($path) || is_link($path)) {
+                @unlink($path);
+            } elseif (is_dir($path)) {
+                $items = new RecursiveIteratorIterator(
+                    new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS),
+                    RecursiveIteratorIterator::CHILD_FIRST
+                );
+                foreach ($items as $item) {
+                    $item->isDir() && ! $item->isLink() ? @rmdir($item->getPathname()) : @unlink($item->getPathname());
+                }
+                @rmdir($path);
+            }
+        }
     }
 
     private function fixPermissions(): void

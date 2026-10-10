@@ -26,23 +26,25 @@ class PersistentTagsCache extends FileSystemCache {
   /** @param {any} ctx */
   constructor(ctx) {
     super(ctx);
-    this.manifestPath = path.join(
-      ctx.serverDistDir ?? path.join(process.cwd(), ".next", "server"),
-      "..",
-      "cache",
-      "revalidated-tags.json",
-    );
+    // Only Next's own serverDistDir: a process.cwd()-based path makes the standalone file
+    // tracer copy the whole project (src, tests, configs) into the deploy package.
+    /** @type {string | null} */
+    this.manifestPath = ctx.serverDistDir
+      ? path.join(ctx.serverDistDir, "..", "cache", "revalidated-tags.json")
+      : null;
     this.loadedMtime = 0;
     this.sync();
   }
 
   /** Merges tag invalidations written by any process (or before a restart) into memory. */
   sync() {
+    if (!this.manifestPath) return;
+    const file = this.manifestPath;
     try {
-      const { mtimeMs } = fs.statSync(this.manifestPath);
+      const { mtimeMs } = fs.statSync(file);
       if (mtimeMs === this.loadedMtime) return;
       /** @type {Record<string, TagEntry>} */
-      const saved = JSON.parse(fs.readFileSync(this.manifestPath, "utf8"));
+      const saved = JSON.parse(fs.readFileSync(file, "utf8"));
       for (const [tag, entry] of Object.entries(saved)) {
         tagsManifest.set(tag, newest(tagsManifest.get(tag), entry));
       }
@@ -53,6 +55,8 @@ class PersistentTagsCache extends FileSystemCache {
   }
 
   persist() {
+    if (!this.manifestPath) return;
+    const file = this.manifestPath;
     const cutoff = Date.now() - KEEP_MS;
     /** @type {Record<string, TagEntry>} */
     const data = {};
@@ -61,11 +65,11 @@ class PersistentTagsCache extends FileSystemCache {
         data[tag] = entry;
     }
     try {
-      fs.mkdirSync(path.dirname(this.manifestPath), { recursive: true });
-      const temp = `${this.manifestPath}.${process.pid}.tmp`;
+      fs.mkdirSync(path.dirname(file), { recursive: true });
+      const temp = `${file}.${process.pid}.tmp`;
       fs.writeFileSync(temp, JSON.stringify(data));
-      fs.renameSync(temp, this.manifestPath);
-      this.loadedMtime = fs.statSync(this.manifestPath).mtimeMs;
+      fs.renameSync(temp, file);
+      this.loadedMtime = fs.statSync(file).mtimeMs;
     } catch (error) {
       console.error("cache-handler: could not save revalidated tags", error);
     }
