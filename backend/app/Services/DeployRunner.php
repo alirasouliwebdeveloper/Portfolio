@@ -6,6 +6,7 @@ use App\Jobs\RevalidateFrontend;
 use FilesystemIterator;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use RecursiveDirectoryIterator;
@@ -33,17 +34,32 @@ class DeployRunner
         try {
             $response = $this->github()->timeout(30)->get($this->releaseUrl());
         } catch (Throwable $e) {
-            // Usually the host blocking outbound HTTPS or a missing CA bundle: say so in the log.
-            Log::warning('deploy: GitHub release lookup failed: '.$e->getMessage());
+            // Usually the host blocking outbound HTTPS or a missing CA bundle.
+            self::logLookupProblem('GitHub release lookup failed: '.$e->getMessage());
 
             return null;
         }
 
         if (! $response->ok()) {
+            // 403 with no remaining quota = GitHub's 60/hour anonymous limit (set DEPLOY_GITHUB_TOKEN).
+            self::logLookupProblem("GitHub release lookup answered HTTP {$response->status()}, rate limit remaining: "
+                .($response->header('X-RateLimit-Remaining') ?: 'n/a'));
+
             return null;
         }
 
         return ['id' => $response->json('id'), 'published_at' => $response->json('published_at')];
+    }
+
+    /**
+     * Logged at error level (production keeps LOG_LEVEL=error) but at most every 30 minutes, since
+     * the cron retries every minute.
+     */
+    private static function logLookupProblem(string $message): void
+    {
+        if (Cache::add('deploy:lookup-problem-logged', true, now()->addMinutes(30))) {
+            Log::error('deploy: '.$message);
+        }
     }
 
     /**

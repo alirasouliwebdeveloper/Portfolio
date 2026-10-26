@@ -35,7 +35,8 @@ class DeployCheck extends Command
         $results = $runner->run();
         $ok = $results['backend']['ok'] && $results['frontend']['ok'];
 
-        Log::info('deploy:check ran', ['ok' => $ok, 'release_id' => $latest['id'], 'results' => $results]);
+        // Production logs only errors, so a failed deploy must be an error to show up at all.
+        Log::log($ok ? 'info' : 'error', 'deploy:check ran', ['ok' => $ok, 'release_id' => $latest['id'], 'results' => $results]);
 
         if (! $ok) {
             // Marker left alone, so the next tick retries on its own.
