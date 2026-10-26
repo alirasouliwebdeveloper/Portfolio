@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 
 beforeEach(function () {
     config(['portfolio.internal_key' => 'test-key', 'portfolio.mail_to' => 'owner@example.com']);
-    Setting::factory()->create(['contact_options' => [
+    Setting::factory()->create(['email' => 'owner@example.com', 'notification_email' => 'alerts@example.com', 'contact_options' => [
         'needs' => ['Website or web app', 'Online store'],
         'budgets' => ['$1,500 – $4,000', 'Not sure yet'],
         'timelines' => ['Flexible'],
@@ -48,6 +48,24 @@ it('saves a message, hashes the ip and queues both emails', function () {
 
     Mail::assertQueued(ContactReceived::class, fn ($mail) => $mail->hasTo('owner@example.com') && $mail->hasReplyTo('sara@securio.store'));
     Mail::assertQueued(ContactAutoReply::class, fn ($mail) => $mail->hasTo('sara@securio.store'));
+});
+
+it('emails the contact address and the notification address once each', function () {
+    contact()->assertCreated();
+
+    Mail::assertQueued(ContactReceived::class, 2);
+    Mail::assertQueued(ContactReceived::class, fn ($mail) => $mail->hasTo('alerts@example.com') && ! $mail->hasTo('owner@example.com'));
+});
+
+it('does not email the same address twice and falls back to MAIL_TO_ADDRESS', function () {
+    Setting::query()->update(['notification_email' => ' OWNER@example.com']);
+    contact()->assertCreated();
+    Mail::assertQueued(ContactReceived::class, 1);
+
+    config(['portfolio.mail_to' => 'fallback@example.com']);
+    Setting::query()->update(['email' => '', 'notification_email' => null]);
+    contact(['email' => 'second@securio.store'])->assertCreated();
+    Mail::assertQueued(ContactReceived::class, fn ($mail) => $mail->hasTo('fallback@example.com') && $mail->hasReplyTo('second@securio.store'));
 });
 
 it('validates every field on the server', function (array $payload, string $field) {

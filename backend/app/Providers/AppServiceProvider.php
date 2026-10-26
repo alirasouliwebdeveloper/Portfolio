@@ -17,6 +17,7 @@ use App\Models\Setting;
 use App\Models\Tag;
 use App\Models\Testimonial;
 use App\Observers\ContentObserver;
+use App\Support\MailSettings;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentTimezone;
@@ -44,6 +45,9 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(MediaHasBeenAddedEvent::class, StoreImageDimensions::class);
 
         FilamentTimezone::set(config('portfolio.display_timezone'));
+
+        // SMTP settings from the admin (Settings > Email) win over .env once the mailer is built.
+        $this->callAfterResolving('mail.manager', fn () => MailSettings::apply());
 
         // Public write endpoints: 20 uploads and 5 contact messages per hour per visitor.
         RateLimiter::for('uploads', fn (Request $request) => Limit::perHour(20)->by($request->ip()));

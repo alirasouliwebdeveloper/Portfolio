@@ -39,9 +39,10 @@ class ContactController extends Controller
             return $message;
         });
 
-        $owner = config('portfolio.mail_to') ?: Setting::current()->email;
-        if (filled($owner)) {
-            Mail::to($owner)->queue(new ContactReceived($message));
+        // One email per recipient (contact email + notification email from Settings > Email),
+        // so neither address sees the other.
+        foreach (Setting::current()->contactRecipients() as $recipient) {
+            Mail::to($recipient)->queue(new ContactReceived($message));
         }
         Mail::to($message->email)->queue(new ContactAutoReply($message));
 

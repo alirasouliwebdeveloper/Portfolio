@@ -79,6 +79,7 @@ class MockDataSeeder extends Seeder
             'headline' => $s['headline'],
             'bio_short' => $s['bio_short'],
             'email' => $s['email'],
+            'notification_email' => 'ali.rasouli.webdeveloper@gmail.com',
             'phone' => $s['phone'],
             'whatsapp' => $s['whatsapp'],
             'city' => $s['city'],

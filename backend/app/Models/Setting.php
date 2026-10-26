@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Concerns\RegistersImageConversions;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
@@ -14,7 +15,10 @@ use Spatie\MediaLibrary\HasMedia;
     'meta_title', 'meta_description', 'brand_name', 'tagline', 'footer_text', 'ga_measurement_id',
     'gsc_verification', 'twitter_handle', 'site_noindex', 'focus_keyword',
     'headline_fa', 'bio_short_fa', 'tagline_fa', 'footer_text_fa', 'stats_fa',
+    'notification_email', 'mail_host', 'mail_port', 'mail_encryption', 'mail_username', 'mail_password',
+    'mail_from_address', 'mail_from_name',
 ])]
+#[Hidden(['mail_password'])]
 class Setting extends Model implements HasMedia
 {
     use HasFactory, RegistersImageConversions;
@@ -28,6 +32,8 @@ class Setting extends Model implements HasMedia
             'popular_searches' => 'array',
             'contact_options' => 'array',
             'site_noindex' => 'boolean',
+            'mail_port' => 'integer',
+            'mail_password' => 'encrypted',
         ];
     }
 
@@ -48,7 +54,26 @@ class Setting extends Model implements HasMedia
             'name' => 'Ali',
             'headline' => 'I build things for the web.',
             'email' => 'hello@example.com',
+            'notification_email' => 'ali.rasouli.webdeveloper@gmail.com',
         ]);
+    }
+
+    /**
+     * Who receives contact-form messages: the public contact email plus the notification email,
+     * without duplicates. MAIL_TO_ADDRESS is only a fallback for a site with neither set.
+     *
+     * @return list<string>
+     */
+    public function contactRecipients(): array
+    {
+        $recipients = collect([$this->email, $this->notification_email])
+            ->map(fn (?string $address) => strtolower(trim((string) $address)))
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
+
+        return $recipients ?: array_values(array_filter([config('portfolio.mail_to')]));
     }
 
     /** The site has exactly one settings record. */

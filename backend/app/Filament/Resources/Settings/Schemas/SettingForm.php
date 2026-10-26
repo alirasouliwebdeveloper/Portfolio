@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Settings\Schemas;
 use App\Filament\Support\BrandFields;
 use App\Filament\Support\Fields;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\Textarea;
@@ -66,6 +67,33 @@ class SettingForm
                         TagsInput::make('contact_options.budgets')->label('Budget choices'),
                         TagsInput::make('contact_options.timelines')->label('Timeline choices'),
                     ]),
+                ]),
+                Tab::make('Email')->icon('heroicon-o-at-symbol')->schema([
+                    Section::make('Contact form notifications')
+                        ->description('Every contact-form message is emailed to the contact email (Contact tab) and to this address.')
+                        ->schema([
+                            TextInput::make('notification_email')->email()->maxLength(255)
+                                ->placeholder('ali.rasouli.webdeveloper@gmail.com'),
+                        ]),
+                    Section::make('SMTP server')
+                        ->description('Leave the host empty to use the server defaults (.env). Use "Send test email" at the top to check these.')
+                        ->columns(2)
+                        ->schema([
+                            TextInput::make('mail_host')->label('Host')->maxLength(255)->placeholder('mail.alirasouli.ir'),
+                            TextInput::make('mail_port')->label('Port')->numeric()->minValue(1)->maxValue(65535)->placeholder('465'),
+                            Select::make('mail_encryption')->label('Encryption')
+                                ->options(['ssl' => 'SSL (port 465)', 'tls' => 'TLS / STARTTLS (port 587)'])
+                                ->placeholder('None'),
+                            TextInput::make('mail_username')->label('Username')->maxLength(255)->autocomplete('off'),
+                            TextInput::make('mail_password')->label('Password')->password()->revealable()
+                                ->autocomplete('new-password')
+                                // Never sent back to the browser; an empty field keeps the saved password.
+                                ->formatStateUsing(fn () => null)
+                                ->dehydrated(fn (?string $state) => filled($state))
+                                ->helperText(fn ($record) => filled($record?->mail_password) ? 'Saved. Leave empty to keep it.' : null),
+                            TextInput::make('mail_from_address')->label('From address')->email()->maxLength(255),
+                            TextInput::make('mail_from_name')->label('From name')->maxLength(255),
+                        ]),
                 ]),
                 Tab::make('Blog')->icon('heroicon-o-newspaper')->schema([
                     Section::make()->schema([
