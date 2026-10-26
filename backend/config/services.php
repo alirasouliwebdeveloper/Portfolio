@@ -49,7 +49,6 @@ return [
 
     // cPanel deploys (DEPLOY_CPANEL.md): the server pulls CI builds from a rolling GitHub release.
     'deploy' => [
-        'token' => env('DEPLOY_WEBHOOK_SECRET'),
         'github_repo' => env('DEPLOY_GITHUB_REPO', 'alirasouliwebdeveloper/Portfolio'),
         'github_token' => env('DEPLOY_GITHUB_TOKEN'),
         'release_tag' => env('DEPLOY_RELEASE_TAG', 'deploy-latest'),

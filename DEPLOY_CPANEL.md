@@ -24,7 +24,7 @@
    در File Manager داخل پوشه‌ی ساب‌دامین آپلود و Extract کن. (فایل `.htaccess` ریشه همه‌ی درخواست‌ها را به
    `public/` می‌فرستد؛ لازم نیست Document Root را عوض کنی.)
 5. **`.env`**: فایل `.env.cpanel.example` را به `.env` کپی کن و پر کن: اطلاعات دیتابیس، SMTP،
-   `API_INTERNAL_KEY` و `REVALIDATE_SECRET` و `DEPLOY_WEBHOOK_SECRET` (هر کدام یک مقدار تصادفی بلند)،
+   `API_INTERNAL_KEY` و `REVALIDATE_SECRET` (هر کدام یک مقدار تصادفی بلند)،
    `TURNSTILE_SECRET_KEY`، `ADMIN_PASSWORD`، `DEPLOY_FRONTEND_PATH`، و `USER` در `SEED_PATH`/`ASSETS_PATH`.
    `DEPLOY_GITHUB_TOKEN` اختیاری است ولی توصیه می‌شود (Fine-grained PAT فقط برای همین ریپو، Contents: Read-only)
    چون بدون آن سقف ۶۰ درخواست در ساعتِ گیت‌هاب روی IP مشترک هاست زود پر می‌شود.
@@ -42,11 +42,13 @@
    بعد از seed، `ADMIN_PASSWORD` را از `.env` پاک کن.
 7. **سه Cron دائمی** (Cron Jobs، هر دقیقه):
    ```
-   * * * * * /usr/local/bin/php /home/USER/api.alirasouli.ir/artisan schedule:run >> /dev/null 2>&1
-   * * * * * /usr/local/bin/php /home/USER/api.alirasouli.ir/artisan queue:work --stop-when-empty >> /dev/null 2>&1
-   * * * * * /usr/local/bin/php /home/USER/api.alirasouli.ir/artisan deploy:check >> /dev/null 2>&1
+   * * * * * /usr/local/bin/ea-php84 /home/USER/api.alirasouli.ir/artisan schedule:run >> /dev/null 2>&1
+   * * * * * /usr/local/bin/ea-php84 /home/USER/api.alirasouli.ir/artisan queue:work --stop-when-empty >> /dev/null 2>&1
+   * * * * * /usr/local/bin/ea-php84 /home/USER/api.alirasouli.ir/artisan deploy:check >> /dev/null 2>&1
    ```
    صف (ایمیل فرم تماس، تبدیل تصاویر، revalidate سایت) بدون کرون دوم اجرا نمی‌شود.
+   `/usr/local/bin/php` روی این هاست افزونه‌ی PDO ندارد و هر سه کرون با `Class "PDO" not found` کرش می‌کنند؛ حتماً
+   PHP 8.4 (`ea-php84`، یا روی CloudLinux `/opt/alt/php84/usr/bin/php`) را بده.
 8. ورود به پنل: `https://api.alirasouli.ir/admin` — ورود دومرحله‌ای را همان‌جا فعال کن.
 
 ## ۲. فرانت‌اند — یک‌بار
@@ -80,10 +82,7 @@ Settings → Secrets and variables → Actions:
 ## دیپلوی‌های بعدی
 
 فقط `git push origin main`. ظرف چند دقیقه (build حدود ۵ دقیقه + حداکثر یک دقیقه تا تیک کرون) روی سایت است.
-دیپلوی فوری بدون صبر برای کرون:
-```
-curl -X POST -H "X-Deploy-Token: <DEPLOY_WEBHOOK_SECRET>" https://api.alirasouli.ir/deploy-hook
-```
+دیپلوی فقط از کرون `deploy:check` انجام می‌شود؛ هیچ آدرس HTTP برای دیپلوی وجود ندارد.
 برگشت به نسخه‌ی قبل: `git revert` و push، یا اجرای دستی workflow «Deploy (cPanel)» با `ref` قدیمی‌تر.
 لاگ دیپلوی‌ها: `storage/logs/laravel.log` (پیام `deploy:check ran`).
 

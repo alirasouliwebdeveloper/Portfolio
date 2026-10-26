@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\DeployController;
 use App\Models\Upload;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +16,3 @@ Route::middleware(['web', Authenticate::class])
         return Storage::disk('uploads')->download($upload->path, $upload->original_name);
     })
     ->name('contact-files.download');
-
-// Manual "deploy now" on cPanel (the cron `deploy:check` is the automated path). Shared secret, CSRF-exempt.
-Route::post('/deploy-hook', DeployController::class)->middleware('throttle:10,1');

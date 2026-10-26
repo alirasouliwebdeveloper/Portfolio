@@ -17,7 +17,7 @@ use ZipArchive;
  * cPanel deploys (see DEPLOY_CPANEL.md): GitHub Actions publishes backend.zip/frontend.zip to a
  * rolling GitHub Release and this server pulls them itself — shared hosting firewalls tend to
  * block inbound FTP/webhooks from GitHub's cloud IPs, while outbound calls to api.github.com work.
- * Used by the `deploy:check` cron command (the automated path) and the manual /deploy-hook.
+ * Used only by the `deploy:check` cron command (every minute); there is no HTTP trigger.
  */
 class DeployRunner
 {
