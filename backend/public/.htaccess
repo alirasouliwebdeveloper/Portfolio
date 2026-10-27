@@ -5,6 +5,13 @@
 
     RewriteEngine On
 
+    # cPanel serves this folder through the app root's .htaccess, so /public is an internal detail:
+    # a browser asking for /public/... (e.g. /public/admin) gets the clean address. It lives here,
+    # not in the root .htaccess, because Apache only runs the rules of the deepest folder.
+    # THE_REQUEST is the original request line, so the root's internal rewrite never matches it.
+    RewriteCond %{THE_REQUEST} \s/+public(?:/([^\s?]*))?[\s?] [NC]
+    RewriteRule ^ /%1 [R=301,L,NE]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
