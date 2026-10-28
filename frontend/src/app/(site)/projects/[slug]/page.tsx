@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProjectMeta } from "@/components/project/ProjectMeta";
 import { QuoteBlock } from "@/components/project/QuoteBlock";
+import { ScreenGallery } from "@/components/project/ScreenGallery";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -224,28 +225,7 @@ export default async function ProjectPage({
             title="A closer look"
             id="screens-title"
           />
-          <ul className="tablet:grid-cols-2 mt-12 grid gap-8">
-            {project.screens.map((screen, index) => (
-              <li key={`${screen.caption}-${index}`}>
-                <figure className="flex flex-col gap-3">
-                  <div className="hover-card rounded-card-lg border-border bg-surface relative aspect-16/10 overflow-hidden border">
-                    <Media
-                      image={screen.image}
-                      size="md"
-                      fill
-                      sheen
-                      sizes="(min-width: 768px) 50vw, 100vw"
-                    />
-                  </div>
-                  {screen.caption ? (
-                    <figcaption className="text-meta text-dim">
-                      {screen.caption}
-                    </figcaption>
-                  ) : null}
-                </figure>
-              </li>
-            ))}
-          </ul>
+          <ScreenGallery screens={project.screens} />
         </Section>
       ) : null}
 
